@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+      'name', 'display_name', 'email', 'password', 'description',
     ];
 
     /**
@@ -36,4 +36,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    // the badges that belong to the user
+    public function trophies()
+    {
+      return $this->belongsToMany('App\Trophy');
+    }
+    
+    // the subs that this user belongs to
+    public function communities()
+    {
+      return $this->belongsToMany('App\Community');
+    }
+    
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
 }

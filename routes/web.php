@@ -28,6 +28,12 @@ Route::prefix('admin')->group(function() {
   Route::get('password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
   Route::post('password/reset', 'Auth\AdminResetPasswordController@reset')->name('admin.password.update');
   Route::get('password/reset/{token}', 'Auth\AdminResetPasswordController@showResetForm')->name('admin.password.reset');
+  // model routes
+  Route::resource('trophies', 'TrophyController');
+  Route::resource('comments', 'CommentController');
+  Route::resource('posts', 'PostController');
+  Route::resource('communities', 'CommunityController');
+  Route::resource('users', 'UserController');
   
   
   Route::get('/', 'AdminController@index')->name('admin.dashboard');
