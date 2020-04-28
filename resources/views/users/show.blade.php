@@ -60,7 +60,21 @@
         </div>
         
         <div class="bg-white shadow p-4 mb-5 rounded">
-          Trophies
+          <h3 class="title h3">Trophés</h3>
+          @foreach ($user->trophies as $trophy)
+            
+            
+            <div class="flex">
+              
+              <div>
+                {{-- <img src="{{ asset('storage/'.$trophy->image) }}" alt="{{ $trophy->name }}" class="w-20"> --}}
+                <img src="{{ $trophy->image }}" alt="{{ $trophy->name }}">
+                
+              </div>
+              <div>{{ $trophy->name }}</div>
+            </div>
+            
+          @endforeach
         </div>
         @include('components.footer')
       </div>
