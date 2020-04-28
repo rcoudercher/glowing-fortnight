@@ -29,6 +29,4 @@ class FrontController extends Controller
   {
     return view('posts.create', compact('community'));
   }
-  
-  
 }

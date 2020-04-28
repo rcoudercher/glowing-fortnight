@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title') / {{ config('app.name', 'Laravel') }}</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
   </head>
-  <body class="bg-gray-300 h-screen antialiased leading-none">
+  <body class="antialiased leading-none">
     <nav class="bg-blue-900 shadow py-5">
       <div class="container mx-auto px-6 md:px-0">
         <div class="flex items-center justify-center">
@@ -40,8 +40,8 @@
                 <div id="dropdown" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg hidden">
                   <div class="rounded-md bg-white shadow-xs">
                     <div class="py-1">
-                      <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">My Profile</a>
-                      <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">User Settings</a>
+                      <a href="{{ route('front.users.show', ['user' => Auth::user()]) }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Mon Profil</a>
+                      <a href="{{ route('user.settings.index') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Configuration</a>
                     </div>
                     <div class="border-t border-gray-100"></div>
                     <div class="py-1">

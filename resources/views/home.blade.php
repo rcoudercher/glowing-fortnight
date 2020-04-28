@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+  <div class="bg-gray-300 h-screen ">
     <div class="flex items-center">
         <div class="md:w-1/2 md:mx-auto">
 
@@ -25,4 +26,5 @@
             </div>
         </div>
     </div>
+  </div>
 @endsection

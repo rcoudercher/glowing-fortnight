@@ -17,6 +17,23 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
+
+Route::get('r/{community:name}', 'FrontController@showSub')->name('front.subs.show');
+Route::get('r/{community:name}/publier', 'FrontController@createPost')->name('front.posts.create');
+Route::get('r/{community:name}/{post:slug}', 'FrontController@showPost')->name('front.posts.show');
+Route::get('u/{user:name}', 'FrontController@showUser')->name('front.users.show');
+
+Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
+  Route::name('user.settings.')->group(function () {
+    Route::get('/', 'UserSettingsController@account')->name('index');
+    Route::get('compte', 'UserSettingsController@account')->name('account');
+    Route::get('profil', 'UserSettingsController@profile')->name('profile');
+    Route::get('securite', 'UserSettingsController@privacy')->name('privacy');
+    Route::get('flux', 'UserSettingsController@feed')->name('feed');
+    Route::get('notifications', 'UserSettingsController@notifications')->name('notifications');
+    Route::get('messagerie', 'UserSettingsController@messaging')->name('messaging');
+  });
+});
   
   
 Route::prefix('admin')->group(function() {

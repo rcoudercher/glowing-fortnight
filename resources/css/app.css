@@ -35,6 +35,42 @@
  * @import "components/buttons";
  * @import "components/forms";
  */
+ 
+ .title {
+   @apply font-black leading-7 text-gray-900;
+ }
+ 
+ .h1 {
+   @apply text-4xl;
+ }
+ 
+ .h2 {
+   @apply text-3xl;
+ }
+ 
+ .h2 {
+   @apply text-2xl;
+ }
+ 
+ .h2 {
+   @apply text-xl;
+ }
+ 
+ .btn {
+    @apply font-bold py-2 px-4 rounded;
+  }
+  
+  .btn-blue {
+    @apply bg-blue-500 text-white;
+  }
+  
+  .btn-red {
+    @apply bg-red-500 text-white;
+  }
+  
+  .btn-blue:hover {
+    @apply bg-blue-700;
+  }
 
 /**
  * This injects all of Tailwind's utility classes, generated based on your
@@ -60,3 +96,44 @@
  * @import "utilities/background-patterns";
  * @import "utilities/skew-transforms";
  */
+ 
+ 
+ 
+ 
+ 
+ 
+ /* ios switch */
+ 
+ input.apple-switch {
+  position: relative;
+  -webkit-appearance: none;
+  outline: none;
+  width: 50px;
+  height: 30px;
+  background-color: #fff;
+  border: 1px solid #D9DADC;
+  border-radius: 50px;
+  box-shadow: inset -20px 0 0 0 #fff;
+}
+
+input.apple-switch:after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  background: transparent;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  box-shadow: 2px 4px 6px rgba(0,0,0,0.2);
+}
+
+input.apple-switch:checked {
+  box-shadow: inset 20px 0 0 0 #4ed164;
+  border-color: #4ed164;
+}
+
+input.apple-switch:checked:after {
+  left: 20px;
+  box-shadow: -2px 4px 3px rgba(0,0,0,0.05);
+}
