@@ -10,6 +10,7 @@
       <tr>
         <th scope="col">id</th>
         <th scope="col">name</th>
+        <th scope="col">image</th>
         <th scope="col">created_at</th>
       </tr>
     </thead>
@@ -18,6 +19,7 @@
       <tr>
         <th scope="row">{{ $trophy->id }}</th>
         <td><a href="{{ route('trophies.update', ['trophy' => $trophy]) }}">{{ $trophy->name }}</a></td>
+        <td>{{ $trophy->image }}</td>
         <td>{{ $trophy->created_at }}</td>
       </tr>
     @endforeach

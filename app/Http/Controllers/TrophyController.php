@@ -23,10 +23,33 @@ class TrophyController extends Controller
 
   public function store(Request $request)
   {
-    $validator = request()->validate([
+    // $validator = request()->validate([
+    //   'name' => 'required|max:255|unique:trophies',
+    // ]);
+    // 
+    //
+
+    
+    
+    // dd($request->file('image'));
+    
+    $validator = tap(request()->validate([
       'name' => 'required|max:255|unique:trophies',
-    ]);
-    Trophy::create($validator);
+    ]), function () {
+      if (request()->hasFile('image')) {
+        request()->validate([
+          'image' => 'file|image|max:5000'
+        ]);
+      }
+    });
+        
+    $trophy = Trophy::create($validator);
+    
+    
+    $this->storeImage($trophy);
+    
+    
+    
     return redirect(route('trophies.index'))->with('message', 'Trophy created successfully.');
   }
 
@@ -48,6 +71,8 @@ class TrophyController extends Controller
     
     $trophy->update($validator);
     
+    $this->storeImage($trophy);
+    
     return redirect(route('trophies.show', ['trophy' => $trophy]))->with('message', 'Trophy updated successfully.');
   }
 
@@ -55,5 +80,14 @@ class TrophyController extends Controller
   {
     $trophy->delete();
     return redirect(route('trophies.index'))->with('message', 'Trophy deleted successfully.');
+  }
+  
+  private function storeImage($trophy)
+  {
+    if (request()->has('image')) {
+      $trophy->update([
+        'image' => request()->image->store('uploads', 'public'),
+      ]);
+    }
   }
 }

@@ -25,6 +25,17 @@
         <th scope="row">name</th>
         <td>{{ $trophy->name }}</td>
       </tr>
+      
+      
+      @if ($trophy->image)
+        <tr>
+          <th scope="row">image</th>
+          <td><img src="{{ asset('storage/'.$trophy->image) }}" class="img-thumbnail"></td>
+        </tr>
+      @endif
+      
+      
+      
     </tbody>
   </table>
 @endsection

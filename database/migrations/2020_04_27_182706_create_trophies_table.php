@@ -15,7 +15,8 @@ class CreateTrophiesTable extends Migration
     {
         Schema::create('trophies', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255)->unique();
+            $table->string('name')->unique();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
