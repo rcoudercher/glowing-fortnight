@@ -17,10 +17,11 @@
     </div>
     <div class="flex mb-8">
       <div>
-        <h3 class="title h3">Mot de passe</h3>
+        <h3 class="title h3">Changer le mot de passe</h3>
+        <p>Le mot de pase doit contenir au minimum 8 caractères.</p>
       </div>
       <div class="ml-8">
-        <button type="button" name="button" class="btn btn-blue">modifier</button>
+        <a href="{{ route('user.settings.password.edit') }}"><button type="button" name="button" class="btn btn-blue">modifier</button></a>
       </div>
     </div>
     <div class="mb-8">

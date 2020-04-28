@@ -2,6 +2,13 @@
 
 @section('content')
   <div class="container mx-auto mt-8 border-b-2">
+    
+    @if (session()->has('message'))
+      <div class="shadow rounded p-4 my-4 bg-green-300">
+        <div class="text-green-900 text-center"><strong>{{ session()->get('message') }}</strong></div>
+      </div>
+    @endif
+    
     <div class="mb-8">
       <h1 class="title h1 mb-4">Configuration</h1>
       <h2 class="title h2 mb-4">@yield('section-title')</h2>
