@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container mx-auto mt-8">
+
+<div class="bg-gray-300">
+  <div class="container mx-auto pt-8">
     <div class="lg:flex">
       <div id="left" class="lg:w-2/3">
         
@@ -64,6 +66,7 @@
       </div>
     </div>
   </div>
+</div>
   
   
 @endsection

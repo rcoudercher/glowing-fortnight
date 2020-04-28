@@ -18,7 +18,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
 
-Route::get('r/{community:name}', 'FrontController@showSub')->name('front.subs.show');
+Route::get('r/{community:name}', 'FrontController@showCommunity')->name('front.communities.show');
 Route::get('r/{community:name}/publier', 'FrontController@createPost')->name('front.posts.create');
 Route::get('r/{community:name}/{post:slug}', 'FrontController@showPost')->name('front.posts.show');
 Route::get('u/{user:name}', 'FrontController@showUser')->name('front.users.show');
