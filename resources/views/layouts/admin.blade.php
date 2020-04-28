@@ -45,10 +45,10 @@
         @else
           <span class="navbar-text">{{ Auth::user()->name }}</span>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); 
+            <a class="nav-link" href="{{ route('admin.logout') }}" onclick="event.preventDefault(); 
             document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
           </li>
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+          <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="hidden">
             {{ csrf_field() }}
           </form>
         @endguest
