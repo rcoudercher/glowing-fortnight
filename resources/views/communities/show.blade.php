@@ -2,7 +2,6 @@
 
 @section('content')
   <div id="hero" class="w-screen shadow">
-    <div class="h-24 bg-red-300"></div>
     <div class="bg-white h-24">
       <div class="container mx-auto flex">
         <div>
@@ -67,7 +66,7 @@
     {{-- <div>hero links</div> --}}
   </div>
   
-  <div class="bg-gray-300">
+  <div class="bg-gray-300 h-screen">
     <div class="container mx-auto pt-8">
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">

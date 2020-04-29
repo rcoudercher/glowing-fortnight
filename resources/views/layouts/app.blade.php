@@ -57,26 +57,44 @@
       </div>
     </nav>
     
-    @if (session()->has('message'))
-      <div class="bg-gray-300">
-        <div class="container mx-auto">
-          <div class="shadow rounded p-4 bg-green-300">
-            <div class="text-green-900 text-center"><strong>{{ session()->get('message') }}</strong></div>
+    {{-- notifications container --}}
+    <div id="notif-container" class="absolute top-0 right-0 mr-5 mt-24 w-1/4">
+      
+      @if (session()->has('message'))
+        <div class="py-3 pl-6 pr-3 rounded-lg bg-green-300 shadow-lg mb-4">
+          <div class="flex items-center justify-between flex-wrap">
+            <div class="w-full flex-1 flex items-center sm:w-0">
+              <p class="text-green-900">{{ session()->get('message') }}</p>
+            </div>
+            <div class="flex-shrink-0">
+                <div class="rounded-md shadow-sm">
+                  <a href="/" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">
+                    X
+                  </a>
+                </div>
+              </div>
           </div>
         </div>
-    @endif
-    
-    @if (session()->has('error'))
-      <div class="bg-gray-300">
-        <div class="container mx-auto pt-8">
-          <div class="shadow rounded p-4 bg-red-300">
-            <div class="text-red-900 text-center"><strong>{{ session()->get('error') }}</strong></div>
+      @endif
+      
+      @if (session()->has('error'))
+        <div class="py-3 pl-6 pr-3 rounded-lg bg-red-300 shadow-lg mb-4">
+          <div class="flex items-center justify-between flex-wrap">
+            <div class="w-full flex-1 flex items-center sm:w-0">
+              <p class="text-green-red">{{ session()->get('error') }}</p>
+            </div>
+            <div class="flex-shrink-0">
+                <div class="rounded-md shadow-sm">
+                  <a href="/" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">
+                    X
+                  </a>
+                </div>
+              </div>
           </div>
         </div>
-      </div>
-    @endif
-    
-    
+      @endif
+      
+    </div>
     
     @yield('content')
     <script>
