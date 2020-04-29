@@ -16,7 +16,7 @@
                 <span>↓</span>  
               </div>
               <div class="mx-5">
-                <div class="mb-4"><span class="font-bold">r/{{ $post->community->name }}</span> - Posted by {{ $user->name }}, {{ now()->diffInHours($post->created_at) }} hours ago</div>
+                <div class="mb-4">Publié sur <a class="hover:underline font-bold" href="{{ $post->community->deleted ? '#' : route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->deleted ? '[supprimé]' : $post->community->name }}</a>, {{ now()->diffInHours($post->created_at) }} hours ago</div>
                 <div class="mb-4">{{ $post->title }}</div>
                 <div class="mb-4">{{ $post->content }}</div>
                 <div class="mb-4"><a href="url" class="regLink">Hello world link</a></div>

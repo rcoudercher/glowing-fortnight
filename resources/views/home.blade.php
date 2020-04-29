@@ -2,18 +2,7 @@
 
 @section('content')
   <div class="bg-gray-300">
-    
     <div class="container mx-auto pt-8">
-      
-      
-      @if (session()->has('message'))
-        <div class="shadow rounded p-4 my-4 bg-green-300">
-          <div class="text-green-900 text-center"><strong>{{ session()->get('message') }}</strong></div>
-        </div>
-      @endif
-      
-      
-      
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
           @foreach ($posts as $post)
@@ -24,8 +13,11 @@
                 <span>↓</span>  
               </div>
               <div class="mx-5">
-                <div class="mb-4"><span class="font-bold">
-                  <a href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->name }}</a></span> - Posted by u/<a href="{{ route('front.users.show', ['user' => $post->user]) }}">{{ $post->user->name }}</a>, {{ now()->diffInHours($post->created_at) }} hours ago
+                <div class="mb-4">
+                  <span class="font-bold">
+                    <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->name }}</a>
+                  </span>
+                   - Posted by <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, {{ now()->diffInHours($post->created_at) }} hours ago
                 </div>
                 <div class="mb-4">{{ $post->title }}</div>
                 <div class="mb-4">{{ $post->content }}</div>

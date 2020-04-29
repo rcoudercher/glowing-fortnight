@@ -14,14 +14,7 @@ class UserSettingsController extends Controller
   public function account()
   {
     // encrypt user id
-    $key = encrypt(Auth::user()->id);  
-    
-    // dd($key);  
-    // 
-    // $decrypted = decrypt($key);
-    // 
-    // dd($decrypted);
-    
+    $key = encrypt(Auth::user()->id);
     return view('users.settings.account', compact('key'));
   }
   
@@ -87,39 +80,72 @@ class UserSettingsController extends Controller
   public function destroyUser(Request $request)
   {
     
-    // check if hidden key was modified
-    try {
-      $decrypted = decrypt($request->input('key'));
-    } catch (DecryptException $e) {
-      return redirect(route('user.settings.index'))->with('error', 'Echec de la suppression du compte. Veuillez essayer de nouveau.');
+    if (Auth::check()) {
+      
+      // check if hidden key was modified
+      try {
+        $decrypted = decrypt($request->input('key'));
+      } catch (DecryptException $e) {
+        return redirect(route('user.settings.index'))->with('error', 'Echec de la suppression du compte. Veuillez essayer de nouveau.');
+      }
+      
+      $user = Auth::user();
+      
+      // check if logged user id matches the decrypted key
+      if ($user->id == $decrypted) {
+        
+        // if it all matches, then we can start deleting the user
+        
+        // 1. remove user memberships
+        $user->communities()->sync([]);
+        
+        // 2. all comments and posts 'deleted' colums are now set to true
+        
+        foreach ($user->posts as $post) {
+          $post->deleted = true;
+          $post->save();
+        }
+                
+        foreach ($user->comments as $comment) {
+          $comment->deleted = true;
+          $comment->save();
+        }
+        
+        
+        // 3. send email
+        
+        
+        // delete user
+        
+        $user->deleted = true;
+        
+        
+        // clean up the user model, i.e. set sensitive values to null. ONLY EMAIL IS KEPT
+        $user->name= NULL;
+        $user->display_name= NULL;
+        $user->password= NULL;
+        $user->description= NULL;
+        $user->remember_token= NULL;
+        
+        $user->save();
+        
+        // log the user out for the last time
+        Auth::guard('web')->logout();        
+        
+        return redirect(route('home'))->with('message', 'Votre compte a bien été supprimé.');
+        
+        
+      }
+      
+      return redirect(route('user.settings.index'))
+      ->with('error', 'Echec de la suppression du compte. Veuillez essayer de nouveau.');
+      
+      
     }
     
-    
-    // check if logged user id matches the decrypted key
-    if (Auth::user()->id == $decrypted) {
-      
-      // if it all matches, then we can start deleting the user
-      
-      // remove user memberships
-      
-      
-      
-      dd('egal');
-    } else {
-      return redirect(route('user.settings.index'))->with('error', 'Echec de la suppression du compte. Veuillez essayer de nouveau.');
-    }
-
-    
-    // other things to do before deleting the user
-    // - remove all memberships
-    // - all comments and posts are now owned by u/[supprime]
-    // - send email 
-    
-    
-    
-    $user->delete();
-    return redirect(route('home'))->with('message', 'User deleted successfully.');
-
+    // ask the user to connect first before joining this community
+    return redirect(route('login'))
+    ->with('error', 'Vous devez être connecté pour rejoindre une communauté.');
     
   }
   

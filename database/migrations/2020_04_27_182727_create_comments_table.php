@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('community_id'); // community this comment is related to
             $table->unsignedBigInteger('parent_id')->nullable(); // comment this comment is related to. Null if root comment, i.e. is a direct reply to a post
             $table->text('content');
+            $table->boolean('deleted')->default(0);
             $table->timestamps();
         });
     }

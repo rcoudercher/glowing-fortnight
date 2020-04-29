@@ -91,7 +91,7 @@
                   <span>↓</span>  
                 </div>
                 <div class="mx-5">
-                  <div class="mb-4"><span class="font-bold">r/{{ $post->community->name }}</span> - Posted by u/{{ $post->user->name }}, {{ now()->diffInHours($post->created_at) }} hours ago</div>
+                  <div class="mb-4">Posted by <a  class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, {{ now()->diffInHours($post->created_at) }} hours ago</div>
                   <div class="mb-4">{{ $post->title }}</div>
                   <div class="mb-4">{{ $post->content }}</div>
                   <div class="mb-4"><a href="url" class="regLink">Hello world link</a></div>

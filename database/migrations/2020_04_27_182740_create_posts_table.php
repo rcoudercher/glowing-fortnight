@@ -19,9 +19,10 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('community_id'); // id of the related community
             $table->boolean('notification')->default(0); // notifies post activity to the author
             $table->boolean('public')->default(1); // remains false until community moderator accepts post
-            $table->string('title', 255);	
+            $table->string('title');	
             $table->text('content');
             $table->text('slug')->unique();
+            $table->boolean('deleted')->default(0);
             $table->timestamps();
         });
     }
