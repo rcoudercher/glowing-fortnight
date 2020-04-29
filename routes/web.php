@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
+Route::get('test', 'PageController@test')->name('test');
+
+
+
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
