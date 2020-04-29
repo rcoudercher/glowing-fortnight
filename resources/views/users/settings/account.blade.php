@@ -25,7 +25,17 @@
       </div>
     </div>
     <div class="mb-8">
-      <button type="button" name="button" class="btn btn-red">Supprimer mon compte</button>
+      
+      
+      
+      <a class="nav-link" href="{{ route('user.settings.account.destroy') }}" onclick="event.preventDefault(); 
+        document.getElementById('destroy-form').submit();"><button type="button" name="button" class="btn btn-red">Supprimer mon compte</button></a>
+        
+      <form id="destroy-form" action="{{ route('user.settings.account.destroy') }}" method="POST" class="hidden">
+        @method('DELETE')
+        @csrf
+        <input type="hidden" name="key" value="{{ $key }}">
+      </form>
     </div>
   </div>
 @endsection

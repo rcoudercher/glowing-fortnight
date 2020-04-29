@@ -2,7 +2,18 @@
 
 @section('content')
   <div class="bg-gray-300">
+    
     <div class="container mx-auto pt-8">
+      
+      
+      @if (session()->has('message'))
+        <div class="shadow rounded p-4 my-4 bg-green-300">
+          <div class="text-green-900 text-center"><strong>{{ session()->get('message') }}</strong></div>
+        </div>
+      @endif
+      
+      
+      
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
           @foreach ($posts as $post)

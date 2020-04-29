@@ -18,7 +18,17 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
 
-Route::get('r/{community:name}', 'FrontController@showCommunity')->name('front.communities.show');
+
+Route::name('front.communities.')->group(function () {
+  Route::get('r/{community:name}', 'FrontController@showCommunity')->name('show');
+  Route::post('r/{community:name}/rejoindre', 'CommunityController@join')->name('join');
+  Route::post('r/{community:name}/quitter', 'CommunityController@leave')->name('leave');
+});
+
+
+
+
+
 Route::get('r/{community:name}/publier', 'FrontController@createPost')->name('front.posts.create');
 Route::get('r/{community:name}/{post:slug}', 'FrontController@showPost')->name('front.posts.show');
 Route::get('u/{user:name}', 'FrontController@showUser')->name('front.users.show');
@@ -27,6 +37,8 @@ Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
   Route::name('user.settings.')->group(function () {
     Route::get('/', 'UserSettingsController@account')->name('index');
     Route::get('compte', 'UserSettingsController@account')->name('account');
+    Route::delete('compte/supprimer', 'UserSettingsController@destroyUser')->name('account.destroy');
+    
     Route::get('profil', 'UserSettingsController@profile')->name('profile');
     Route::get('securite', 'UserSettingsController@privacy')->name('privacy');
     Route::get('flux', 'UserSettingsController@feed')->name('feed');

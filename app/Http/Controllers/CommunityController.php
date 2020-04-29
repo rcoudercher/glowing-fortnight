@@ -6,6 +6,7 @@ use App\Community;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Auth;
 
 class CommunityController extends Controller
 {
@@ -55,7 +56,8 @@ class CommunityController extends Controller
     // update model
     $community->update($validator);
     
-    return redirect(route('communities.show', ['community' => $community]))->with('message', 'Community updated successfully.');
+    return redirect(route('communities.show', ['community' => $community]))
+    ->with('message', 'Community updated successfully.');
   }
 
   public function destroy(Community $community)
@@ -63,4 +65,46 @@ class CommunityController extends Controller
     $community->delete();
     return redirect(route('communities.index'))->with('message', 'Community deleted successfully.');
   }
+  
+  public function join(Community $community)
+  {
+    // check is someone is logged in
+    if (Auth::check()) {
+      // retrieve logged in user
+      $user = Auth::user();
+      // retrieve user's communities
+      $communities = $user->communities;
+      // check if the user isn't already a member of the community he's now requesting to join
+      if (!$communities->contains($community)) {
+        // if user not already a member, then attach this new community
+        $user->communities()->attach($community);
+        // redirect to community front index with succes message
+        return redirect(route('front.communities.show', ['community' => $community]))
+        ->with('message', 'Vous faites maintenant partie de r/'.$community->name);
+      } else {
+        return redirect(route('front.communities.show', ['community' => $community]))
+        ->with('error', 'Vous êtes déja membre de cette communauté.');
+      }  
+    }
+    
+    // ask the user to connect first before joining this community
+    return redirect(route('login'))
+    ->with('error', 'Vous devez être connecté pour rejoindre une communauté.');
+  }
+  
+  public function leave(Community $community)
+  {
+    if (Auth::check()) {
+      $user = Auth::user();
+      $user->communities()->detach($community);
+      return redirect(route('front.communities.show', ['community' => $community]))
+      ->with('message', 'Vous avez bien quitté r/'.$community->name);
+    }
+    
+    // ask the user to connect first before leaving this community
+    return redirect(route('login'))
+    ->with('error', 'Vous devez être connecté pour quitter une communauté.');
+    
+  }  
+  
 }

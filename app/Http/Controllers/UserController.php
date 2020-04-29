@@ -93,5 +93,13 @@ class UserController extends Controller
     {
       $user->delete();
       return redirect(route('users.index'))->with('message', 'User deleted successfully.');
+      
+      
+      // other things to do when a user is deleted
+      // - remove all memberships
+      // - all comments and posts are now owned by u/[supprime]
+      // - send email 
+      
+      
     }
 }

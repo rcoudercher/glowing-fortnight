@@ -56,6 +56,28 @@
         </div>
       </div>
     </nav>
+    
+    @if (session()->has('message'))
+      <div class="bg-gray-300">
+        <div class="container mx-auto">
+          <div class="shadow rounded p-4 bg-green-300">
+            <div class="text-green-900 text-center"><strong>{{ session()->get('message') }}</strong></div>
+          </div>
+        </div>
+    @endif
+    
+    @if (session()->has('error'))
+      <div class="bg-gray-300">
+        <div class="container mx-auto pt-8">
+          <div class="shadow rounded p-4 bg-red-300">
+            <div class="text-red-900 text-center"><strong>{{ session()->get('error') }}</strong></div>
+          </div>
+        </div>
+      </div>
+    @endif
+    
+    
+    
     @yield('content')
     <script>
       // show/hide dropdown menu
