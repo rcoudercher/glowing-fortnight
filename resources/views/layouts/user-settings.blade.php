@@ -37,6 +37,10 @@
         <li class="mr-6">
           <a class="text-blue-500 hover:text-blue-800" href="{{ route('user.settings.messaging') }}">Messagerie</a>
         </li>
+        <li class="mr-6">
+          <a class="text-blue-500 hover:text-blue-800" href="{{ route('user.settings.communities.index') }}">Communautés</a>
+        </li>
+        
       </ul>
     </div>
   </div>

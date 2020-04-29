@@ -44,6 +44,12 @@ Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
     Route::get('flux', 'UserSettingsController@feed')->name('feed');
     Route::get('notifications', 'UserSettingsController@notifications')->name('notifications');
     Route::get('messagerie', 'UserSettingsController@messaging')->name('messaging');
+    
+    Route::get('communautes', 'UserSettingsController@communitiesIndex')->name('communities.index');
+    Route::get('communautes/creer', 'UserSettingsController@communitiesCreate')->name('communities.create');
+    Route::post('communautes/creer', 'UserSettingsController@communitiesStore')->name('communities.store');
+    
+    
     Route::get('modifier-mot-de-passe', 'UserSettingsController@editUserPassword')->name('password.edit');
     Route::post('modifier-mot-de-passe', 'UserSettingsController@updateUserPassword')->name('password.update');
   });

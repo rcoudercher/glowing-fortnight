@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Community;
 use Auth;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UserSettingsController extends Controller
 {
@@ -41,6 +45,60 @@ class UserSettingsController extends Controller
   public function messaging()
   {
     return view('users.settings.messaging');
+  }
+  
+  public function communitiesIndex()
+  {
+    if (Auth::check()) {
+      $user = Auth::user();
+      $communities = $user->communities;
+      return view('users.settings.communities.index', compact('communities'));
+    }
+    return redirect(route('home'))->with('error', 'Vous devez être connecté pour accéder à cette page.');
+  }
+  
+  public function communitiesCreate()
+  {
+    $community = new Community(); // passes an empty model to the view
+    return view('users.settings.communities.create', compact('community'));
+  }
+  
+  public function communitiesStore(Request $request)
+  {
+    
+    if (Auth::check()) {
+      $name = $request->input('name');
+      
+      $data = [
+        'name' => Str::lower($request->input('name')),
+        'description' => $request->input('description'),
+      ];
+      
+      $rules = [
+        'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', 'unique:communities'],
+        'description' => ['nullable', 'string'],
+      ];
+      
+      $validator = Validator::make($data, $rules)->validate();
+          
+      $validator['display_name'] = $name;
+      
+      $community = Community::create($validator);
+      
+      
+      // the user who created the community becomes its first member and moderator
+      $community->users()->attach(Auth::user(), ['moderator' => true]);
+      
+      
+
+      return redirect(route('front.communities.show', ['community' => $community]))
+      ->with('message', 'Votre communauté a bien été créée. A vous de jouer !');
+    }
+    
+    return redirect(route('home'))
+    ->with('error', 'Vous devez être connecté pour créer une nouvelle communauté.');
+    
+    
   }
   
   public function editUserPassword()
