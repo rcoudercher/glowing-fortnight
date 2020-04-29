@@ -15,7 +15,7 @@
               <div class="mx-5">
                 <div class="mb-4">
                   <span class="font-bold">
-                    <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->name }}</a>
+                    <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>
                   </span>
                    - Posted by <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, {{ now()->diffInHours($post->created_at) }} hours ago
                 </div>

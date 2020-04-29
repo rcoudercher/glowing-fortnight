@@ -6,6 +6,7 @@ use App\Community;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use Auth;
 
 class CommunityController extends Controller
@@ -24,12 +25,24 @@ class CommunityController extends Controller
 
   public function store(Request $request)
   {
-    $validator = request()->validate([
-      'name' => 'required|max:70|unique:communities',
-      'title' => 'nullable',
-      'description' => 'nullable',
-    ]);
-
+    $name = $request->input('name');
+    
+    $data = [
+      'name' => Str::lower($request->input('name')),
+      'title' => $request->input('title'),
+      'description' => $request->input('description'),
+    ];
+    
+    $rules = [
+      'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', 'unique:communities'],
+      'title' => ['nullable', 'string'],
+      'description' => ['nullable', 'string'],
+    ];
+    
+    $validator = Validator::make($data, $rules)->validate();
+        
+    $validator['display_name'] = $name;
+    
     Community::create($validator);
 
     return redirect(route('communities.index'))->with('message', 'Community created successfully.');
@@ -47,17 +60,32 @@ class CommunityController extends Controller
 
   public function update(Request $request, Community $community)
   {
-    $validator = Validator::make($request->all(), [
-        'name' => ['required', Rule::unique('communities')->ignore($community)],
-        'title' => 'nullable',
-        'description' => 'nullable',
-    ])->validate();
+    
+    $name = $request->input('name');
+    
+    $data = [
+      'name' => Str::lower($request->input('name')),
+      'title' => $request->input('title'),
+      'description' => $request->input('description'),
+    ];
+    
+    $rules = [
+      'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', Rule::unique('communities')->ignore($community)],
+      'title' => ['nullable', 'string'],
+      'description' => ['nullable', 'string'],
+    ];
+    
+    $validator = Validator::make($data, $rules)->validate();
+        
+    $validator['display_name'] = $name;
+  
     
     // update model
     $community->update($validator);
     
     return redirect(route('communities.show', ['community' => $community]))
     ->with('message', 'Community updated successfully.');
+    
   }
 
   public function destroy(Community $community)

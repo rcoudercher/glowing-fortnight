@@ -7,8 +7,12 @@ use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 $factory->define(Community::class, function (Faker $faker) {
-    return [
-      'name' => Str::slug($faker->name, '-'),
+  
+  $name = $faker->firstName.$faker->numberBetween(1000,9000);
+  
+    return [      
+      'name' => Str::lower($name),
+      'display_name' => $name,
       'title' => $faker->text(50),
       'description' => $faker->text(300),
     ];

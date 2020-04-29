@@ -26,6 +26,10 @@
         <td>{{ $community->name }}</td>
       </tr>
       <tr>
+        <th scope="row">display_name</th>
+        <td>{{ $community->display_name }}</td>
+      </tr>
+      <tr>
         <th scope="row">title</th>
         <td>{{ $community->title }}</td>
       </tr>

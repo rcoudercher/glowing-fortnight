@@ -7,7 +7,7 @@
       <div class="container mx-auto flex">
         <div>
           <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 sm:truncate">{{ $community->title }}</h1>
-          <h2>r/{{ $community->name }}</h2>
+          <h2>r/{{ $community->display_name }}</h2>
         </div>
         <div class="ml-10 my-6">
           
@@ -91,7 +91,7 @@
                   <span>↓</span>  
                 </div>
                 <div class="mx-5">
-                  <div class="mb-4">Posted by <a  class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, {{ now()->diffInHours($post->created_at) }} hours ago</div>
+                  <div class="mb-4">Publié par <a  class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures</div>
                   <div class="mb-4">{{ $post->title }}</div>
                   <div class="mb-4">{{ $post->content }}</div>
                   <div class="mb-4"><a href="url" class="regLink">Hello world link</a></div>

@@ -17,10 +17,10 @@
             <div class="mx-5">
               <div class="mb-4">
                 <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">
-                  <span class="font-bold">r/{{ $post->community->name }}</span>
+                  <span class="font-bold">r/{{ $post->community->display_name }}</span>
                 </a>
-                 - Posted by <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>
-                 , {{ now()->diffInHours($post->created_at) }} hours ago</div>
+                 - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>
+                 , il y a {{ now()->diffInHours($post->created_at) }} heures</div>
               <div class="mb-4">{{ $post->title }}</div>
               <div class="mb-4">{{ $post->content }}</div>
               <div class="mb-4"><a href="url" class="regLink">Hello world link</a></div>

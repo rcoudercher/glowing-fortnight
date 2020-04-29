@@ -10,6 +10,7 @@
       <tr>
         <th scope="col">id</th>
         <th scope="col">name</th>
+        <th scope="col">display_name</th>
         <th scope="col">title</th>
         <th scope="col">description</th>
         <th scope="col">created_at</th>
@@ -21,6 +22,7 @@
       <tr>
         <th scope="row">{{ $community->id }}</th>
         <td><a href="{{ route('communities.update', ['community' => $community]) }}">{{ $community->name }}</a></td>
+        <td>{{ $community->display_name }}</td>
         <td>{{ $community->title }}</td>
         <td>{{ $community->description }}</td>
         <td>{{ $community->created_at }}</td>
