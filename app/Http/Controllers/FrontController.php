@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Community;
 use App\Post;
 use App\User;
+use App\Comment;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -96,4 +97,62 @@ class FrontController extends Controller
     return redirect(route('home'))->with('error', 'Vous devez être connecté pour publier un message.');
 
   }
+  
+  public function storeComment(Request $request, Community $community, Post $post, $slug)
+  {
+    // check if slugs are matching
+    if ($post->slug != $slug) {
+      abort(404);
+    }
+    
+    // check if user is loged in
+    if (!Auth::check()) {
+      return route('home')->with('error', 'Vous devez être connecté pour écrire un commentaire.');
+    }
+    
+    // if evrything all right, then create the comment
+    
+    // data validation first
+    $validator = request()->validate([
+      'content' => 'required|max:1000',
+    ]);
+    
+    // find unique hash
+    $hashes = Comment::all()->pluck('hash');
+    $hash = Str::random(7);
+    while ($hashes->contains($hash)) {
+      $hash = Str::random(7);
+    }
+    // end find unique hash
+    
+    $validator['hash'] = $hash;
+    
+    $comment = Comment::create($validator);
+    
+    $comment->user()->associate(Auth::user());
+    $comment->post()->associate($post);
+    $comment->community()->associate($community);
+    
+    $comment->save();
+    
+    
+    return redirect(route('front.posts.show', ['community' => $community, 'post' => $post, 'slug' => $post->slug]))
+    ->with('message', 'Votre message a bien été publié.');
+    
+    
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

@@ -6,6 +6,7 @@ use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class CommentController extends Controller
 {
@@ -30,6 +31,17 @@ class CommentController extends Controller
         'parent_id' => 'required|integer',
         'content' => 'required',
       ]);
+      
+      // find unique hash
+      $hashes = Comment::all()->pluck('hash');
+      $hash = Str::random(7);
+      while ($hashes->contains($hash)) {
+        $hash = Str::random(7);
+      }
+      // end find unique hash
+      
+      $validator['hash'] = $hash;
+      
       
       Comment::create($validator);
 

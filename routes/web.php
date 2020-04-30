@@ -34,20 +34,9 @@ Route::name('front.communities.')->group(function () {
 
 Route::get('r/{community:display_name}/publier', 'FrontController@createPost')->name('front.posts.create');
 Route::post('r/{community:display_name}/publier', 'FrontController@storePost')->name('front.posts.store');
-
-
-
-
-
-
 Route::get('r/{community:display_name}/{post:hash}/{slug}', 'FrontController@showPost')->name('front.posts.show');
 
-
-
-
-
-
-
+Route::post('r/{community:display_name}/{post:hash}/{slug}', 'FrontController@storeComment')->name('front.comments.store');
 
 
 

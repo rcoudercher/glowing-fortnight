@@ -4,6 +4,7 @@
 
 use App\Comment;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(Comment::class, function (Faker $faker) {
     return [
@@ -11,6 +12,7 @@ $factory->define(Comment::class, function (Faker $faker) {
       'post_id' => 1,
       'community_id' => 1,
       'parent_id' => null,
+      'hash' => Str::random(7),
       'content' => $faker->text(300),
     ];
 });

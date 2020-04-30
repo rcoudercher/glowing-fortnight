@@ -38,6 +38,10 @@
         <td>{{ $comment->community_id }}</td>
       </tr>
       <tr>
+        <th scope="row">hash</th>
+        <td>{{ $comment->hash }}</td>
+      </tr>
+      <tr>
         <th scope="row">content</th>
         <td>{{ $comment->content }}</td>
       </tr>
