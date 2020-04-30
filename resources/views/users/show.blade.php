@@ -1,14 +1,16 @@
 @extends('layouts.app')
 
+@section('title', 'Membre')
+
 @section('content')
 
-<div class="bg-gray-300">
+<div class="bg-gray-300 min-h-screen">
   <div class="container mx-auto pt-8">
     <div class="lg:flex">
       <div id="left" class="lg:w-2/3">
         
         @foreach ($user->posts as $post)
-          <a href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post]) }}">
+          <a href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">
             <div class="bg-white shadow px-5 py-5 mb-5 rounded flex">
               <div class="">
                 <span>↑</span><br>

@@ -66,14 +66,14 @@
     {{-- <div>hero links</div> --}}
   </div>
   
-  <div class="bg-gray-300 h-screen">
+  <div class="bg-gray-300 min-h-screen">
     <div class="container mx-auto pt-8">
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
           
           {{-- post sthg to the community --}}
           <div class="bg-white shadow px-5 py-5 mb-5 rounded flex">
-            <input type="text" value="Create Post" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+            <input type="text" value="Publier un message" onclick="window.location.href='{{ route('front.posts.create', ['community' => $community]) }}'" class="hover:border-solid hover:border-blue-800 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
           </div>
           
           {{-- filter the community --}}
@@ -82,7 +82,7 @@
           </div>
           
           @foreach ($community->posts as $post)
-            <a href="{{ route('front.posts.show', ['community' => $community, 'post' => $post]) }}">
+            <a href="{{ route('front.posts.show', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}">
               <div class="bg-white shadow px-5 py-5 mb-5 rounded flex">
                 <div class="">
                   <span>↑</span><br>
@@ -107,11 +107,11 @@
         <div id="right" class="lg:ml-6 lg:w-1/3">
           <div class="bg-white shadow p-4 mb-5 rounded">
             <div class="bg-red-300">
-              <h3>A propos de ce community</h3>
+              <h3>A propos de r/{{ $community->display_name }}</h3>
             </div>
             <div>
               <div class="mb-2">{{ $community->description }}</div>
-              <div class="mb-2">150 membres</div>
+              <div class="mb-2">{{ $community->users->count() }} membres</div>
               <div class="mb-2">15 membres en ligne</div>
               <div class="mb-2">community créé le {{ $community->created_at }}</div>
               <div>

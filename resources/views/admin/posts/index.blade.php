@@ -13,6 +13,7 @@
         <th scope="col">community_id</th>
         <th scope="col">notification</th>
         <th scope="col">public</th>
+        <th scope="col">hash</th>
         <th scope="col">title</th>
         <th scope="col">created_at</th>
       </tr>
@@ -25,6 +26,7 @@
         <td>{{ $post->community_id }}</td>
         <td>{{ $post->notification }}</td>
         <td>{{ $post->public }}</td>
+        <td>{{ $post->hash }}</td>
         <td><a href="{{ route('posts.update', ['post' => $post]) }}">{{ $post->title }}</a></td>
         <td>{{ $post->created_at }}</td>
       </tr>

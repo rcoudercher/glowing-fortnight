@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
+@section('title', 'eee')
+
 @section('content')
   
 <div class="bg-gray-300 h-screen">
+
+  
   <div class="container mx-auto pt-8">
     <div class="lg:flex">
       <div id="left" class="lg:w-2/3">
@@ -47,7 +51,7 @@
       <div id="right" class="lg:ml-6 lg:w-1/3">
         <div class="bg-white shadow p-4 mb-5 rounded">
           <div>
-            <div class="mb-4">r/{{ $community->name }}</div>
+            <div class="mb-4">r/{{ $community->display_name }}</div>
             <div>{{ $community->description }}</div>
           </div>
         </div>

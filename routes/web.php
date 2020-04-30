@@ -27,18 +27,31 @@ Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logo
 
 
 Route::name('front.communities.')->group(function () {
-  Route::get('r/{community:name}', 'FrontController@showCommunity')->name('show');
-  Route::post('r/{community:name}/rejoindre', 'CommunityController@join')->name('join');
-  Route::post('r/{community:name}/quitter', 'CommunityController@leave')->name('leave');
+  Route::get('r/{community:display_name}', 'FrontController@showCommunity')->name('show');
+  Route::post('r/{community:display_name}/rejoindre', 'CommunityController@join')->name('join');
+  Route::post('r/{community:display_name}/quitter', 'CommunityController@leave')->name('leave');
 });
 
+Route::get('r/{community:display_name}/publier', 'FrontController@createPost')->name('front.posts.create');
+Route::post('r/{community:display_name}/publier', 'FrontController@storePost')->name('front.posts.store');
 
 
 
 
-Route::get('r/{community:name}/publier', 'FrontController@createPost')->name('front.posts.create');
-Route::get('r/{community:name}/{post:slug}', 'FrontController@showPost')->name('front.posts.show');
-Route::get('u/{user:name}', 'FrontController@showUser')->name('front.users.show');
+
+
+Route::get('r/{community:display_name}/{post:hash}/{slug}', 'FrontController@showPost')->name('front.posts.show');
+
+
+
+
+
+
+
+
+
+
+Route::get('u/{user:display_name}', 'FrontController@showUser')->name('front.users.show');
 
 Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
   Route::name('user.settings.')->group(function () {

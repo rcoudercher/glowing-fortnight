@@ -7,14 +7,13 @@ use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 $factory->define(Post::class, function (Faker $faker) {
-  $title = $faker->text(50);
-    return [
-      'user_id' => 1,
-      'community_id' => 1,
-      'notification' => true,
-      'public' => true,
-      'title' => $title,
-      'content' => $faker->text(300),
-      'slug' => Str::limit(Str::slug($title, '-'), 50, '_c').'-'.Str::lower(Str::random(7)),
-    ];
+  
+  $title = $faker->text(30);
+  
+  return [
+    'hash' => Str::random(6),
+    'slug' => Str::limit(Str::slug($title, '_'), 50),
+    'title' => $title,
+    'content' => $faker->text(300),
+  ];
 });

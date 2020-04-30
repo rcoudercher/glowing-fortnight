@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class PostController extends Controller
 {
@@ -34,15 +35,18 @@ class PostController extends Controller
         'content' => 'required',
       ]);
       
-      $post = Post::create([
-          'user_id' => $validator['user_id'],
-          'community_id' => $validator['community_id'],
-          'notification' => $validator['notification'],
-          'public' => $validator['public'],
-          'title' => $validator['title'],
-          'content' => $validator['content'],
-          'slug' => Str::limit(Str::slug($validator['title'], '-'), 50, '_c').'-'.Str::lower(Str::random(7)),
-      ]);      
+      // find unique hash
+      $hashes = Post::all()->pluck('hash');
+      $hash = Str::random(6);
+      while ($hashes->contains($hash)) {
+        $hash = Str::random(6);
+      }
+      // end find unique hash
+      
+      $validator['hash'] = $hash;      
+      $validator['slug'] = Str::limit(Str::slug($request->input('title'), '_'), 50);
+      
+      $post = Post::create($validator);      
 
       return redirect(route('posts.index'))->with('message', 'Post created successfully.');
     }
@@ -68,7 +72,7 @@ class PostController extends Controller
         'content' => 'required',
       ])->validate();
       
-      $validator['slug'] = Str::limit(Str::slug($validator['title'], '-'), 50, '_c').'-'.Str::lower(Str::random(7));
+      $validator['slug'] = Str::limit(Str::slug($request->input('title'), '_'), 50);
 
       // update model
       $post->update($validator);

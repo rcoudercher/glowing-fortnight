@@ -38,16 +38,24 @@
         <td>{{ $post->public }}</td>
       </tr>
       <tr>
+        <th scope="row">hash</th>
+        <td>{{ $post->hash }}</td>
+      </tr>
+      <tr>
+        <th scope="row">slug</th>
+        <td>{{ $post->slug }}</td>
+      </tr>
+      <tr>
+        <th scope="row">deleted</th>
+        <td>{{ $post->deleted }}</td>
+      </tr>
+      <tr>
         <th scope="row">title</th>
         <td>{{ $post->title }}</td>
       </tr>
       <tr>
         <th scope="row">content</th>
         <td>{{ $post->content }}</td>
-      </tr>
-      <tr>
-        <th scope="row">slug</th>
-        <td>{{ $post->slug }}</td>
       </tr>
     </tbody>
   </table>

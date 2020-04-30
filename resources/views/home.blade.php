@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Accueil')
+
 @section('content')
   <div class="bg-gray-300">
     <div class="container mx-auto pt-8">
