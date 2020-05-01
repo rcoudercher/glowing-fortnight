@@ -10,7 +10,7 @@
   
   <div class="h-screen">
     <h2 class="title h1 mb-8">Créer une nouvelle commnauté</h2>
-    <form action="{{ route('user.settings.communities.store') }}" method="POST">
+    <form action="{{ route('front.communities.store') }}" method="POST">
       @csrf
       
       
@@ -39,7 +39,7 @@
       
       
 
-      <button type="submit" class="btn btn-blue">Save</button>
+      <button type="submit" class="btn btn-blue">Créer</button>
     </form>
   </div>
   

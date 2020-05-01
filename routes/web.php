@@ -40,9 +40,7 @@ Route::name('front.')->group(function() {
         Route::get('flux', 'UserSettingsController@feed')->name('feed');
         Route::get('notifications', 'UserSettingsController@notifications')->name('notifications');
         Route::get('messagerie', 'UserSettingsController@messaging')->name('messaging');
-        Route::get('communautes', 'UserSettingsController@communitiesIndex')->name('communities.index');
-        Route::get('communautes/creer', 'UserSettingsController@communitiesCreate')->name('communities.create');
-        Route::post('communautes/creer', 'UserSettingsController@communitiesStore')->name('communities.store');
+        Route::get('communautes', 'UserSettingsController@showCommunities')->name('communities');
         Route::get('modifier-mot-de-passe', 'UserSettingsController@editUserPassword')->name('password.edit');
         Route::post('modifier-mot-de-passe', 'UserSettingsController@updateUserPassword')->name('password.update');
       });
@@ -53,15 +51,18 @@ Route::name('front.')->group(function() {
   Route::name('communities.')->group(function () {
     Route::get('communautes', 'Front\CommunityController@index')->name('index');
     Route::get('r/{community:display_name}', 'Front\CommunityController@show')->name('show');
+    Route::get('config/communautes/creer', 'Front\CommunityController@create')->name('create');
+    Route::post('config/communautes/creer', 'Front\CommunityController@store')->name('store');
     Route::post('r/{community:display_name}/rejoindre', 'Front\CommunityController@join')->name('join');
     Route::post('r/{community:display_name}/quitter', 'Front\CommunityController@leave')->name('leave');
+    Route::get('r/{community:display_name}/admin', 'Front\CommunityController@admin')->name('admin');
   });
   
   // post routes
   Route::name('posts.')->group(function() {
-    Route::get('r/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
     Route::get('r/{community:display_name}/publier', 'Front\PostController@create')->name('create');
     Route::post('r/{community:display_name}/publier', 'Front\PostController@store')->name('store');
+    Route::get('r/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
   });
   
   // comment routes

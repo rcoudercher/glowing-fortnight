@@ -59,4 +59,104 @@ class CommunityController extends Controller
     return back()->with('message', 'Vous avez bien quitté r/'.$community->name);
   }
   
+  public function admin(Community $community)
+  {
+    return view('communities.admin', compact('community'));  
+  }
+  
+  public function create()
+  {
+    $community = new Community(); // passes an empty model to the view
+    return view('users.settings.communities.create', compact('community'));
+  }
+  
+  public function store(Request $request)
+  {
+    if (!Auth::check()) {
+      return redirect(route('home'))
+      ->with('error', 'Vous devez être connecté pour créer une nouvelle communauté.');
+    }
+    
+    $user = Auth::user();
+    $name = $request->input('name');
+    
+    $data = [
+      'name' => Str::lower($request->input('name')),
+      'description' => $request->input('description'),
+    ];
+    
+    $rules = [
+      'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', 'unique:communities'],
+      'description' => ['nullable', 'string'],
+    ];
+    
+    $validator = Validator::make($data, $rules)->validate();
+    
+    // find unique hash
+    $hashes = Community::all()->pluck('hash');
+    $hash = Str::random(6);
+    while ($hashes->contains($hash)) {
+      $hash = Str::random(6);
+    }
+    // end find unique hash
+        
+    $validator['type'] = 1;
+    $validator['hash'] = $hash;
+    $validator['display_name'] = $name;
+    
+    
+    $community = Community::create($validator);
+    
+    
+    // the user who created the community becomes its first member and moderator
+    $community->creator()->associate($user);
+    $community->save();
+    $community->users()->attach($user, ['moderator' => true]);
+    
+    
+
+    return redirect(route('front.communities.show', ['community' => $community]))
+    ->with('message', 'Votre communauté a bien été créée. A vous de jouer !');
+    
+    
+    
+    
+    
+    // ---------
+    // 
+    // if (Auth::check()) {
+    //   $name = $request->input('name');
+    // 
+    //   $data = [
+    //     'name' => Str::lower($request->input('name')),
+    //     'description' => $request->input('description'),
+    //   ];
+    // 
+    //   $rules = [
+    //     'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', 'unique:communities'],
+    //     'description' => ['nullable', 'string'],
+    //   ];
+    // 
+    //   $validator = Validator::make($data, $rules)->validate();
+    // 
+    //   $validator['display_name'] = $name;
+    // 
+    //   $community = Community::create($validator);
+    // 
+    // 
+    //   // the user who created the community becomes its first member and moderator
+    //   $community->users()->attach(Auth::user(), ['moderator' => true]);
+    // 
+    // 
+    // 
+    //   return redirect(route('front.communities.show', ['community' => $community]))
+    //   ->with('message', 'Votre communauté a bien été créée. A vous de jouer !');
+    // }
+    // 
+    // return redirect(route('home'))
+    // ->with('error', 'Vous devez être connecté pour créer une nouvelle communauté.');
+    
+    
+  }
+  
 }

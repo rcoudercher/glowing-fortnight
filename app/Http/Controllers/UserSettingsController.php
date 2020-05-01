@@ -47,56 +47,20 @@ class UserSettingsController extends Controller
     return view('users.settings.messaging');
   }
   
-  public function communitiesIndex()
+  public function showCommunities()
   {
-    if (Auth::check()) {
-      $user = Auth::user();
-      $communities = $user->communities;
-      return view('users.settings.communities.index', compact('communities'));
-    }
-    return redirect(route('home'))->with('error', 'Vous devez être connecté pour accéder à cette page.');
-  }
-  
-  public function communitiesCreate()
-  {
-    $community = new Community(); // passes an empty model to the view
-    return view('users.settings.communities.create', compact('community'));
-  }
-  
-  public function communitiesStore(Request $request)
-  {
-    
-    if (Auth::check()) {
-      $name = $request->input('name');
-      
-      $data = [
-        'name' => Str::lower($request->input('name')),
-        'description' => $request->input('description'),
-      ];
-      
-      $rules = [
-        'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', 'unique:communities'],
-        'description' => ['nullable', 'string'],
-      ];
-      
-      $validator = Validator::make($data, $rules)->validate();
-          
-      $validator['display_name'] = $name;
-      
-      $community = Community::create($validator);
-      
-      
-      // the user who created the community becomes its first member and moderator
-      $community->users()->attach(Auth::user(), ['moderator' => true]);
-      
-      
-
-      return redirect(route('front.communities.show', ['community' => $community]))
-      ->with('message', 'Votre communauté a bien été créée. A vous de jouer !');
+    if (!Auth::check()) {
+      return redirect(route('home'))->with('error', 'Vous devez être connecté pour accéder à cette page.');
     }
     
-    return redirect(route('home'))
-    ->with('error', 'Vous devez être connecté pour créer une nouvelle communauté.');
+    $user = Auth::user();
+    
+    $moderatorCommunities = $user->moderatorCommunities;
+    
+    $nonModeratorCommunities = $user->nonModeratorCommunities;
+    
+    
+    return view('users.settings.communities.index', compact('moderatorCommunities', 'nonModeratorCommunities'));
     
     
   }

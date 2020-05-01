@@ -1006,8 +1006,6 @@ video {
 
 @media (min-width: 640px) {
   .btn {
-    margin-left: 1rem;
-    margin-top: 0;
     width: auto;
   }
 }

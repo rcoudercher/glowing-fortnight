@@ -49,6 +49,17 @@ class User extends Authenticatable
       return $this->belongsToMany('App\Community');
     }
     
+    public function moderatorCommunities()
+    {
+      return $this->belongsToMany('App\Community')->wherePivot('moderator', 1);
+    }
+    
+    public function nonModeratorCommunities()
+    {
+      return $this->belongsToMany('App\Community')->wherePivot('moderator', 0);
+    }
+    
+    
     public function posts()
     {
         return $this->hasMany('App\Post');

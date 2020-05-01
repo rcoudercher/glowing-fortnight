@@ -26,7 +26,7 @@
           <a class="text-blue-500 hover:text-blue-800" href="{{ route('front.users.settings.messaging') }}">Messagerie</a>
         </li>
         <li class="mr-6">
-          <a class="text-blue-500 hover:text-blue-800" href="{{ route('front.users.settings.communities.index') }}">Communautés</a>
+          <a class="text-blue-500 hover:text-blue-800" href="{{ route('front.users.settings.communities') }}">Communautés</a>
         </li>
         
       </ul>
