@@ -56,30 +56,18 @@
    @apply text-xl;
  }
   
-  .btn-blue {
-    @apply bg-blue-500 text-white;
-  }
-  
-  .btn-red {
-    @apply bg-red-500 text-white;
-  }
-  
-  .btn-blue:hover {
-    @apply bg-blue-700;
-  }
-  
-  .linkBtn {
-    @apply p-3 bg-blue-600 rounded text-white;
-  }
-  
   /* button */
   
   .btn {
-    @apply mt-4 px-5 py-2 w-full inline-flex items-center justify-center border border-transparent text-base leading-6 font-semibold rounded-md text-white shadow-sm transition ease-in-out duration-150;    
+    @apply px-5 py-2 w-full inline-flex items-center justify-center border border-transparent text-base leading-6 font-semibold rounded-md text-white shadow-sm transition ease-in-out duration-150;    
   }
   
   .btn-sm {
-    @apply mt-4 px-3 py-1 w-full inline-flex items-center justify-center border border-transparent text-base leading-6 font-semibold rounded-md text-white shadow-sm transition ease-in-out duration-150;    
+    @apply px-3 py-1 w-full inline-flex items-center justify-center border border-transparent text-base leading-6 font-semibold rounded-md text-white shadow-sm transition ease-in-out duration-150;    
+  }
+  
+  .btn-xsm {
+    @apply px-2 w-full inline-flex items-center justify-center border border-transparent text-sm leading-6 font-semibold rounded-md text-white shadow-sm transition ease-in-out duration-150;    
   }
   
   
@@ -141,6 +129,18 @@
   
   .btn-red:focus {
     @apply bg-red-500;
+  }
+  
+  .btn-green {
+    @apply bg-green-600;
+  }
+  
+  .btn-green:hover {
+    @apply bg-green-500;
+  }
+  
+  .btn-green:focus {
+    @apply bg-green-500;
   }
   
   

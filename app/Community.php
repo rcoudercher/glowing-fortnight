@@ -8,6 +8,11 @@ class Community extends Model
 {
   // allows mass assignment on any field of the model
   protected $guarded = [];
+
+  public function creator()
+  {
+    return $this->belongsTo('App\User');
+  }
   
   public function users()
   {

@@ -22,9 +22,7 @@
         @endguest
         
         @auth
-          @if ($isMember)
-            {{-- a user is logged in but is already a member of this community --}}
-            
+          @if ($community->users->contains(Auth::user()))            
             <a class="btn btn-black" onmouseover="leave(this)" onmouseout="member(this)" href="{{ route('front.communities.leave', ['community' => $community]) }}" onclick="event.preventDefault(); 
               document.getElementById('destroy-form').submit();">Membre</a>
             <form id="destroy-form" action="{{ route('front.communities.leave', ['community' => $community]) }}" method="POST" class="hidden">

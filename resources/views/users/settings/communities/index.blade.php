@@ -18,7 +18,7 @@
   @endif
   
   <div>
-    <a class="btn btn-blue" href="{{ route('user.settings.communities.create') }}">Créer une communauté</a>
+    <a class="btn btn-blue" href="{{ route('front.users.settings.communities.create') }}">Créer une communauté</a>
   </div>
   
 

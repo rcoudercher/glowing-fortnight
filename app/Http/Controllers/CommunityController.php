@@ -28,19 +28,34 @@ class CommunityController extends Controller
     $name = $request->input('name');
     
     $data = [
+      'creator_id' => $request->input('creator_id'),
+      'type' => $request->input('type'),      
       'name' => Str::lower($request->input('name')),
       'title' => $request->input('title'),
       'description' => $request->input('description'),
+      'submission_text' => $request->input('submission_text'),
     ];
     
     $rules = [
+      'creator_id' => ['required', 'integer'],
+      'type' => ['required', 'integer'],
       'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', 'unique:communities'],
       'title' => ['nullable', 'string'],
       'description' => ['nullable', 'string'],
+      'submission_text' => ['nullable', 'string'],
     ];
     
     $validator = Validator::make($data, $rules)->validate();
-        
+    
+    // find unique hash
+    $hashes = Community::all()->pluck('hash');
+    $hash = Str::random(6);
+    while ($hashes->contains($hash)) {
+      $hash = Str::random(6);
+    }
+    // end find unique hash
+    
+    $validator['hash'] = $hash;
     $validator['display_name'] = $name;
     
     Community::create($validator);
@@ -64,15 +79,21 @@ class CommunityController extends Controller
     $name = $request->input('name');
     
     $data = [
+      'creator_id' => $request->input('creator_id'),
+      'type' => $request->input('type'),      
       'name' => Str::lower($request->input('name')),
       'title' => $request->input('title'),
       'description' => $request->input('description'),
+      'submission_text' => $request->input('submission_text'),
     ];
     
     $rules = [
+      'creator_id' => ['required', 'integer'],
+      'type' => ['required', 'integer'],
       'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', Rule::unique('communities')->ignore($community)],
       'title' => ['nullable', 'string'],
       'description' => ['nullable', 'string'],
+      'submission_text' => ['nullable', 'string'],
     ];
     
     $validator = Validator::make($data, $rules)->validate();
@@ -93,46 +114,5 @@ class CommunityController extends Controller
     $community->delete();
     return redirect(route('communities.index'))->with('message', 'Community deleted successfully.');
   }
-  
-  public function join(Community $community)
-  {
-    // check is someone is logged in
-    if (Auth::check()) {
-      // retrieve logged in user
-      $user = Auth::user();
-      // retrieve user's communities
-      $communities = $user->communities;
-      // check if the user isn't already a member of the community he's now requesting to join
-      if (!$communities->contains($community)) {
-        // if user not already a member, then attach this new community
-        $user->communities()->attach($community);
-        // redirect to community front index with succes message
-        return redirect(route('front.communities.show', ['community' => $community]))
-        ->with('message', 'Vous faites maintenant partie de r/'.$community->name);
-      } else {
-        return redirect(route('front.communities.show', ['community' => $community]))
-        ->with('error', 'Vous êtes déja membre de cette communauté.');
-      }  
-    }
-    
-    // ask the user to connect first before joining this community
-    return redirect(route('login'))
-    ->with('error', 'Vous devez être connecté pour rejoindre une communauté.');
-  }
-  
-  public function leave(Community $community)
-  {
-    if (Auth::check()) {
-      $user = Auth::user();
-      $user->communities()->detach($community);
-      return redirect(route('front.communities.show', ['community' => $community]))
-      ->with('message', 'Vous avez bien quitté r/'.$community->name);
-    }
-    
-    // ask the user to connect first before leaving this community
-    return redirect(route('login'))
-    ->with('error', 'Vous devez être connecté pour quitter une communauté.');
-    
-  }  
   
 }

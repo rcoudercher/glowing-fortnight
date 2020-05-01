@@ -16,10 +16,12 @@
       <div class="container mx-auto px-6 md:px-0">
         <div class="flex items-center justify-center">
           <div class="mr-6">
-            <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-100 no-underline">{{ config('app.name', 'REDDIT') }}</a>
+            <a href="{{ route('front.home') }}" class="text-lg font-semibold text-gray-100 no-underline">{{ config('app.name', 'REDDIT') }}</a>
           </div>
           <div class="flex-1">
             <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('admin.dashboard') }}">ADMIN</a>
+            <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('front.communities.index') }}">Communautés</a>
+            
           </div>
           <div class="flex-1 text-right">
             @guest
@@ -44,11 +46,11 @@
                   <div class="rounded-md bg-white shadow-xs">
                     <div class="py-1">
                       <a href="{{ route('front.users.show', ['user' => Auth::user()]) }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Mon Profil</a>
-                      <a href="{{ route('user.settings.index') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Configuration</a>                      
+                      <a href="{{ route('front.users.settings.index') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Configuration</a>                      
                     </div>
                     <div class="border-t border-gray-100"></div>
                     <div class="py-1">
-                      <a href="{{ route('user.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">{{ __('Logout') }}</a>
+                      <a href="{{ route('user.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Déconnexion</a>
                       <form id="logout-form" action="{{ route('user.logout') }}" method="POST" class="hidden">{{ csrf_field() }}</form>
                     </div>
                   </div>

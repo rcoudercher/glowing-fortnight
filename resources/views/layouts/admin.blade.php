@@ -28,7 +28,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ route('communities.index') }}">Communities</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
           
-          <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">// FRONT //</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('front.home') }}">// FRONT //</a></li>
         </ul>
         {{-- <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

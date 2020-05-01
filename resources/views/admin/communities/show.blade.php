@@ -22,6 +22,18 @@
         <td>{{ $community->id }}</td>
       </tr>
       <tr>
+        <th scope="row">creator</th>
+        <td><a href="{{ route('users.show', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a></td>
+      </tr>
+      <tr>
+        <th scope="row">type</th>
+        <td>{{ $community->type }}</td>
+      </tr>
+      <tr>
+        <th scope="row">hash</th>
+        <td>{{ $community->hash }}</td>
+      </tr>
+      <tr>
         <th scope="row">name</th>
         <td>{{ $community->name }}</td>
       </tr>
@@ -36,6 +48,10 @@
       <tr>
         <th scope="row">description</th>
         <td>{{ $community->description }}</td>
+      </tr>
+      <tr>
+        <th scope="row">submission_text</th>
+        <td>{{ $community->submission_text }}</td>
       </tr>
       <tr>
         <th scope="row">created_at</th>

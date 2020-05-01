@@ -938,31 +938,9 @@ video {
   font-size: 1.25rem;
 }
 
-.btn-blue {
-  background-color: #4299e1;
-  color: #fff;
-}
-
-.btn-red {
-  background-color: #f56565;
-  color: #fff;
-}
-
-.btn-blue:hover {
-  background-color: #2b6cb0;
-}
-
-.linkBtn {
-  padding: 0.75rem;
-  background-color: #3182ce;
-  border-radius: 0.25rem;
-  color: #fff;
-}
-
 /* button */
 
 .btn {
-  margin-top: 1rem;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   padding-top: 0.5rem;
@@ -985,7 +963,6 @@ video {
 }
 
 .btn-sm {
-  margin-top: 1rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-top: 0.25rem;
@@ -997,6 +974,26 @@ video {
   border-width: 1px;
   border-color: transparent;
   font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  color: #fff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btn-xsm {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-color: transparent;
+  font-size: 0.875rem;
   line-height: 1.5rem;
   font-weight: 600;
   border-radius: 0.375rem;
@@ -1069,6 +1066,18 @@ video {
 
 .btn-red:focus {
   background-color: #f56565;
+}
+
+.btn-green {
+  background-color: #38a169;
+}
+
+.btn-green:hover {
+  background-color: #48bb78;
+}
+
+.btn-green:focus {
+  background-color: #48bb78;
 }
 
 /**

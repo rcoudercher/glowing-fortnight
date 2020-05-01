@@ -9,10 +9,10 @@
     <thead>
       <tr>
         <th scope="col">id</th>
-        <th scope="col">name</th>
+        <th scope="col">creator</th>
+        <th scope="col">type</th>
+        <th scope="col">hash</th>
         <th scope="col">display_name</th>
-        <th scope="col">title</th>
-        <th scope="col">description</th>
         <th scope="col">created_at</th>
         <th scope="col">updated_at</th>
       </tr>
@@ -21,10 +21,10 @@
     @foreach ($communities as $community)
       <tr>
         <th scope="row">{{ $community->id }}</th>
-        <td><a href="{{ route('communities.update', ['community' => $community]) }}">{{ $community->name }}</a></td>
-        <td>{{ $community->display_name }}</td>
-        <td>{{ $community->title }}</td>
-        <td>{{ $community->description }}</td>
+        <td><a href="{{ route('users.show', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a></td>
+        <td>{{ $community->type }}</td>
+        <td>{{ $community->hash }}</td>
+        <td><a href="{{ route('communities.update', ['community' => $community]) }}">{{ $community->display_name }}</a></td>
         <td>{{ $community->created_at }}</td>
         <td>{{ $community->updated_at }}</td>
       </tr>
