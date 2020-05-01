@@ -21,17 +21,17 @@
         <p>Le mot de pase doit contenir au minimum 8 caractères.</p>
       </div>
       <div class="ml-8">
-        <a class="btn btn-blue" href="{{ route('front.users.settings.password.edit') }}">modifier</a>
+        <a class="btn btn-blue" href="{{ route('front.settings.password.edit') }}">modifier</a>
       </div>
     </div>
     <div class="mb-8">
       
       
       
-      <a class="btn btn-red" href="{{ route('front.users.settings.account.destroy') }}" onclick="event.preventDefault(); 
+      <a class="btn btn-red" href="{{ route('front.settings.account.destroy') }}" onclick="event.preventDefault(); 
         document.getElementById('destroy-form').submit();">Supprimer mon compte</a>
-      <form id="destroy-form" action="{{ route('front.users.settings.account.destroy') }}" method="POST" class="hidden">
-        @method('DELETE')
+      <form id="destroy-form" action="{{ route('front.settings.account.destroy') }}" method="POST" class="hidden">
+        @method('PATCH')
         @csrf
         <input type="hidden" name="key" value="{{ $key }}">
       </form>

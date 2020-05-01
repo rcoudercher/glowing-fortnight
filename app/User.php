@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use App\Community;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -37,6 +39,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
+    
+    // other functions
+    
+    public function isModerator(Community $community)
+    {
+      return $this->moderatorCommunities->contains($community);  
+    }
+    
+    
+    
+    
+    // relationships functions
+    
     // the badges that belong to the user
     public function trophies()
     {
@@ -58,7 +73,6 @@ class User extends Authenticatable
     {
       return $this->belongsToMany('App\Community')->wherePivot('moderator', 0);
     }
-    
     
     public function posts()
     {

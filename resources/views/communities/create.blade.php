@@ -28,9 +28,7 @@
       
       <div class="flex flex-wrap mb-6">
         <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-        <textarea class="bg-gray-300 form-input w-full @error('name') border-red-500 @enderror" name="description" id="description" rows="4" cols="80">
-          {{ old('description') ?? $community->description }}
-        </textarea>
+        <textarea class="bg-gray-300 form-input w-full @error('name') border-red-500 @enderror" name="description" id="description" rows="4" cols="80">{{ old('description') ?? $community->description }}</textarea>
         @error('description')
           <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
         @enderror

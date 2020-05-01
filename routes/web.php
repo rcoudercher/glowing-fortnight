@@ -17,8 +17,6 @@ Route::get('test', 'PageController@test')->name('test');
 
 Auth::routes();
 
-Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
-
 // front routes
 Route::name('front.')->group(function() {
   
@@ -27,35 +25,26 @@ Route::name('front.')->group(function() {
   
   // user routes
   Route::name('users.')->group(function() {
-    Route::get('u/{user:display_name}', 'FrontController@showUser')->name('show');
-    
-    // user settings routes
-    Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
-      Route::name('settings.')->group(function () {
-        Route::get('/', 'UserSettingsController@account')->name('index');
-        Route::get('compte', 'UserSettingsController@account')->name('account');
-        Route::delete('compte/supprimer', 'UserSettingsController@destroyUser')->name('account.destroy');
-        Route::get('profil', 'UserSettingsController@profile')->name('profile');
-        Route::get('securite', 'UserSettingsController@privacy')->name('privacy');
-        Route::get('flux', 'UserSettingsController@feed')->name('feed');
-        Route::get('notifications', 'UserSettingsController@notifications')->name('notifications');
-        Route::get('messagerie', 'UserSettingsController@messaging')->name('messaging');
-        Route::get('communautes', 'UserSettingsController@showCommunities')->name('communities');
-        Route::get('modifier-mot-de-passe', 'UserSettingsController@editUserPassword')->name('password.edit');
-        Route::post('modifier-mot-de-passe', 'UserSettingsController@updateUserPassword')->name('password.update');
-      });
-    });
+    Route::get('u/{user:display_name}', 'Front\UserController@show')->name('show');
+    Route::post('u/logout', 'Auth\LoginController@userLogout')->name('logout');
   });
   
   // community routes
   Route::name('communities.')->group(function () {
-    Route::get('communautes', 'Front\CommunityController@index')->name('index');
-    Route::get('r/{community:display_name}', 'Front\CommunityController@show')->name('show');
+    Route::get('r', 'Front\CommunityController@index')->name('index');
+    
     Route::get('config/communautes/creer', 'Front\CommunityController@create')->name('create');
     Route::post('config/communautes/creer', 'Front\CommunityController@store')->name('store');
-    Route::post('r/{community:display_name}/rejoindre', 'Front\CommunityController@join')->name('join');
-    Route::post('r/{community:display_name}/quitter', 'Front\CommunityController@leave')->name('leave');
-    Route::get('r/{community:display_name}/admin', 'Front\CommunityController@admin')->name('admin');
+    
+    Route::prefix('r/{community:display_name}')->group(function() {
+      Route::get('/', 'Front\CommunityController@show')->name('show');
+      Route::patch('/', 'Front\CommunityController@update')->name('update');
+      Route::get('admin', 'Front\CommunityController@admin')->name('admin');
+      Route::get('modifier', 'Front\CommunityController@edit')->name('edit');
+      Route::post('quitter', 'Front\CommunityController@leave')->name('leave');
+      Route::post('rejoindre', 'Front\CommunityController@join')->name('join');
+    });
+    
   });
   
   // post routes
@@ -68,6 +57,22 @@ Route::name('front.')->group(function() {
   // comment routes
   Route::name('comments.')->group(function() {
     Route::post('r/{community:display_name}/{post:hash}/{slug}', 'Front\CommentController@store')->name('store');
+  });
+  
+  // settings routes
+  Route::name('settings.')->group(function () {
+    Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
+      Route::get('compte', 'SettingsController@account')->name('account');
+      Route::patch('compte/supprimer', 'Front\UserController@destroy')->name('account.destroy');
+      Route::get('profil', 'SettingsController@profile')->name('profile');
+      Route::get('securite', 'SettingsController@privacy')->name('privacy');
+      Route::get('flux', 'SettingsController@feed')->name('feed');
+      Route::get('notifications', 'SettingsController@notifications')->name('notifications');
+      Route::get('messagerie', 'SettingsController@messaging')->name('messaging');
+      Route::get('communautes', 'SettingsController@showCommunities')->name('communities');
+      Route::get('modifier-mot-de-passe', 'SettingsController@editUserPassword')->name('password.edit');
+      Route::post('modifier-mot-de-passe', 'SettingsController@updateUserPassword')->name('password.update');
+    });
   });
   
 });

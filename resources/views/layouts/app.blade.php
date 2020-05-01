@@ -46,12 +46,12 @@
                   <div class="rounded-md bg-white shadow-xs">
                     <div class="py-1">
                       <a href="{{ route('front.users.show', ['user' => Auth::user()]) }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Mon Profil</a>
-                      <a href="{{ route('front.users.settings.index') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Configuration</a>                      
+                      <a href="{{ route('front.settings.account') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Configuration</a>                      
                     </div>
                     <div class="border-t border-gray-100"></div>
                     <div class="py-1">
-                      <a href="{{ route('user.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Déconnexion</a>
-                      <form id="logout-form" action="{{ route('user.logout') }}" method="POST" class="hidden">{{ csrf_field() }}</form>
+                      <a href="{{ route('front.users.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Déconnexion</a>
+                      <form id="logout-form" action="{{ route('front.users.logout') }}" method="POST" class="hidden">{{ csrf_field() }}</form>
                     </div>
                   </div>
                 </div>
@@ -62,10 +62,8 @@
       </div>
     </nav>
     
-    {{-- notifications container --}}
-    <div id="notif-container" class="absolute top-0 right-0 mr-5 mt-24 w-1/4">
-      
-      @if (session()->has('message'))
+    @if (session()->has('message'))
+      <div id="notif-container" class="absolute top-0 right-0 mr-5 mt-24 w-1/4">
         <div class="py-3 pl-6 pr-3 rounded-lg bg-green-300 shadow-lg mb-4">
           <div class="flex items-center justify-between flex-wrap">
             <div class="w-full flex-1 flex items-center sm:w-0">
@@ -78,9 +76,11 @@
               </div>
           </div>
         </div>
-      @endif
-      
-      @if (session()->has('error'))
+      </div>
+    @endif
+    
+    @if (session()->has('error'))
+      <div id="notif-container" class="absolute top-0 right-0 mr-5 mt-24 w-1/4">
         <div class="py-3 pl-6 pr-3 rounded-lg bg-red-300 shadow-lg mb-4">
           <div class="flex items-center justify-between flex-wrap">
             <div class="w-full flex-1 flex items-center sm:w-0">
@@ -93,9 +93,10 @@
               </div>
           </div>
         </div>
-      @endif
+      </div>
+    @endif
       
-    </div>
+    
     
     @yield('content')
     <script>
