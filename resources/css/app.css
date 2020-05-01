@@ -55,10 +55,6 @@
  .h4 {
    @apply text-xl;
  }
- 
- .btn {
-    @apply font-bold py-2 px-4 rounded;
-  }
   
   .btn-blue {
     @apply bg-blue-500 text-white;
@@ -71,7 +67,74 @@
   .btn-blue:hover {
     @apply bg-blue-700;
   }
-
+  
+  .linkBtn {
+    @apply p-3 bg-blue-600 rounded text-white;
+  }
+  
+  /* button */
+  
+  .btn {
+    @apply mt-4 px-5 py-2 w-full inline-flex items-center justify-center border border-transparent text-base leading-6 font-semibold rounded-md text-white shadow-sm transition ease-in-out duration-150;    
+  }
+  
+  .btn-sm {
+    @apply mt-4 px-3 py-1 w-full inline-flex items-center justify-center border border-transparent text-base leading-6 font-semibold rounded-md text-white shadow-sm transition ease-in-out duration-150;    
+  }
+  
+  
+  @media (min-width: 640px) {
+    .btn {
+      @apply ml-4 mt-0 w-auto;
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .btn {
+      @apply text-lg py-4;
+    }
+  }
+  
+  .btn-black {
+    @apply bg-gray-800;
+  }
+  
+  .btn-black:hover {
+    @apply bg-gray-700;
+  }
+  
+  .btn-black:focus {
+    @apply bg-gray-700;
+  }
+  
+  .btn-blue {
+    @apply bg-blue-600;
+  }
+  
+  .btn-blue:hover {
+    @apply bg-blue-500;
+  }
+  
+  .btn-blue:focus {
+    @apply bg-blue-500;
+  }
+  
+  .btn-indigo {
+    @apply bg-indigo-700;
+  }
+  
+  .btn-indigo:hover {
+    @apply bg-indigo-600;
+  }
+  
+  .btn-indigo:focus {
+    @apply bg-indigo-600;
+  }
+  
+  
+  
+  
+  
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.

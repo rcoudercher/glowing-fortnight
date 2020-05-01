@@ -43,10 +43,10 @@
               <div class="flex">
                 <div class="flex-grow mt-3">Connectez-vous pour écrire un commentaire</div>
                 <div>
-                  <button class="btn btn-blue" type="button" name="button">Connexion</button>
+                  <a class="btn-sm btn-black" href="{{ route('login') }}">Connexion</a>
                 </div>
                 <div class="ml-4">
-                  <button class="btn btn-blue" type="button" name="button">Inscription</button>
+                  <a class="btn-sm btn-black" href="{{ route('register') }}">Inscription</a>
                 </div>
               </div>
             </div>

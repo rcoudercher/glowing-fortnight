@@ -14,10 +14,8 @@
           @guest
             {{--  should link directly to the ogin instead of just attempting to join as guest ? --}}
             
-            <a class="nav-link" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
-              document.getElementById('destroy-form').submit();">
-                <button type="button" name="button" class="btn btn-blue">Rejoindre</button>
-              </a>
+            <a class="btn btn-black" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
+              document.getElementById('destroy-form').submit();">Rejoindre</a>
             <form id="destroy-form" action="{{ route('front.communities.join', ['community' => $community]) }}" method="POST" class="hidden">
               @csrf
             </form>
@@ -27,10 +25,8 @@
             @if ($isMember)
               {{-- a user is logged in but is already a member of this community --}}
               
-              <a class="nav-link" href="{{ route('front.communities.leave', ['community' => $community]) }}" onclick="event.preventDefault(); 
-                document.getElementById('destroy-form').submit();">
-                  <button type="button" name="button" class="btn btn-blue" onmouseover="leave(this)" onmouseout="member(this)">Membre</button>
-                </a>
+              <a class="btn btn-black" onmouseover="leave(this)" onmouseout="member(this)" href="{{ route('front.communities.leave', ['community' => $community]) }}" onclick="event.preventDefault(); 
+                document.getElementById('destroy-form').submit();">Membre</a>
               <form id="destroy-form" action="{{ route('front.communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
                 @csrf
               </form>
@@ -46,10 +42,8 @@
             @else
               {{-- a user is logged in but not a member of this community yet --}}
               
-              <a class="nav-link" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
-                document.getElementById('destroy-form').submit();">
-                  <button type="button" name="button" class="btn btn-blue">Rejoindre</button>
-                </a>
+              <a class="btn btn-black" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
+                document.getElementById('destroy-form').submit();">Rejoindre</a>
               <form id="destroy-form" action="{{ route('front.communities.join', ['community' => $community]) }}" method="POST" class="hidden">
                 @csrf
               </form>
@@ -121,13 +115,7 @@
               <div class="mb-2">{{ $community->users->count() }} membres</div>
               <div class="mb-2">15 membres en ligne</div>
               <div class="mb-2">community créé le {{ $community->created_at }}</div>
-              <div>
-                <span class="shadow-sm rounded-md">
-                  <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline-indigo focus:border-indigo-700 active:bg-indigo-700 transition duration-150 ease-in-out">
-                    CREATE POST
-                  </button>
-                </span>
-              </div>
+              <div><a href="#" class="btn btn-indigo">Publier un message</a></div>
             </div>
           </div>
           @include('components.footer')
