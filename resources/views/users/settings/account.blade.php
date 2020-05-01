@@ -12,7 +12,7 @@
         <div>{{ Auth::user()->email }}</div>
       </div>
       <div class="ml-8">
-        <button type="button" name="button" class="btn btn-blue">modifier</button>
+        <a href="#" class="btn btn-blue">Modifier</a>
       </div>
     </div>
     <div class="flex mb-8">
@@ -21,16 +21,15 @@
         <p>Le mot de pase doit contenir au minimum 8 caractères.</p>
       </div>
       <div class="ml-8">
-        <a href="{{ route('user.settings.password.edit') }}"><button type="button" name="button" class="btn btn-blue">modifier</button></a>
+        <a class="btn btn-blue" href="{{ route('user.settings.password.edit') }}">modifier</a>
       </div>
     </div>
     <div class="mb-8">
       
       
       
-      <a class="nav-link" href="{{ route('user.settings.account.destroy') }}" onclick="event.preventDefault(); 
-        document.getElementById('destroy-form').submit();"><button type="button" name="button" class="btn btn-red">Supprimer mon compte</button></a>
-        
+      <a class="btn btn-red" href="{{ route('user.settings.account.destroy') }}" onclick="event.preventDefault(); 
+        document.getElementById('destroy-form').submit();">Supprimer mon compte</a>
       <form id="destroy-form" action="{{ route('user.settings.account.destroy') }}" method="POST" class="hidden">
         @method('DELETE')
         @csrf

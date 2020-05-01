@@ -18,7 +18,7 @@
   @endif
   
   <div>
-    <a class="hover:underline text-blue-600" href="{{ route('user.settings.communities.create') }}">Créer une communauté</a>
+    <a class="btn btn-blue" href="{{ route('user.settings.communities.create') }}">Créer une communauté</a>
   </div>
   
 

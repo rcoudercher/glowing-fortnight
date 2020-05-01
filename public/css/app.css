@@ -1059,6 +1059,18 @@ video {
   background-color: #5a67d8;
 }
 
+.btn-red {
+  background-color: #e53e3e;
+}
+
+.btn-red:hover {
+  background-color: #f56565;
+}
+
+.btn-red:focus {
+  background-color: #f56565;
+}
+
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.

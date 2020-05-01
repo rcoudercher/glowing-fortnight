@@ -70,10 +70,8 @@
               <p class="text-green-900">{{ session()->get('message') }}</p>
             </div>
             <div class="flex-shrink-0">
-                <div class="rounded-md shadow-sm">
-                  <a href="/" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">
-                    X
-                  </a>
+                <div class="rounded-md shadow-sm closeX cursor-pointer">
+                  <span class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">X</span>
                 </div>
               </div>
           </div>
@@ -87,10 +85,8 @@
               <p class="text-green-red">{{ session()->get('error') }}</p>
             </div>
             <div class="flex-shrink-0">
-                <div class="rounded-md shadow-sm">
-                  <a href="/" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">
-                    X
-                  </a>
+                <div class="rounded-md shadow-sm closeX cursor-pointer">
+                  <span class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">X</span>
                 </div>
               </div>
           </div>
@@ -110,6 +106,23 @@
           x.classList.add("hidden");
         }
       }
+    </script>
+    <script>
+    // close notifications
+      var remove = function(){
+        this.parentNode.parentNode.parentNode.remove();
+      };
+      var closeX = document.querySelectorAll('div.closeX');
+      for (var i = 0, len = closeX.length; i < len; i++) {
+        closeX[i].addEventListener('click', remove, false);
+      }
+      // make notifications disappear by themselves after 4 seconds
+      setTimeout(function(){    
+        for (var i = 0, len = closeX.length; i < len; i++) {
+          closeX[i].parentNode.parentNode.parentNode.remove();
+        }
+        
+      }, 4000);
     </script>
   </body>
 </html>

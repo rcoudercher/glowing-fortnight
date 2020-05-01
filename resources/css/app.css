@@ -131,6 +131,18 @@
     @apply bg-indigo-600;
   }
   
+  .btn-red {
+    @apply bg-red-600;
+  }
+  
+  .btn-red:hover {
+    @apply bg-red-500;
+  }
+  
+  .btn-red:focus {
+    @apply bg-red-500;
+  }
+  
   
   
   

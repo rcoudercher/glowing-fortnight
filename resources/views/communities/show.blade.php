@@ -1,63 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-  <div id="hero" class="w-screen shadow">
-    <div class="bg-white h-24">
-      <div class="container mx-auto flex">
-        <div>
-          <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 sm:truncate">{{ $community->title }}</h1>
-          <h2>r/{{ $community->display_name }}</h2>
-        </div>
-        <div class="ml-10 my-6">
-          
-          
-          @guest
-            {{--  should link directly to the ogin instead of just attempting to join as guest ? --}}
+  
+  <div id="hero" class="bg-white w-screen shadow">
+    <div class="container mx-auto flex py-6">
+      <div class="">
+        <img class="rounded-full w-20" src="https://styles.redditmedia.com/t5_2qh1o/styles/communityIcon_vzx333xor7101.png" alt="">
+      </div>
+      <div class="ml-8" style="font-family: 'Roboto', sans-serif;">
+        <h1 class="title h1">{{ $community->title ?? $community->display_name }}</h1>
+        <h2 class="title h2 mt-4">r/{{ $community->display_name }}</h2>
+      </div>
+      <div class="ml-8">
+        @guest
+          {{--  should link directly to the login instead of just attempting to join as guest ? --}}
+          <a class="btn btn-black" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
+            document.getElementById('destroy-form').submit();">Rejoindre</a>
+          <form id="destroy-form" action="{{ route('front.communities.join', ['community' => $community]) }}" method="POST" class="hidden">
+            @csrf
+          </form>
+        @endguest
+        
+        @auth
+          @if ($isMember)
+            {{-- a user is logged in but is already a member of this community --}}
+            
+            <a class="btn btn-black" onmouseover="leave(this)" onmouseout="member(this)" href="{{ route('front.communities.leave', ['community' => $community]) }}" onclick="event.preventDefault(); 
+              document.getElementById('destroy-form').submit();">Membre</a>
+            <form id="destroy-form" action="{{ route('front.communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
+              @csrf
+            </form>
+            
+            <script>
+              function leave(x) {
+                x.innerHTML = "Quitter";
+              }
+              function member(x) {
+                x.innerHTML = "Membre";
+              }
+            </script>
+          @else
+            {{-- a user is logged in but not a member of this community yet --}}
             
             <a class="btn btn-black" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
               document.getElementById('destroy-form').submit();">Rejoindre</a>
             <form id="destroy-form" action="{{ route('front.communities.join', ['community' => $community]) }}" method="POST" class="hidden">
               @csrf
             </form>
-          @endguest
-          
-          @auth
-            @if ($isMember)
-              {{-- a user is logged in but is already a member of this community --}}
-              
-              <a class="btn btn-black" onmouseover="leave(this)" onmouseout="member(this)" href="{{ route('front.communities.leave', ['community' => $community]) }}" onclick="event.preventDefault(); 
-                document.getElementById('destroy-form').submit();">Membre</a>
-              <form id="destroy-form" action="{{ route('front.communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
-                @csrf
-              </form>
-              
-              <script>
-                function leave(x) {
-                  x.innerHTML = "Quitter";
-                }
-                function member(x) {
-                  x.innerHTML = "Membre";
-                }
-              </script>
-            @else
-              {{-- a user is logged in but not a member of this community yet --}}
-              
-              <a class="btn btn-black" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
-                document.getElementById('destroy-form').submit();">Rejoindre</a>
-              <form id="destroy-form" action="{{ route('front.communities.join', ['community' => $community]) }}" method="POST" class="hidden">
-                @csrf
-              </form>
-              
-            @endif
             
-          @endauth
-          
-          
-          
-        </div>
+          @endif
+        @endauth
       </div>
+      
     </div>
-    {{-- <div>hero links</div> --}}
   </div>
   
   <div class="bg-gray-300 min-h-screen">
