@@ -57,7 +57,7 @@
     </button>
 
     @if (Route::has('password.request'))
-    <a class="text-sm text-blue-500 hover:text-blue-700 whitespace-no-wrap no-underline ml-auto" href="{{ route('password.request') }}">
+    <a class="text-sm text-blue-500 hover:text-blue-700 whitespace-no-wrap no-underline ml-auto" href="{{ route('front.users.password.request') }}">
     Mot de passe oublié ?
     </a>
     @endif

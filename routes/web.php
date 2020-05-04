@@ -19,6 +19,7 @@ Route::get('test', 'PageController@test')->name('test');
 
 Auth::routes();
 
+
 // front routes
 Route::name('front.')->group(function() {
   
@@ -28,9 +29,11 @@ Route::name('front.')->group(function() {
   // user routes
   Route::name('users.')->group(function() {
     Route::get('u/{user:display_name}', 'Front\UserController@show')->name('show');
+    Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('deconnexion', 'Auth\LoginController@userLogout')->name('logout');
     Route::get('inscription', 'Front\UserController@create')->name('create')->middleware('guest');
     Route::post('inscription', 'Front\UserController@store')->name('store');
+    Route::get('mot-de-passe/reinitialiser', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
     Route::patch('config/compte/supprimer', 'Front\UserController@destroy')->name('destroy')->middleware('auth');
   });
   

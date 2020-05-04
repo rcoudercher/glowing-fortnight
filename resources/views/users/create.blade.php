@@ -16,7 +16,7 @@
       <div class="mt-8 px-8 container mx-auto" style="font-family: 'Roboto', sans-serif;">
         <div class="mb-8 flex">
           <p class="flex-grow text-xl underline"><a href="{{ route('front.home') }}">← accueil</a></p>
-          <p class="text-sm">Déjà membre ? <a class="text-blue-600 hover:underline font-bold" href="{{ route('login') }}">CONNEXION</a></p>
+          <p class="text-sm">Déjà membre ? <a class="text-blue-600 hover:underline font-bold" href="{{ route('front.users.login') }}">CONNEXION</a></p>
         </div>
         <div class="max-w-lg">
           <div class="mb-5">
