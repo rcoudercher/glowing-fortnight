@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 use Auth;
 use App\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -15,6 +19,44 @@ class UserController extends Controller
     return view('users.show', compact('user'));
   }
   
+  public function create()
+  {
+    $user = new User;
+    return view('users.create', compact('user'));
+  }
+  
+  public function store(Request $request)
+  {    
+    $data = [
+      'email' => $request->input('email'),
+      'name' => Str::lower($request->input('name')),
+      'password' => $request->input('password'),
+    ];
+    
+    $rules = [
+      'email' => ['required', 'string', 'email', 'max:80', 'unique:users'],
+      'name' => ['required', 'string', 'min:4', 'max:50', 'alpha_num', 'unique:users'],
+      'password' => ['required', 'string', 'min:8'],
+    ];
+    
+    $validator = Validator::make($data, $rules)->validate();
+    
+    $user = User::create([
+        'name' => $validator['name'],
+        'display_name' => $request->input('name'),
+        'email' => $validator['email'],
+        'password' => Hash::make($validator['password']),
+    ]);
+    
+    // send email to the new user
+    
+    // log new user in
+    if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+      return redirect(route('front.home'))->with('message', 'Votre compte a bien été créé. Bienvenue !');
+    }
+    
+    return redirect(route('front.home'))->with('error', 'Une erreur s\'est produite.');
+  }
   
   public function destroy(Request $request)
   {

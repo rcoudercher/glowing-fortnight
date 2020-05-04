@@ -1,4 +1,4 @@
-@extends('layouts.user-settings')
+@extends('layouts.settings')
 
 @section('title', 'Messagerie / Configuration')
 

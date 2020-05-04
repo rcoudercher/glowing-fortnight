@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Inscription')
+
 @section('content')
 <div class="bg-gray-300 h-screen">
   <div class="container mx-auto pt-8">

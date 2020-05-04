@@ -71,12 +71,7 @@ class CommunityController extends Controller
   }
   
   public function store(Request $request)
-  {
-    if (!Auth::check()) {
-      return redirect(route('home'))
-      ->with('error', 'Vous devez être connecté pour créer une nouvelle communauté.');
-    }
-    
+  {  
     $user = Auth::user();
     $name = $request->input('name');
     

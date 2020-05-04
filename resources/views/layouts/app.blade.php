@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') / {{ config('app.name', 'Laravel') }}</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">    
     <script src="{{ asset('js/app.js') }}" defer></script>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
   </head>
@@ -24,10 +22,10 @@
             
           </div>
           <div class="flex-1 text-right">
-            @guest
-              <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('login') }}">{{ __('Login') }}</a>
+            @guest              
+              <a id="loginBtn" class="no-underline hover:underline text-gray-300 text-sm p-3 cursor-pointer">Connexion</a>
             @if (Route::has('register'))
-              <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('register') }}">{{ __('Register') }}</a>
+              <a class="no-underline hover:underline text-gray-300 text-sm p-3 cursor-pointer" href="{{ route('front.users.create') }}">Inscription</a>
             @endif
             @else
               {{-- dropdown menu with options if user is logged in --}}
@@ -95,10 +93,51 @@
         </div>
       </div>
     @endif
-      
     
+    @include('components.modals.login')
     
     @yield('content')
+    
+    
+    <script>
+    // Get the modal
+    var loginModal = document.getElementById("loginModal");    
+
+    // Get the button that opens the modal
+    var loginBtn = document.getElementById("loginBtn");    
+
+    // Get the <span> element that closes the modal
+    var closeLogin = document.getElementById("closeLogin");    
+
+    // When the user clicks the button, open the modal 
+    loginBtn.onclick = function() {
+      loginModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    closeLogin.onclick = function() {
+      loginModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == loginModal) {
+      loginModal.style.display = "none";
+      }
+    }
+    </script>
+    
+    @if($errors->has('email') || $errors->has('password'))
+      <script>
+        var loginModal = document.getElementById("loginModal");
+        loginModal.style.display = "block";
+      </script>
+    @endif
+    
+  
+
+    
+    
     <script>
       // show/hide dropdown menu
       function dropdown() {

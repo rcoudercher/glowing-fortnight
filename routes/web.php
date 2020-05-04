@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('test', 'PageController@test')->name('test');
 
+
+
 Auth::routes();
 
 // front routes
@@ -26,21 +28,24 @@ Route::name('front.')->group(function() {
   // user routes
   Route::name('users.')->group(function() {
     Route::get('u/{user:display_name}', 'Front\UserController@show')->name('show');
-    Route::post('u/logout', 'Auth\LoginController@userLogout')->name('logout');
+    Route::post('deconnexion', 'Auth\LoginController@userLogout')->name('logout');
+    Route::get('inscription', 'Front\UserController@create')->name('create')->middleware('guest');
+    Route::post('inscription', 'Front\UserController@store')->name('store');
+    Route::patch('config/compte/supprimer', 'Front\UserController@destroy')->name('destroy')->middleware('auth');
   });
   
   // community routes
   Route::name('communities.')->group(function () {
     Route::get('r', 'Front\CommunityController@index')->name('index');
     
-    Route::get('config/communautes/creer', 'Front\CommunityController@create')->name('create');
-    Route::post('config/communautes/creer', 'Front\CommunityController@store')->name('store');
+    Route::get('config/communautes/creer', 'Front\CommunityController@create')->name('create')->middleware('auth');
+    Route::post('config/communautes/creer', 'Front\CommunityController@store')->name('store')->middleware('auth');
     
     Route::prefix('r/{community:display_name}')->group(function() {
       Route::get('/', 'Front\CommunityController@show')->name('show');
-      Route::patch('/', 'Front\CommunityController@update')->name('update');
+      Route::patch('/', 'Front\CommunityController@update')->name('update')->middleware('auth');
       Route::get('admin', 'Front\CommunityController@admin')->name('admin');
-      Route::get('modifier', 'Front\CommunityController@edit')->name('edit');
+      Route::get('modifier', 'Front\CommunityController@edit')->name('edit')->middleware('auth');
       Route::post('quitter', 'Front\CommunityController@leave')->name('leave');
       Route::post('rejoindre', 'Front\CommunityController@join')->name('join');
     });
@@ -63,7 +68,6 @@ Route::name('front.')->group(function() {
   Route::name('settings.')->group(function () {
     Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
       Route::get('compte', 'SettingsController@account')->name('account');
-      Route::patch('compte/supprimer', 'Front\UserController@destroy')->name('account.destroy');
       Route::get('profil', 'SettingsController@profile')->name('profile');
       Route::get('securite', 'SettingsController@privacy')->name('privacy');
       Route::get('flux', 'SettingsController@feed')->name('feed');

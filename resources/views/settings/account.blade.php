@@ -1,4 +1,4 @@
-@extends('layouts.user-settings')
+@extends('layouts.settings')
 
 @section('title', 'Compte / Configuration')
 
@@ -28,9 +28,9 @@
       
       
       
-      <a class="btn btn-red" href="{{ route('front.settings.account.destroy') }}" onclick="event.preventDefault(); 
+      <a class="btn btn-red" href="{{ route('front.users.destroy') }}" onclick="event.preventDefault(); 
         document.getElementById('destroy-form').submit();">Supprimer mon compte</a>
-      <form id="destroy-form" action="{{ route('front.settings.account.destroy') }}" method="POST" class="hidden">
+      <form id="destroy-form" action="{{ route('front.users.destroy') }}" method="POST" class="hidden">
         @method('PATCH')
         @csrf
         <input type="hidden" name="key" value="{{ $key }}">
