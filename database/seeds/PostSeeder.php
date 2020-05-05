@@ -11,7 +11,7 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-      factory(App\Post::class, 20)->create()->each(function($post) {
+      factory(App\Post::class, 50)->create()->each(function($post) {
         $post->user()->associate(App\User::all()->random());
         $post->community()->associate(App\Community::all()->random());
         $post->save();

@@ -7,6 +7,7 @@
     <title>@yield('title') / {{ config('app.name', 'Laravel') }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">    
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @yield('scripts')
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
   </head>
   <body class="antialiased leading-none">
@@ -98,57 +99,36 @@
     
     @yield('content')
     
-    
-    <script>
-    // Get the modal
-    var loginModal = document.getElementById("loginModal");    
-
-    // Get the button that opens the modal
-    var loginBtn = document.getElementById("loginBtn");    
-
-    // Get the <span> element that closes the modal
-    var closeLogin = document.getElementById("closeLogin");    
-
-    // When the user clicks the button, open the modal 
-    loginBtn.onclick = function() {
-      loginModal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    closeLogin.onclick = function() {
-      loginModal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == loginModal) {
-      loginModal.style.display = "none";
-      }
-    }
-    </script>
-    
-    @if($errors->has('email') || $errors->has('password'))
+    @guest
       <script>
-        var loginModal = document.getElementById("loginModal");
-        loginModal.style.display = "block";
-      </script>
-    @endif
-    
-  
+      var loginModal = document.getElementById("loginModal");
+      var loginBtn = document.getElementById("loginBtn");
+      var closeLogin = document.getElementById("closeLogin");    
 
-    
-    
-    <script>
-      // show/hide dropdown menu
-      function dropdown() {
-        var x = document.getElementById("dropdown");
-        if (x.classList.contains("hidden")) {
-          x.classList.remove("hidden");
-        } else {        
-          x.classList.add("hidden");
-        }
+      loginBtn.onclick = function() {loginModal.style.display = "block";}
+      closeLogin.onclick = function() {loginModal.style.display = "none";}
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+        if (event.target == loginModal) {loginModal.style.display = "none";}
       }
-    </script>
+      </script>
+    @endguest
+    
+    @auth
+      <script>
+        // show/hide dropdown menu
+        function dropdown() {
+          var x = document.getElementById("dropdown");
+          if (x.classList.contains("hidden")) {
+            x.classList.remove("hidden");
+          } else {        
+            x.classList.add("hidden");
+          }
+        }
+      </script>
+    @endauth
+
     <script>
     // close notifications
       var remove = function(){

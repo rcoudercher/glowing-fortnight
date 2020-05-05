@@ -2,6 +2,25 @@
 
 @section('title', 'eee')
 
+@section('scripts')
+  <script src="https://cdn.tiny.cloud/1/qkzidnm9epp85gb91fk89jbherl7rr6e8xna4bt3056xvvtx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'link lists',
+      toolbar: 'bold italic strikethrough h2 | link blockquote | bullist numlist',
+      toolbar_location: 'bottom',
+      link_context_toolbar: true,
+      menubar: false,
+      branding: false,
+      statusbar: false,
+      link_title: false,
+      target_list: false,
+      link_assume_external_targets: 'http',
+    });
+  </script>  
+@endsection
+
 @section('content')
   
 <div class="bg-gray-300 min-h-screen">
@@ -55,12 +74,12 @@
           @auth
             <form action="{{ route('front.comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST">
               @csrf
-              <div class="flex flex-wrap mb-6">
+              <div class="mb-6">
                 <textarea placeholder="Qu'en pensez-vous ?" class="bg-gray-300 form-input w-full @error('content') border-red-500 @enderror" name="content" id="content" rows="4" cols="80">{{ old('content') }}</textarea>
-                @error('content')
-                  <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
-                @enderror
               </div>
+              @error('content')
+                <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
+              @enderror
               <button type="submit" class="btn btn-blue">Commenter</button>
             </form>
           @endauth
@@ -68,7 +87,7 @@
           
           <div class="mt-8 text-base leading-snug">
             @foreach ($post->comments as $comment)
-              <div class="mb-4">- {{ $comment->content }}</div>
+              <div class="mb-4">{!! $comment->content !!}</div>
             @endforeach
           </div>
           

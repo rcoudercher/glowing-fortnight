@@ -15,6 +15,7 @@
         <th scope="col">public</th>
         <th scope="col">hash</th>
         <th scope="col">title</th>
+        <th scope="col">type</th>
         <th scope="col">created_at</th>
       </tr>
     </thead>
@@ -28,6 +29,7 @@
         <td>{{ $post->public }}</td>
         <td>{{ $post->hash }}</td>
         <td><a href="{{ route('posts.update', ['post' => $post]) }}">{{ $post->title }}</a></td>
+        <td>{{ $post->type }}</td>
         <td>{{ $post->created_at }}</td>
       </tr>
     @endforeach

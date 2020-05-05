@@ -23,16 +23,6 @@ class TrophyController extends Controller
 
   public function store(Request $request)
   {
-    // $validator = request()->validate([
-    //   'name' => 'required|max:255|unique:trophies',
-    // ]);
-    // 
-    //
-
-    
-    
-    // dd($request->file('image'));
-    
     $validator = tap(request()->validate([
       'name' => 'required|max:255|unique:trophies',
     ]), function () {
@@ -47,8 +37,6 @@ class TrophyController extends Controller
     
     
     $this->storeImage($trophy);
-    
-    
     
     return redirect(route('trophies.index'))->with('message', 'Trophy created successfully.');
   }

@@ -1,6 +1,47 @@
 @extends('layouts.app')
 
-@section('title', 'eee')
+@section('title', 'Publier sur k/'.$community->display_name)
+
+@section('scripts')
+  <script src="https://cdn.tiny.cloud/1/qkzidnm9epp85gb91fk89jbherl7rr6e8xna4bt3056xvvtx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'link lists',
+      toolbar: 'bold italic strikethrough h2 | link blockquote | bullist numlist',
+      // toolbar_location: 'bottom',
+      link_context_toolbar: true,
+      menubar: false,
+      branding: false,
+      statusbar: false,
+      link_title: false,
+      target_list: false,
+      link_assume_external_targets: 'http',
+    });
+    
+  function showPostForm() {
+    document.getElementById("postForm").classList.remove("hidden");
+    document.getElementById("imageForm").classList.add("hidden");
+    document.getElementById("linkForm").classList.add("hidden");
+    document.getElementById("postType").value = 1;
+  }
+  
+  function showImageForm() {
+    document.getElementById("imageForm").classList.remove("hidden");
+    document.getElementById("postForm").classList.add("hidden");
+    document.getElementById("linkForm").classList.add("hidden");
+    document.getElementById("postType").value = 2;
+  }
+  
+  function showLinkForm() {
+    document.getElementById("linkForm").classList.remove("hidden");
+    document.getElementById("postForm").classList.add("hidden");
+    document.getElementById("imageForm").classList.add("hidden");
+    document.getElementById("postType").value = 3;
+  }
+  </script>
+  
+@endsection
 
 @section('content')
   <div class="bg-gray-300 min-h-screen">
@@ -12,49 +53,57 @@
               <h2 class="title h2">Publier sur r/{{ $community->display_name }}</h2>
             </div>
             
+            <div class="mb-6">submission_text : {{ $community->submission_text }}</div>
             
             <div class="flex">
-              <button class="btn btn-blue flex-grow mr-2" type="button" name="button">Texte</button>
-              <button class="btn btn-blue flex-grow mr-2" type="button" name="button">Image & Vidéo</button>
-              <button class="btn btn-blue flex-grow mr-2" type="button" name="button">Lien</button>
-              <button class="btn btn-blue flex-grow" type="button" name="button">Sondage</button>
+              <button onclick="showPostForm()" class="btn btn-blue flex-grow mr-2" type="button" name="button">Publication</button>
+              <button onclick="showImageForm()" class="btn btn-blue flex-grow mr-2" type="button" name="button">Image</button>
+              <button onclick="showLinkForm()" class="btn btn-blue flex-grow" type="button" name="button">Lien</button>
             </div>
             
             <div class="border-b-2 border-gray-900 my-6"></div>
             
-            
-            
-            <div class="">
-              
-              <form action="{{ route('front.posts.create', ['community' => $community]) }}" method="POST">
+            <div>
+              <form action="{{ route('front.posts.create', ['community' => $community]) }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <div class="flex flex-wrap mb-6">
-                  <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Titre</label>
-                  <input id="title" type="title" class="bg-gray-300 form-input w-full @error('title') border-red-500 @enderror" name="title" value="{{ old('title') ?? $post->title }}" required autofocus>
+                
+                <input type="hidden" 
+                value="@if ($errors->has('image')) 2 @elseif ($errors->has('link')) 3 @else 1 @endif" 
+                  name="type" id="postType">
+                
+                <div class="mb-6">
+                  <input class="form-input w-full" type="text" name="title" value="" placeholder="titre" autocomplete="off" required>
                   @error('title')
                     <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
-                  @enderror            
+                  @enderror
                 </div>
                 
-                <div class="flex flex-wrap mb-6">
-                  <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Contenu</label>
-                  <textarea class="bg-gray-300 form-input w-full @error('name') border-red-500 @enderror" name="content" id="content" rows="4" cols="80">{{ old('content') ?? $post->content }}</textarea>
+                <div id="postForm" class="@if ($errors->has('image') || $errors->has('link')) hidden @endif">
+                  <textarea name="content" id="content" rows="4" cols="80">{{ old('content') ?? $post->content }}</textarea>
                   @error('content')
                     <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
                   @enderror
                 </div>
                 
+                <div id="imageForm" class="@if (!$errors->has('image')) hidden @endif">
+                  <input type="file" accept="image/*,.pdf" name="image">
+                  @error('image')
+                    <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
+                  @enderror
+                </div>
                 
-
-                <button type="submit" class="btn btn-blue">Save</button>
+                <div id="linkForm" class="@if (!$errors->has('link')) hidden @endif">
+                  <input class="form-input w-full" type="text" name="link" value="" placeholder="url" autocomplete="off">
+                  @error('link')
+                    <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
+                  @enderror
+                </div>
+                
+                <button type="submit" class="btn btn-blue mt-6">Publier</button>
               </form>
-              
             </div>
-            
           </div>
         </div>
-        
-        
         <div id="right" class="lg:ml-6 lg:w-1/3">
           <div class="bg-white shadow p-4 mb-5 rounded">
             <div class="mb-4 title h3">r/{{ $community->display_name }}</div>
@@ -62,14 +111,9 @@
           </div>
           @include('components.footer')
         </div>
-        
-        
       </div>
     </div>
-    
-    @component('components.who')
-    @endcomponent
-    
-    
   </div>
+  @component('components.who')
+  @endcomponent
 @endsection

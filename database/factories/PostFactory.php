@@ -5,15 +5,34 @@
 use App\Post;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 $factory->define(Post::class, function (Faker $faker) {
-  
+    
   $title = $faker->text(30);
-  
-  return [
+  $data = [
     'hash' => Str::random(6),
     'slug' => Str::limit(Str::slug($title, '_'), 50),
     'title' => $title,
-    'content' => $faker->text(300),
   ];
+  
+  switch (Arr::random([1,2,3])) {
+    
+    case 1:
+      $data['type'] = 1;
+      $data['content'] = $faker->text(300);
+      break;
+
+    case 2:
+      $data['type'] = 2;
+      $data['image'] = $faker->imageUrl(640, 480, 'cats');
+      break;
+
+    case 3:
+      $data['type'] = 3;
+      $data['link'] = $faker->url;
+      break;
+  }
+  
+  return $data;
 });

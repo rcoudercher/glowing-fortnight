@@ -24,7 +24,23 @@
                     <h3 class="title h3">{{ $post->title }}</h3>
                   </a>
                 </div>
-                <div class="mb-4 text-base leading-snug">{{ $post->content }}</div>
+                
+                @switch($post->type)
+                  @case(1)
+                    <div class="mb-4 text-base leading-snug">{{ $post->content }}</div>
+                  @break
+                  @case(2)
+                    <div class="mb-4 text-base leading-snug">
+                      <img src="{{ $post->image }}" alt="">
+                    </div>
+                  @break
+                  @case(3)
+                    <div class="mb-4 text-base leading-snug">
+                      <a class="text-blue-800 underline" href="{{ $post->link }}" rel="nofollow">{{ $post->link }}</a>
+                    </div>
+                  @break
+                @endswitch
+                
                 <div class="flex text-sm">
                   <div><a class="hover:underline" href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">{{ $post->comments->count() }} commentaires</a></div>
                   <div class="ml-4 hover:underline">Partager</div>

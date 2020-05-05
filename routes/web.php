@@ -57,8 +57,8 @@ Route::name('front.')->group(function() {
   
   // post routes
   Route::name('posts.')->group(function() {
-    Route::get('r/{community:display_name}/publier', 'Front\PostController@create')->name('create');
-    Route::post('r/{community:display_name}/publier', 'Front\PostController@store')->name('store');
+    Route::get('r/{community:display_name}/publier', 'Front\PostController@create')->name('create')->middleware('auth');
+    Route::post('r/{community:display_name}/publier', 'Front\PostController@store')->name('store')->middleware('auth');
     Route::get('r/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
   });
   

@@ -26,8 +26,8 @@
         <td>{{ $post->user_id }}</td>
       </tr>
       <tr>
-        <th scope="row">sub_id</th>
-        <td>{{ $post->sub_id }}</td>
+        <th scope="row">community</th>
+        <td><a href="{{ route('communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a></td>
       </tr>
       <tr>
         <th scope="row">notification</th>
@@ -50,6 +50,10 @@
         <td>{{ $post->deleted }}</td>
       </tr>
       <tr>
+        <th scope="row">type</th>
+        <td>{{ $post->type }}</td>
+      </tr>
+      <tr>
         <th scope="row">title</th>
         <td>{{ $post->title }}</td>
       </tr>
@@ -57,6 +61,15 @@
         <th scope="row">content</th>
         <td>{{ $post->content }}</td>
       </tr>
+      <tr>
+        <th scope="row">image</th>
+        <td>{{ $post->image }}</td>
+      </tr>
+      <tr>
+        <th scope="row">link</th>
+        <td><a href="{{ $post->link }}">{{ $post->link }}</a></td>
+      </tr>
+      
     </tbody>
   </table>
 @endsection

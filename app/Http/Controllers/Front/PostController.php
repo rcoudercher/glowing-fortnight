@@ -33,22 +33,41 @@ class PostController extends Controller
   
   public function store(Request $request, Community $community)
   {
-    if (!Auth::check()) {
-      return back()->with('error', 'Vous devez être connecté pour publier un message.');
+    $type = $request->input('type');
+    
+    // check if type is correct
+    if (!in_array($type, [1,2,3])) {
+      return back()->with('error', 'Une erreur s\'est produite.');
     }
     
-    // first validate the form data
-    $data = [
-      'title' => $request->input('title'),
-      'content' => $request->input('content'),
+    $data = ['title' => $request->input('title')];
+    $rules = ['title' => ['required', 'string', 'min:4', 'max:50']];
+    $messages = [
+      'title.required' => 'Vous devez donner un titre à votre publication',
+      'title.min' => 'Le titre doit contenir au moins :min caractères',
+      'required' => 'Le champ :attribute est obligatoire',
+      'min' => 'Le champ :attribute doit faire au moins :min caractères',
     ];
     
-    $rules = [
-      'title' => ['required', 'string'],
-      'content' => ['required', 'string'],
-    ];
+    // make a custom data and rules set depending on post type
+    switch ($type) {
+      case 1:
+        $data['content'] = $request->input('content');
+        $rules['content'] = ['required', 'string', 'max:5000'];
+        break;
+        
+      case 2:
+        $data['image'] = $request->file('image');
+        $rules['image'] = ['file', 'image', 'max:5000'];
+        break;
+      
+      case 3:
+        $data['link'] = $request->input('link');
+        $rules['link'] = ['required', 'string'];
+        break;
+    }
     
-    $validator = Validator::make($data, $rules)->validate();
+    $validator = Validator::make($data, $rules, $messages)->validate();
     
     // once form data is validated, lets find a unique hash forthis post
     $hashes = Post::all()->pluck('hash');
@@ -58,12 +77,16 @@ class PostController extends Controller
     }
     // end find unique hash
     
-    $validator['hash'] = $hash;      
+    $validator['hash'] = $hash;
+    $validator['type'] = $type;
     $validator['slug'] = Str::limit(Str::slug($request->input('title'), '_'), 50);
     
-    
     $post = Post::create($validator);
-    
+        
+    // if image post, upload picture after validation
+    if ($type == 2) {
+      $post->update(['image' => $request->file('image')->store('uploads', 'public')]);
+    }
     
     $post->user()->associate(Auth::user());
     $post->community()->associate($community);

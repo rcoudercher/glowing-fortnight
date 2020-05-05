@@ -1,4 +1,4 @@
-<div id="loginModal" class="modal">
+<div id="loginModal" class="modal @if (!$errors->has('email') && !$errors->has('password')) hidden @endif">
   <div class="modal-content">
     <div class="bg-white h-full flex" style="font-family: 'Roboto', sans-serif;">
       <div class="bg-chocolate-weave w-1/12 sm:w-1/6"></div>
