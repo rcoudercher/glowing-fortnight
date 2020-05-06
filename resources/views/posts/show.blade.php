@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'eee')
+@section('title', $post->title)
 
 @section('scripts')
   <script src="https://cdn.tiny.cloud/1/qkzidnm9epp85gb91fk89jbherl7rr6e8xna4bt3056xvvtx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
@@ -28,12 +28,9 @@
 @section('content')
   
 <div class="bg-gray-300 min-h-screen">
-
-  
   <div class="container mx-auto pt-8">
     <div class="lg:flex">
       <div id="left" class="lg:w-2/3">
-        
         
         <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded">
           <div class="flex">
@@ -58,8 +55,6 @@
               </div>
             </div>
           </div>
-          
-          
           
           @guest
             <div class="p-5 border border-gray-400 rounded">
@@ -91,7 +86,44 @@
           
           <div class="mt-8 text-base leading-snug">
             @foreach ($post->comments as $comment)
-              <div class="mb-4">{!! $comment->content !!}</div>
+              
+              
+              <div class="flex mb-6">
+                <div>
+                  <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↑</div>
+                  <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↓</div>
+                </div>
+                <div class="ml-6">
+                  <div class="text-sm mb-2 flex">
+                    <div class="">
+                      <a  class="hover:underline" href="{{ route('front.users.show', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                    </div>
+                    <div class="ml-2">
+                      15 votes
+                    </div>
+                     <div class="ml-2">
+                       il y a {{ now()->diffInHours($comment->created_at) }} heures
+                     </div>
+                  </div>
+                  <div class="mb-2">
+                    {!! $comment->content !!}
+                  </div>
+                  <div class="flex text-sm">
+                    <div class="hover:underline"><a href="">répondre</a></div>
+                    <div class="hover:underline ml-2"><a href="">partager</a></div>
+                    <div class="hover:underline ml-2"><a href="">signaler</a></div>
+                  </div>
+                  
+                  
+                  
+                  
+                  
+                  
+                </div>
+              </div>
+              
+              
+
             @endforeach
           </div>
           
