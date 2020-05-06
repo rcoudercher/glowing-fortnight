@@ -33,6 +33,8 @@ class PostController extends Controller
   
   public function store(Request $request, Community $community)
   {
+    // dd($request->input('content'));
+    
     $type = $request->input('type');
     
     // check if type is correct
@@ -41,7 +43,7 @@ class PostController extends Controller
     }
     
     $data = ['title' => $request->input('title')];
-    $rules = ['title' => ['required', 'string', 'min:4', 'max:50']];
+    $rules = ['title' => ['required', 'string', 'min:4', 'max:100']];
     $messages = [
       'title.required' => 'Vous devez donner un titre à votre publication',
       'title.min' => 'Le titre doit contenir au moins :min caractères',
@@ -51,8 +53,9 @@ class PostController extends Controller
     
     // make a custom data and rules set depending on post type
     switch ($type) {
-      case 1:
-        $data['content'] = $request->input('content');
+      case 1:        
+        $content = strip_tags($request->input('content'), ['<p>','<a>','<strong>','<em>','<span>','<h2>','<blockquote>','<ul>','<ol>','<li>']);
+        $data['content'] = $content;
         $rules['content'] = ['required', 'string', 'max:5000'];
         break;
         
@@ -63,7 +66,7 @@ class PostController extends Controller
       
       case 3:
         $data['link'] = $request->input('link');
-        $rules['link'] = ['required', 'string'];
+        $rules['link'] = ['required', 'string', 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/'];
         break;
     }
     

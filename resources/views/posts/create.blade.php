@@ -7,16 +7,20 @@
   <script>
     tinymce.init({
       selector: 'textarea',
-      plugins: 'link lists',
+      plugins: 'link lists paste',
       toolbar: 'bold italic strikethrough h2 | link blockquote | bullist numlist',
       // toolbar_location: 'bottom',
-      link_context_toolbar: true,
       menubar: false,
       branding: false,
       statusbar: false,
       link_title: false,
       target_list: false,
       link_assume_external_targets: 'http',
+      // strip all tags from what is pasted
+      paste_preprocess: function(plugin, args) {
+        console.log(args.content);        
+        args.content = args.content.replace(/(<([^>]+)>)/ig,"");
+      }
     });
     
   function showPostForm() {
@@ -72,14 +76,14 @@
                   name="type" id="postType">
                 
                 <div class="mb-6">
-                  <input class="form-input w-full" type="text" name="title" value="" placeholder="titre" autocomplete="off" required>
+                  <input class="form-input w-full" type="text" name="title" value="{{ old('title') }}" placeholder="titre" autocomplete="off" required>
                   @error('title')
                     <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
                   @enderror
                 </div>
                 
                 <div id="postForm" class="@if ($errors->has('image') || $errors->has('link')) hidden @endif">
-                  <textarea name="content" id="content" rows="4" cols="80">{{ old('content') ?? $post->content }}</textarea>
+                  <textarea name="content" id="content" rows="4" cols="80">{{ old('content') }}</textarea>
                   @error('content')
                     <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
                   @enderror
@@ -93,7 +97,7 @@
                 </div>
                 
                 <div id="linkForm" class="@if (!$errors->has('link')) hidden @endif">
-                  <input class="form-input w-full" type="text" name="link" value="" placeholder="url" autocomplete="off">
+                  <input class="form-input w-full" type="text" name="link" value="{{ old('link') }}" placeholder="url" autocomplete="off">
                   @error('link')
                     <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
                   @enderror

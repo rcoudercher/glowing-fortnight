@@ -27,11 +27,11 @@
                 
                 @switch($post->type)
                   @case(1)
-                    <div class="mb-4 text-base leading-snug">{{ $post->content }}</div>
+                    <div class="mb-4 text-base leading-snug">{!! $post->content !!}</div>
                   @break
                   @case(2)
                     <div class="mb-4 text-base leading-snug">
-                      <img src="{{ $post->image }}" alt="">
+                      <img src="{{ $post->image }}">
                     </div>
                   @break
                   @case(3)
