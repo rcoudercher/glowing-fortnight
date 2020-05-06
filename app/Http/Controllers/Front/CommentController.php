@@ -15,7 +15,6 @@ use Illuminate\Validation\Rule;
 
 class CommentController extends Controller
 {
-  
   public function store(Request $request, Community $community, Post $post, $slug)
   {
     // check if slugs are matching
@@ -23,15 +22,14 @@ class CommentController extends Controller
       abort(404);
     }
     
-    // check if user is loged in
-    if (!Auth::check()) {
-      return back()->with('error', 'Vous devez être connecté pour écrire un commentaire.');
-    }
-    
-    // data validation first
-    $validator = request()->validate([
-      'content' => 'required|max:1000',
-    ]);
+    $data = ['content' => strip_tags($request->input('content'), ['<p>','<a>','<strong>','<em>','<span>','<h2>','<blockquote>','<ul>','<ol>','<li>'])];
+    $rules = ['content' => ['required', 'string', 'max:2000']];
+    $messages = [
+      'content.required' => 'Ce champ est obligatoire',
+      'content.string' => 'Le commentaire doit être une chaîne de caractères',
+      'content.max' => 'Le commentaire ne doit pas faire plus de :max caractères',
+    ];
+    $validator = Validator::make($data, $rules, $messages)->validate();
     
     // find unique hash
     $hashes = Comment::all()->pluck('hash');
@@ -51,9 +49,8 @@ class CommentController extends Controller
     
     $comment->save();
     
-    
     return redirect(route('front.posts.show', ['community' => $community, 'post' => $post, 'slug' => $post->slug]))
-    ->with('message', 'Votre message a bien été publié.');
+    ->with('message', 'Votre commentaire a bien été publié.');
   }
   
 

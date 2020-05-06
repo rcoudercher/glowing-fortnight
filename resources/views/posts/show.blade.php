@@ -7,16 +7,20 @@
   <script>
     tinymce.init({
       selector: 'textarea',
-      plugins: 'link lists',
-      toolbar: 'bold italic strikethrough h2 | link blockquote | bullist numlist',
+      plugins: 'link lists paste',
+      toolbar: 'bold italic strikethrough | link blockquote | bullist numlist',
       toolbar_location: 'bottom',
-      link_context_toolbar: true,
       menubar: false,
       branding: false,
       statusbar: false,
       link_title: false,
       target_list: false,
       link_assume_external_targets: 'http',
+      // strip all tags from what is pasted
+      paste_preprocess: function(plugin, args) {
+        console.log(args.content);        
+        args.content = args.content.replace(/(<([^>]+)>)/ig,"");
+      }
     });
   </script>  
 @endsection
