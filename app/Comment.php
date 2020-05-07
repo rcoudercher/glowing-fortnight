@@ -34,5 +34,10 @@ class Comment extends Model
     return encrypt($this->hash);
   }
   
+  public function children()
+  {
+    return Comment::where('parent_id', $this->id)->get();
+  }
+  
   
 }

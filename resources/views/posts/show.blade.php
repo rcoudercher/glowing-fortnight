@@ -85,12 +85,16 @@
           
           
           <div class="mt-8 text-base leading-snug">
-            @foreach ($post->comments as $comment)
+            @foreach ($post->rootComments as $comment)
               <div class="mb-6">
-                <div class="flex">
+                <div class="flex mb-6">
                   <div>
-                    <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↑</div>
-                    <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↓</div>
+                    <div class="cursor-pointer">
+                      <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="cursor-pointer">
+                      <i class="fas fa-arrow-down"></i>
+                    </div>
                   </div>
                   <div class="ml-6 w-full">
                     <div class="text-sm mb-2 flex">
@@ -112,7 +116,43 @@
                     </div>
                   </div>
                 </div>
+                
+                @if ($comment->children()->count() != 0)
+                  @foreach ($comment->children() as $comment)
+                    <div class="mb-6 ml-6">
+                      <div class="flex">
+                        <div>
+                          <div class="cursor-pointer">
+                            <i class="fas fa-arrow-up"></i>
+                          </div>
+                          <div class="cursor-pointer">
+                            <i class="fas fa-arrow-down"></i>
+                          </div>
+                        </div>
+                        <div class="ml-6 w-full">
+                          <div class="text-sm mb-2 flex">
+                            <div class="">
+                              <a  class="hover:underline" href="{{ route('front.users.show', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                            </div>
+                            <div class="ml-2">15 votes</div>
+                             <div class="ml-2">
+                               il y a {{ now()->diffInHours($comment->created_at) }} heures
+                             </div>
+                          </div>
+                          <div class="mb-2">
+                            {!! $comment->content !!}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  @endforeach
+                @endif
+                
+                
               </div>
+              
+
+              
             @endforeach
           </div>
           

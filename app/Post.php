@@ -23,4 +23,9 @@ class Post extends Model
   {
     return $this->hasMany('App\Comment');
   }
+  
+  public function rootComments()
+  {
+    return $this->comments()->whereNull('parent_id');
+  }
 }
