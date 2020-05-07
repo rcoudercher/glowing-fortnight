@@ -64,7 +64,7 @@ Route::name('front.')->group(function() {
   
   // comment routes
   Route::name('comments.')->group(function() {
-    Route::post('r/{community:display_name}/{post:hash}/{slug}', 'Front\CommentController@store')->name('store')->middleware('auth');
+    Route::post('r/{community:display_name}/{post:hash}/{slug}', 'Front\CommentController@store')->name('store')->middleware('auth');    
   });
   
   // settings routes

@@ -12,6 +12,8 @@ use App\Post;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CommentController extends Controller
 {
@@ -22,13 +24,20 @@ class CommentController extends Controller
       abort(404);
     }
     
-    $data = ['content' => strip_tags($request->input('content'), ['<p>','<a>','<strong>','<em>','<span>','<h2>','<blockquote>','<ul>','<ol>','<li>'])];
-    $rules = ['content' => ['required', 'string', 'max:2000']];
+    $data = [
+      'content' => strip_tags($request->input('content'), ['<p>','<a>','<strong>','<em>','<span>','<h2>','<blockquote>','<ul>','<ol>','<li>']),
+    ];
+    
+    $rules = [
+      'content' => ['required', 'string', 'max:2000'],
+    ];
+    
     $messages = [
       'content.required' => 'Ce champ est obligatoire',
       'content.string' => 'Le commentaire doit être une chaîne de caractères',
       'content.max' => 'Le commentaire ne doit pas faire plus de :max caractères',
     ];
+    
     $validator = Validator::make($data, $rules, $messages)->validate();
     
     // find unique hash
@@ -46,6 +55,31 @@ class CommentController extends Controller
     $comment->user()->associate(Auth::user());
     $comment->post()->associate($post);
     $comment->community()->associate($community);
+        
+    // associate a parent comment if a parent_id exists
+    if ($request->has('parent_id')) {
+      
+      // throws an error if the decrypted has is wrong
+      try {
+        $hash = decrypt($request->input('parent_id'));
+      } catch (DecryptException $e) {
+        return back()->with('error', 'something went wrong');
+      }
+      
+      // throws an error if no model is found with the given hash
+      try {
+        $parent = Comment::where('hash', $hash)->firstOrFail();
+      } catch (ModelNotFoundException $e) {
+        return back()->with('error', 'something went wrong');
+      }
+      
+      // throws an error if the found model doesn't belog to this post
+      if (!$post->comments->contains($parent)) {
+        return back()->with('error', 'something went wrong');
+      }
+      
+      $comment->parent()->associate($parent);
+    }
     
     $comment->save();
     

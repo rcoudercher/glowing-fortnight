@@ -3,8 +3,6 @@
 @section('title', $post->title)
 
 @section('scripts')
-  
-  
   <script src="https://cdn.tiny.cloud/1/qkzidnm9epp85gb91fk89jbherl7rr6e8xna4bt3056xvvtx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <script>
     tinymce.init({
@@ -25,9 +23,6 @@
       }
     });
   </script>
-  
-
-  
 @endsection
 
 @section('content')
@@ -91,7 +86,7 @@
           
           <div class="mt-8 text-base leading-snug">
             @foreach ($post->comments as $comment)
-              <div id="c-{{ $comment->id }}" class="mb-6">
+              <div class="mb-6">
                 <div class="flex">
                   <div>
                     <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↑</div>
@@ -111,7 +106,7 @@
                       {!! $comment->content !!}
                     </div>
                     <div class="flex text-sm">
-                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn">répondre</div>
+                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn" data-hash="{{ $comment->getEncryptedHash() }}">répondre</div>
                       <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><span>partager</span></div>
                       <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><a href="">signaler</a></div>
                     </div>
@@ -140,16 +135,9 @@
 </div>
 
 
-
-<script>
-
-
-</script>
-
-
 <script type="text/javascript">
-
 var replyBtns = document.querySelectorAll('.replyBtn');
+var csrf = document.getElementsByName('csrf-token').item(0).getAttribute("content");
 
 for (const el of replyBtns) {
   
@@ -164,26 +152,36 @@ for (const el of replyBtns) {
       var parent = el.parentNode.parentNode;
       parent.removeChild(parent.lastChild);
       
-      
     } else {
       
       el.setAttribute("data-reply", "");
       
-      
       // create a form
         var f = document.createElement("form");
         f.setAttribute('method',"post");
-        f.setAttribute('action',"{{ route('front.home') }}");
+        f.setAttribute('action',"{{ route('front.comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}");
 
-        var i = document.createElement("textarea"); //input element, text
+        var t = document.createElement("input");
+        t.setAttribute('type',"hidden");
+        t.setAttribute('name',"_token");
+        t.setAttribute('value', csrf);
+        
+        var h = document.createElement("input");
+        h.setAttribute('type',"hidden");
+        h.setAttribute('name',"parent_id");
+        h.setAttribute('value', el.getAttribute('data-hash'));
+        
+        var i = document.createElement("textarea");
         i.classList.add('reply');
         i.setAttribute('name',"content");
-
-        var s = document.createElement("input"); //input element, Submit button
+        
+        var s = document.createElement("input");
         s.setAttribute('type',"submit");
         s.setAttribute('value',"répondre");
         s.classList.add('btn-sm', 'btn-blue', 'mt-2', 'cursor-pointer', 'w-24');
 
+        f.appendChild(t);
+        f.appendChild(h);
         f.appendChild(i);
         f.appendChild(s);
       // end create form
@@ -209,10 +207,8 @@ for (const el of replyBtns) {
           console.log(args.content);        
           args.content = args.content.replace(/(<([^>]+)>)/ig,"");
         }
-      });
-      
+      });  
     }
-      
   });
 }
 

@@ -23,4 +23,16 @@ class Comment extends Model
   {
     return $this->belongsTo('App\Community')->withDefault();
   }
+  
+  public function parent()
+  {
+    return $this->belongsTo('App\Comment');
+  }
+  
+  public function getEncryptedHash()
+  {
+    return encrypt($this->hash);
+  }
+  
+  
 }
