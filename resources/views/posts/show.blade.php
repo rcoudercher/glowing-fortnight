@@ -3,10 +3,12 @@
 @section('title', $post->title)
 
 @section('scripts')
+  
+  
   <script src="https://cdn.tiny.cloud/1/qkzidnm9epp85gb91fk89jbherl7rr6e8xna4bt3056xvvtx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <script>
     tinymce.init({
-      selector: 'textarea',
+      selector: '#main',
       plugins: 'link lists paste',
       toolbar: 'bold italic strikethrough | link blockquote | bullist numlist',
       toolbar_location: 'bottom',
@@ -22,7 +24,10 @@
         args.content = args.content.replace(/(<([^>]+)>)/ig,"");
       }
     });
-  </script>  
+  </script>
+  
+
+  
 @endsection
 
 @section('content')
@@ -74,7 +79,7 @@
             <form action="{{ route('front.comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST">
               @csrf
               <div class="mb-6">
-                <textarea placeholder="Qu'en pensez-vous ?" class="bg-gray-300 form-input w-full @error('content') border-red-500 @enderror" name="content" id="content" rows="4" cols="80">{{ old('content') }}</textarea>
+                <textarea id="main" placeholder="Qu'en pensez-vous ?" class="bg-gray-300 form-input w-full @error('content') border-red-500 @enderror" name="content" id="content" rows="4" cols="80">{{ old('content') }}</textarea>
               </div>
               @error('content')
                 <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
@@ -86,44 +91,33 @@
           
           <div class="mt-8 text-base leading-snug">
             @foreach ($post->comments as $comment)
-              
-              
-              <div class="flex mb-6">
-                <div>
-                  <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↑</div>
-                  <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↓</div>
-                </div>
-                <div class="ml-6">
-                  <div class="text-sm mb-2 flex">
-                    <div class="">
-                      <a  class="hover:underline" href="{{ route('front.users.show', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+              <div id="c-{{ $comment->id }}" class="mb-6">
+                <div class="flex">
+                  <div>
+                    <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↑</div>
+                    <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg cursor-pointer">↓</div>
+                  </div>
+                  <div class="ml-6 w-full">
+                    <div class="text-sm mb-2 flex">
+                      <div class="">
+                        <a  class="hover:underline" href="{{ route('front.users.show', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                      </div>
+                      <div class="ml-2">15 votes</div>
+                       <div class="ml-2">
+                         il y a {{ now()->diffInHours($comment->created_at) }} heures
+                       </div>
                     </div>
-                    <div class="ml-2">
-                      15 votes
+                    <div class="mb-2">
+                      {!! $comment->content !!}
                     </div>
-                     <div class="ml-2">
-                       il y a {{ now()->diffInHours($comment->created_at) }} heures
-                     </div>
+                    <div class="flex text-sm">
+                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn">répondre</div>
+                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><span>partager</span></div>
+                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><a href="">signaler</a></div>
+                    </div>
                   </div>
-                  <div class="mb-2">
-                    {!! $comment->content !!}
-                  </div>
-                  <div class="flex text-sm">
-                    <div class="hover:underline"><a href="">répondre</a></div>
-                    <div class="hover:underline ml-2"><a href="">partager</a></div>
-                    <div class="hover:underline ml-2"><a href="">signaler</a></div>
-                  </div>
-                  
-                  
-                  
-                  
-                  
-                  
                 </div>
               </div>
-              
-              
-
             @endforeach
           </div>
           
@@ -136,7 +130,7 @@
         <div class="bg-white shadow p-4 mb-5 rounded">
           <div>
             <div class="mb-4">r/{{ $community->display_name }}</div>
-            <div>{{ $community->description }}</div>
+            <div id="description">{{ $community->description }}</div>
           </div>
         </div>
         @include('components.footer')
@@ -144,6 +138,85 @@
     </div>
   </div>
 </div>
+
+
+
+<script>
+
+
+</script>
+
+
+<script type="text/javascript">
+
+var replyBtns = document.querySelectorAll('.replyBtn');
+
+for (const el of replyBtns) {
+  
+  el.addEventListener('click', function() {
+    
+    if (el.hasAttribute("data-reply")) {
+      
+      el.removeAttribute("data-reply");
+      el.parentNode.classList.toggle('mb-4');
+      el.classList.toggle('bg-gray-300')
+      
+      var parent = el.parentNode.parentNode;
+      parent.removeChild(parent.lastChild);
+      
+      
+    } else {
+      
+      el.setAttribute("data-reply", "");
+      
+      
+      // create a form
+        var f = document.createElement("form");
+        f.setAttribute('method',"post");
+        f.setAttribute('action',"{{ route('front.home') }}");
+
+        var i = document.createElement("textarea"); //input element, text
+        i.classList.add('reply');
+        i.setAttribute('name',"content");
+
+        var s = document.createElement("input"); //input element, Submit button
+        s.setAttribute('type',"submit");
+        s.setAttribute('value',"répondre");
+        s.classList.add('btn-sm', 'btn-blue', 'mt-2', 'cursor-pointer', 'w-24');
+
+        f.appendChild(i);
+        f.appendChild(s);
+      // end create form
+        
+      el.parentNode.parentNode.appendChild(f);
+      
+      el.parentNode.classList.toggle('mb-4');
+      el.classList.toggle('bg-gray-300')
+      
+      tinymce.init({
+        selector: '.reply',
+        plugins: 'link lists paste',
+        toolbar: 'bold italic strikethrough | link',
+        toolbar_location: 'bottom',
+        menubar: false,
+        branding: false,
+        statusbar: false,
+        link_title: false,
+        target_list: false,
+        link_assume_external_targets: 'http',
+        // strip all tags from what is pasted
+        paste_preprocess: function(plugin, args) {
+          console.log(args.content);        
+          args.content = args.content.replace(/(<([^>]+)>)/ig,"");
+        }
+      });
+      
+    }
+      
+  });
+}
+
+</script>
   
   
 @endsection
