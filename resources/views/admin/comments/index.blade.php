@@ -13,7 +13,7 @@
         <th scope="col">id</th>
         <th scope="col">user_id</th>
         <th scope="col">post_id</th>
-        <th scope="col">community_id</th>
+        <th scope="col">community</th>
         <th scope="col">parent_id</th>
         <th scope="col">content</th>
         <th scope="col">created_at</th>
@@ -27,7 +27,7 @@
         <th>{{ $comment->id }}</th>
         <td>{{ $comment->user_id }}</td>
         <td>{{ $comment->post_id }}</td>
-        <td>{{ $comment->community_id }}</td>
+        <td>k/{{ $comment->community->display_name }}</td>
         <td>{{ $comment->parent_id }}</td>
         <td>{{ $comment->content }}</td>
         <td>{{ $comment->created_at }}</td>

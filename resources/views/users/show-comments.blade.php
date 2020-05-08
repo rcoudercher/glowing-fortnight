@@ -1,56 +1,63 @@
 @extends('layouts.app')
 
-@section('title', 'Membre')
+@section('title', 'Commentaires de u/'.$user->display_name)
 
 @section('content')
+  <div class="border-b border-gray-400">
+    <div class="container mx-auto py-3">
+      <div class="flex">
+        <div class="">
+          <a class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $user]) }}">Publications</a>
+        </div>
+        <div class="ml-6">
+          <a class="hover:underline" href="{{ route('front.users.show.comments', ['user' => $user]) }}">Commentaires</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div class="bg-gray-300 min-h-screen">
   <div class="container mx-auto pt-8">
     <div class="lg:flex">
       <div id="left" class="lg:w-2/3">
         
-        @foreach ($user->posts as $post)
+        @foreach ($comments as $comment)
           
-          
-          <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded flex cursor-pointer" onclick="window.location.href='{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}'">
-            <div>
-              <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↑</div>
-              <div class="p-1 text-center">7.9k</div>
-              <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↓</div>
-            </div>
-            <div class="mx-5">
-              <div class="mb-4 text-sm">
-                Publié sur <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
+          @if ($comment->isChild())
+            
+            <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow mb-5 rounded">
+              <div class="border-b border-gray-400 p-4">
+                u/{{ $user->display_name }} <span class="text-sm">a participé a</span> <a class="hover:underline text-blue-500" href="{{ route('front.posts.show', ['community' => $comment->community, 'post' => $comment->post, 'slug' => $comment->post->slug]) }}">{{ $comment->post->title }}</a>
               </div>
-              <div class="mb-4">
-                <a href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">
-                  <h3 class="title h3">{{ $post->title }}</h3>
-                </a>
+              <div class="border-b border-gray-400 p-4">
+                <div class="mb-2">
+                  <a class="hover:underline text-sm" href="{{ route('front.users.show.posts', ['user' => $comment->parent->user]) }}">u/{{ $comment->parent->user->display_name }}</a> a commenté :
+                </div>
+                <div class="">
+                  {!! $comment->parent->content !!}
+                </div>
               </div>
-              
-              @switch($post->type)
-                @case(1)
-                  <div class="mb-4 text-base leading-snug">{{ $post->content }}</div>
-                @break
-                @case(2)
-                  <div class="mb-4 text-base leading-snug">
-                    <img src="{{ $post->image }}" alt="">
-                  </div>
-                @break
-                @case(3)
-                  <div class="mb-4 text-base leading-snug">
-                    <a class="text-blue-800 underline" href="{{ $post->link }}" rel="nofollow">{{ $post->link }}</a>
-                  </div>
-                @break
-              @endswitch
-              
-              <div class="flex text-sm">
-                <div><a class="hover:underline" href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">{{ $post->comments->count() }} commentaires</a></div>
-                <div class="ml-4 hover:underline">Partager</div>
-                <div class="ml-4 hover:underline">Sauvegarder</div>
+              <div class="p-4 ml-6">
+                {!! $comment->content !!}
               </div>
             </div>
-          </div>
+            
+          @else
+            
+            
+            <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow mb-5 rounded">
+              <div class="border-b border-gray-400 p-4">
+                u/{{ $user->display_name }} <span class="text-sm">a participé a</span> <a class="hover:underline text-blue-500" href="{{ route('front.posts.show', ['community' => $comment->community, 'post' => $comment->post, 'slug' => $comment->post->slug]) }}">{{ $comment->post->title }}</a>
+              </div>
+              <div class="p-4">
+                {!! $comment->content !!}
+              </div>
+            </div>
+            
+          @endif
+          
+          
+          
           
         @endforeach
       </div>

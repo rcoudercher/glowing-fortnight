@@ -21,7 +21,7 @@ class Comment extends Model
   
   public function community()
   {
-    return $this->belongsTo('App\Community')->withDefault();
+    return $this->post->community();
   }
   
   public function parent()
@@ -37,6 +37,15 @@ class Comment extends Model
   public function children()
   {
     return Comment::where('parent_id', $this->id)->get();
+  }
+  
+  public function isChild()
+  {
+    if (is_null($this->parent_id)) {
+      return false;
+    } else {
+      return true;
+    }
   }
   
   

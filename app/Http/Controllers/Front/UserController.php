@@ -7,16 +7,25 @@ use Illuminate\Http\Request;
 
 use Auth;
 use App\User;
+use App\Post;
+use App\Comment;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
-{
-  public function show(User $user)
+{  
+  public function showPosts(User $user)
   {
-    return view('users.show', compact('user'));
+    $posts = $user->posts->sortByDesc('created_at');
+    return view('users.show-posts', compact('user', 'posts'));
+  }
+  
+  public function showComments(User $user)
+  {
+    $comments = $user->comments->sortByDesc('created_at');
+    return view('users.show-comments', compact('user', 'comments'));
   }
   
   public function create()

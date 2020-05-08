@@ -79,7 +79,7 @@
               </div>
               <div class="mx-5">
                 <div class="mb-4 text-sm">
-                  Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
+                  Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
                 </div>
                 <div class="mb-4">
                   <a href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">
@@ -89,7 +89,7 @@
                 
                 @switch($post->type)
                   @case(1)
-                    <div class="mb-4 text-base leading-snug">{{ $post->content }}</div>
+                    <div class="mb-4 text-base leading-snug">{!! $post->content !!}</div>
                   @break
                   @case(2)
                     <div class="mb-4 text-base leading-snug">

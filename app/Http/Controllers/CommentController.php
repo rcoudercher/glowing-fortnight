@@ -27,7 +27,6 @@ class CommentController extends Controller
       $validator = request()->validate([
         'user_id' => 'required|integer',
         'post_id' => 'required|integer',
-        'community_id' => 'required|integer',
         'parent_id' => 'required|integer',
         'content' => 'required',
       ]);
@@ -63,7 +62,6 @@ class CommentController extends Controller
       $validator = Validator::make($request->all(), [
         'user_id' => 'required|integer',
         'post_id' => 'required|integer',
-        'community_id' => 'required|integer',
         'parent_id' => 'required|integer',
         'content' => 'required',
       ])->validate();

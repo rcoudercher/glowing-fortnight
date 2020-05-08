@@ -28,7 +28,12 @@ Route::name('front.')->group(function() {
   
   // user routes
   Route::name('users.')->group(function() {
-    Route::get('u/{user:display_name}', 'Front\UserController@show')->name('show');
+    
+    Route::redirect('/u/{user:display_name}', '/u/{user:display_name}/publications', 301);
+    Route::get('u/{user:display_name}/publications', 'Front\UserController@showPosts')->name('show.posts');
+    Route::get('u/{user:display_name}/commentaires', 'Front\UserController@showComments')->name('show.comments');
+    
+    
     Route::get('connexion', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('deconnexion', 'Auth\LoginController@userLogout')->name('logout');
     Route::get('inscription', 'Front\UserController@create')->name('create')->middleware('guest');

@@ -34,8 +34,8 @@
         <td>{{ $comment->parent_id }}</td>
       </tr>
       <tr>
-        <th scope="row">community_id</th>
-        <td>{{ $comment->community_id }}</td>
+        <th scope="row">community</th>
+        <td>k/{{ $comment->community }}</td>
       </tr>
       <tr>
         <th scope="row">hash</th>

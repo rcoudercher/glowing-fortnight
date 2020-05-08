@@ -42,7 +42,7 @@
             <div class="mx-5">
               <div class="mb-4 text-sm">
                 <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>
-                 - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
+                 - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
               </div>
               <div class="mb-4">
                 <h3 class="title h3">{{ $post->title }}</h3>
@@ -99,7 +99,7 @@
                   <div class="ml-6 w-full">
                     <div class="text-sm mb-2 flex">
                       <div class="">
-                        <a  class="hover:underline" href="{{ route('front.users.show', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                        <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                       </div>
                       <div class="ml-2">15 votes</div>
                        <div class="ml-2">
@@ -132,7 +132,7 @@
                         <div class="ml-6 w-full">
                           <div class="text-sm mb-2 flex">
                             <div class="">
-                              <a  class="hover:underline" href="{{ route('front.users.show', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                              <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                             </div>
                             <div class="ml-2">15 votes</div>
                              <div class="ml-2">
