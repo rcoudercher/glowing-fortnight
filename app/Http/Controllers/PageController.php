@@ -10,4 +10,9 @@ class PageController extends Controller
   {
     return view('pages.test');
   }
+  
+  public function test2()
+  {
+    return view('pages.test');
+  }
 }

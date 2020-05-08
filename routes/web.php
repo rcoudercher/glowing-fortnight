@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test', 'PageController@test')->name('test');
-
 
 
 Auth::routes();
@@ -22,6 +20,10 @@ Auth::routes();
 
 // front routes
 Route::name('front.')->group(function() {
+  
+  // pages
+  Route::get('test', 'PageController@test')->name('test');
+  Route::get('test2', 'PageController@test2')->name('test2');
   
   // home
   Route::get('/', 'HomeController@index')->name('home');
