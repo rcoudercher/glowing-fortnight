@@ -13,6 +13,8 @@ $factory->define(Post::class, function (Faker $faker) {
   $data = [
     'hash' => Str::random(6),
     'slug' => Str::limit(Str::slug($title, '_'), 50),
+    'up_votes' => $faker->numberBetween(1,500),
+    'down_votes' => $faker->numberBetween(1,500),
     'title' => $title,
   ];
   

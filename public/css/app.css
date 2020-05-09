@@ -1122,6 +1122,25 @@ video {
   width: 80%;
 }
 
+/* vote buttons */
+
+.voteBtn {
+  background-color: #edf2f7;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  text-align: center;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.voteBtn:hover {
+  background-color: #e2e8f0;
+}
+
+/* --------------- */
+
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.

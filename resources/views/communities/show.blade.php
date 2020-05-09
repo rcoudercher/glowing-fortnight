@@ -68,14 +68,19 @@
             various filters
           </div>
           
-          @foreach ($community->posts as $post)
-            
+          @foreach ($posts as $post)
             
             <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded flex cursor-pointer" onclick="window.location.href='{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}'">
               <div>
-                <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↑</div>
-                <div class="p-1 text-center">7.9k</div>
-                <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↓</div>
+                <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('u{{ $post->hash }}').submit();">
+                  <i class="fas fa-arrow-up"></i>
+                  <form id="u{{ $post->hash }}" action="{{ route('front.votes.post.up', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST" class="hidden">@csrf</form>
+                </div>
+                <div class="p-1 text-center">{{ $post->upVotes()->count() - $post->downVotes()->count() }}</div>
+                <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('d{{ $post->hash }}').submit();">
+                  <i class="fas fa-arrow-down"></i>
+                  <form id="d{{ $post->hash }}" action="{{ route('front.votes.post.down', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST" class="hidden">@csrf</form>
+                </div>
               </div>
               <div class="mx-5">
                 <div class="mb-4 text-sm">
@@ -107,6 +112,9 @@
                   <div><a class="hover:underline" href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">{{ $post->comments->count() }} commentaires</a></div>
                   <div class="ml-4 hover:underline">Partager</div>
                   <div class="ml-4 hover:underline">Sauvegarder</div>
+                </div>
+                <div class="mt-2 text-sm">
+                  Wilson score : {{ $post->wilsonScore() }}
                 </div>
               </div>
             </div>

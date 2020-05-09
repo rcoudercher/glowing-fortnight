@@ -71,7 +71,15 @@ Route::name('front.')->group(function() {
   
   // comment routes
   Route::name('comments.')->group(function() {
-    Route::post('r/{community:display_name}/{post:hash}/{slug}', 'Front\CommentController@store')->name('store')->middleware('auth');    
+    Route::post('r/{community:display_name}/{post:hash}/{slug}', 'Front\CommentController@store')->name('store')->middleware('auth');
+  });
+  
+  // vote routes
+  Route::name('votes.')->group(function() {
+    Route::post('r/{community:display_name}/{post:hash}/{slug}/post-up', 'Front\VoteController@postUp')->name('post.up')->middleware('auth');
+    Route::post('r/{community:display_name}/{post:hash}/{slug}/post-down', 'Front\VoteController@postDown')->name('post.down')->middleware('auth');
+    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-up', 'Front\VoteController@commentUp')->name('comment.up')->middleware('auth');
+    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-down', 'Front\VoteController@commentDown')->name('comment.down')->middleware('auth');
   });
   
   // settings routes

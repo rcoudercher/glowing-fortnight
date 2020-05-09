@@ -21,7 +21,11 @@ class PostController extends Controller
       abort(404); // if slugs aren't matching, then throw a 404
     }
     
-    return view('posts.show', compact('community', 'post', 'slug'));
+    $rootComments = $post->rootComments->sortByDesc(function($comment) {
+      return $comment->wilsonScore();
+    });
+    
+    return view('posts.show', compact('community', 'post', 'slug', 'rootComments'));
   }
   
   public function create(Community $community)

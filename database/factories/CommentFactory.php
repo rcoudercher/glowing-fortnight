@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 $factory->define(Comment::class, function (Faker $faker) {
     return [
       'hash' => Str::random(7),
+      'up_votes' => $faker->numberBetween(1,500),
+      'down_votes' => $faker->numberBetween(1,500),
       'content' => $faker->text(300),
     ];
 });

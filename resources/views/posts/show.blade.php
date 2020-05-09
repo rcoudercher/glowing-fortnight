@@ -35,9 +35,15 @@
         <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded">
           <div class="flex">
             <div>
-              <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↑</div>
-              <div class="p-1 text-center">7.9k</div>
-              <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↓</div>
+              <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('up-post').submit();">
+                <i class="fas fa-arrow-up"></i>
+                <form id="up-post" action="{{ route('front.votes.post.up', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="POST" class="hidden">@csrf</form>
+              </div>
+              <div class="p-1 text-center">{{ $post->upVotes()->count() - $post->downVotes()->count() }}</div>
+              <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('down-post').submit();">
+                <i class="fas fa-arrow-down"></i>
+                <form id="down-post" action="{{ route('front.votes.post.down', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="POST" class="hidden">@csrf</form>
+              </div>
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
@@ -47,7 +53,24 @@
               <div class="mb-4">
                 <h3 class="title h3">{{ $post->title }}</h3>
               </div>
-              <div class="mb-4 text-base leading-snug">{{ $post->content }}</div>
+              
+              @switch($post->type)
+                @case(1)
+                  <div class="mb-4 text-base leading-snug">{!! $post->content !!}</div>
+                @break
+                @case(2)
+                  <div class="mb-4 text-base leading-snug">
+                    <img src="{{ $post->image }}">
+                  </div>
+                @break
+                @case(3)
+                  <div class="mb-4 text-base leading-snug">
+                    <a class="text-blue-800 underline" href="{{ $post->link }}" rel="nofollow">{{ $post->link }}</a>
+                  </div>
+                @break
+              @endswitch
+              
+              
               <div class="flex text-sm pb-8">
                 <div>{{ $post->comments->count() }} commentaires</div>
                 <div class="ml-4 hover:underline">Partager</div>
@@ -85,15 +108,23 @@
           
           
           <div class="mt-8 text-base leading-snug">
-            @foreach ($post->rootComments as $comment)
+            @foreach ($rootComments as $comment)
               <div class="mb-6">
                 <div class="flex mb-6">
                   <div>
-                    <div class="cursor-pointer">
+                    <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('u{{ $comment->hash }}').submit();">
                       <i class="fas fa-arrow-up"></i>
+                      <form id="u{{ $comment->hash }}" action="{{ route('front.votes.comment.up', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
+                        @csrf
+                        <input type="hidden" name="comment_id" value="{{ $comment->id }}">
+                      </form>
                     </div>
-                    <div class="cursor-pointer">
+                    <div class="voteBtn mt-2" onclick="event.preventDefault(); document.getElementById('d{{ $comment->hash }}').submit();">
                       <i class="fas fa-arrow-down"></i>
+                      <form id="d{{ $comment->hash }}" action="{{ route('front.votes.comment.down', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
+                        @csrf
+                        <input type="hidden" name="comment_id" value="{{ $comment->id }}">
+                      </form>
                     </div>
                   </div>
                   <div class="ml-6 w-full">
@@ -101,7 +132,7 @@
                       <div class="">
                         <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                       </div>
-                      <div class="ml-2">15 votes</div>
+                      <div class="ml-2">{{ $comment->upVotes()->count() - $comment->downVotes()->count() }} votes</div>
                        <div class="ml-2">
                          il y a {{ now()->diffInHours($comment->created_at) }} heures
                        </div>
@@ -114,6 +145,9 @@
                       <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><span>partager</span></div>
                       <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><a href="">signaler</a></div>
                     </div>
+                    <div class="mt-2 text-sm">
+                      Wilson score : {{ $comment->wilsonScore() }}
+                    </div>
                   </div>
                 </div>
                 
@@ -122,11 +156,19 @@
                     <div class="mb-6 ml-6">
                       <div class="flex">
                         <div>
-                          <div class="cursor-pointer">
+                          <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('u{{ $comment->hash }}').submit();">
                             <i class="fas fa-arrow-up"></i>
+                            <form id="u{{ $comment->hash }}" action="{{ route('front.votes.comment.up', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
+                              @csrf
+                              <input type="hidden" name="comment_id" value="{{ $comment->id }}">
+                            </form>
                           </div>
-                          <div class="cursor-pointer">
+                          <div class="voteBtn mt-2" onclick="event.preventDefault(); document.getElementById('d{{ $comment->hash }}').submit();">
                             <i class="fas fa-arrow-down"></i>
+                            <form id="d{{ $comment->hash }}" action="{{ route('front.votes.comment.down', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
+                              @csrf
+                              <input type="hidden" name="comment_id" value="{{ $comment->id }}">
+                            </form>
                           </div>
                         </div>
                         <div class="ml-6 w-full">
@@ -134,7 +176,7 @@
                             <div class="">
                               <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                             </div>
-                            <div class="ml-2">15 votes</div>
+                            <div class="ml-2">{{ $comment->upVotes()->count() - $comment->downVotes()->count() }} votes</div>
                              <div class="ml-2">
                                il y a {{ now()->diffInHours($comment->created_at) }} heures
                              </div>

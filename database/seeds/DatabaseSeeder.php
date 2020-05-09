@@ -18,6 +18,6 @@ class DatabaseSeeder extends Seeder
       $this->call(TrophySeeder::class);
       $this->call(CommentSeeder::class);
       $this->call(MembershipSeeder::class);
-      
+      $this->call(VoteSeeder::class);
     }
 }

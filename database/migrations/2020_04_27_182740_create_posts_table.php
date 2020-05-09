@@ -23,6 +23,10 @@ class CreatePostsTable extends Migration
             $table->text('slug');
             $table->boolean('deleted')->default(0);
             $table->smallInteger('type')->default(0);
+            
+            $table->bigInteger('up_votes')->default(0);
+            $table->bigInteger('down_votes')->default(0);
+            
             $table->string('title');
             $table->text('content')->nullable();
             $table->text('image')->nullable();

@@ -21,7 +21,10 @@ class CommunityController extends Controller
   
   public function show(Community $community)
   {
-    return view('communities.show', compact('community'));
+    $posts = $community->posts->sortByDesc(function($post) {
+      return $post->wilsonScore();
+    });
+    return view('communities.show', compact('community', 'posts'));
   }
     
   public function join(Community $community)
