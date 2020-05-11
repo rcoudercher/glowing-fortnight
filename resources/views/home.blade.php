@@ -101,11 +101,12 @@
     var host = window.location.host;
     
     for (var i = 0; i < posts.length; i++) {
+      let display_name = posts.item(i).getAttribute("data-community");
+      let hash = posts.item(i).getAttribute("data-post");
+      let slug = posts.item(i).getAttribute("data-slug");
+      let url = protocol + "//" + host + "/r/" + display_name + "/" + hash + "/" + slug;
       posts.item(i).addEventListener('click', function() {
-        var display_name = posts.item(i).getAttribute("data-community");
-        var hash = posts.item(i).getAttribute("data-post");
-        var slug = posts.item(i).getAttribute("data-slug");
-        var url = protocol + "//" + host + "/r/" + display_name + "/" + hash + "/" + slug;
+        
         window.location.href=url;
       });
       
