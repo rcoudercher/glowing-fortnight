@@ -11,7 +11,7 @@
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
           @foreach ($posts as $post)
-            <div class="card post cursor-pointer" data-post="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+            <div class="card post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
               <div class="voteWrapper">
                 <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
                 <div class="p-1 text-center">{{ $post->voteCount() }}</div>
@@ -77,35 +77,34 @@
     var downVoteBtns = document.getElementsByClassName("downVote");
     
     for (var i = 0; i < upVoteBtns.length; i++) {
-      upVoteBtns.item(i).addEventListener('click', function(e) {
+      upVoteBtns.item(i).addEventListener("click", function(e) {
         var target = e.target || e.srcElement;
-        postVote(target, 'up');
-        refreshVoteCounter(target);
+        vote(target, "post", "up");
+        refreshVoteCounter(target, "post");
         e.stopPropagation();
       });
     }
     
     for (var i = 0; i < downVoteBtns.length; i++) {
-      downVoteBtns.item(i).addEventListener('click', function(e) {
+      downVoteBtns.item(i).addEventListener("click", function(e) {
         var target = e.target || e.srcElement;
-        postVote(target, 'down');
-        refreshVoteCounter(target);
+        vote(target, "post", "down");
+        refreshVoteCounter(target, "post");
         e.stopPropagation();
       });
     }
     
     // links to posts
     var posts = document.getElementsByClassName("post");
-    console.log(posts);
     var protocol = window.location.protocol;
     var host = window.location.host;
     
     for (var i = 0; i < posts.length; i++) {
       let display_name = posts.item(i).getAttribute("data-community");
-      let hash = posts.item(i).getAttribute("data-post");
+      let hash = posts.item(i).getAttribute("data-hash");
       let slug = posts.item(i).getAttribute("data-slug");
       let url = protocol + "//" + host + "/r/" + display_name + "/" + hash + "/" + slug;
-      posts.item(i).addEventListener('click', function() {
+      posts.item(i).addEventListener("click", function() {
         
         window.location.href=url;
       });

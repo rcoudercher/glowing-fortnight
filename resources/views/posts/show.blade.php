@@ -33,7 +33,7 @@
       <div id="left" class="lg:w-2/3">
         
         <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded">
-          <div class="flex" data-post="{{ $post->hash }}">
+          <div class="flex" data-hash="{{ $post->hash }}">
             <div class="voteWrapper">
               <div id="postUp" class="voteBtn{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
               <div class="p-1 text-center">{{ $post->voteCount() }}</div>
@@ -104,32 +104,18 @@
           <div class="mt-8 text-base leading-snug">
             @foreach ($rootComments as $comment)
               <div class="mb-6">
-                <div class="flex mb-6">
-                  <div>
-                    <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('u{{ $comment->hash }}').submit();">
-                      <i class="fas fa-arrow-up"></i>
-                      <form id="u{{ $comment->hash }}" action="{{ route('front.votes.comment.up', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
-                        @csrf
-                        <input type="hidden" name="comment_id" value="{{ $comment->id }}">
-                      </form>
-                    </div>
-                    <div class="voteBtn mt-2" onclick="event.preventDefault(); document.getElementById('d{{ $comment->hash }}').submit();">
-                      <i class="fas fa-arrow-down"></i>
-                      <form id="d{{ $comment->hash }}" action="{{ route('front.votes.comment.down', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
-                        @csrf
-                        <input type="hidden" name="comment_id" value="{{ $comment->id }}">
-                      </form>
-                    </div>
+                <div class="flex mb-6" data-hash="{{ $comment->hash }}">
+                  <div class="voteWrapper">
+                    <div class="commentUp voteBtn{{ $comment->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+                    <div class="commentDown voteBtn{{ $comment->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
                   </div>
                   <div class="ml-6 w-full">
                     <div class="text-sm mb-2 flex">
                       <div class="">
                         <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                       </div>
-                      <div class="ml-2">{{ $comment->upVotes()->count() - $comment->downVotes()->count() }} votes</div>
-                       <div class="ml-2">
-                         il y a {{ now()->diffInHours($comment->created_at) }} heures
-                       </div>
+                      <div class="ml-2"><span id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span> votes</div>
+                      <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
                     </div>
                     <div class="mb-2">
                       {!! $comment->content !!}
@@ -148,32 +134,18 @@
                 @if ($comment->children()->count() != 0)
                   @foreach ($comment->children() as $comment)
                     <div class="mb-6 ml-6">
-                      <div class="flex">
-                        <div>
-                          <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('u{{ $comment->hash }}').submit();">
-                            <i class="fas fa-arrow-up"></i>
-                            <form id="u{{ $comment->hash }}" action="{{ route('front.votes.comment.up', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
-                              @csrf
-                              <input type="hidden" name="comment_id" value="{{ $comment->id }}">
-                            </form>
-                          </div>
-                          <div class="voteBtn mt-2" onclick="event.preventDefault(); document.getElementById('d{{ $comment->hash }}').submit();">
-                            <i class="fas fa-arrow-down"></i>
-                            <form id="d{{ $comment->hash }}" action="{{ route('front.votes.comment.down', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="post" class="hidden">
-                              @csrf
-                              <input type="hidden" name="comment_id" value="{{ $comment->id }}">
-                            </form>
-                          </div>
+                      <div class="flex" data-hash="{{ $comment->hash }}">
+                        <div class="voteWrapper">
+                          <div class="commentUp voteBtn{{ $comment->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+                          <div class="commentDown voteBtn{{ $comment->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
                         </div>
                         <div class="ml-6 w-full">
                           <div class="text-sm mb-2 flex">
                             <div class="">
                               <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                             </div>
-                            <div class="ml-2">{{ $comment->upVotes()->count() - $comment->downVotes()->count() }} votes</div>
-                             <div class="ml-2">
-                               il y a {{ now()->diffInHours($comment->created_at) }} heures
-                             </div>
+                            <div class="ml-2"><span id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span> votes</div>
+                            <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
                           </div>
                           <div class="mb-2">
                             {!! $comment->content !!}
@@ -288,21 +260,43 @@ for (const el of replyBtns) {
   });
 }
 
-// vote buttons
+// post vote buttons
 var postUp = document.getElementById("postUp");
 var postDown = document.getElementById("postDown");
 
 postUp.addEventListener('click', function(e) {
   var target = e.target || e.srcElement;
-  postVote(target, 'up');
-  refreshVoteCounter(target);
+  vote(target, "post", "up");
+  refreshVoteCounter(target, "post");
 });
 
-postDown.addEventListener('click', function(e) {
+postDown.addEventListener("click", function(e) {
   var target = e.target || e.srcElement;
-  postVote(target, 'down');
-  refreshVoteCounter(target);
+  vote(target, "post", "down");
+  refreshVoteCounter(target, "post");
 });
+
+// comment vote buttons
+var commentUps = document.getElementsByClassName("commentUp");
+var commentDowns = document.getElementsByClassName("commentDown");
+
+for (var i = 0; i < commentUps.length; i++) {
+  commentUps.item(i).addEventListener("click", function(e) {
+    var target = e.target || e.srcElement;
+    vote(target, "comment", "up");
+    refreshVoteCounter(target, "comment");
+  });
+}
+
+for (var i = 0; i < commentDowns.length; i++) {
+  commentDowns.item(i).addEventListener("click", function(e) {
+    var target = e.target || e.srcElement;
+    vote(target, "comment", "down");
+    refreshVoteCounter(target, "comment");
+  });
+}
+
+
 
 </script>
   

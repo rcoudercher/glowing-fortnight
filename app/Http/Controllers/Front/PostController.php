@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Post;
 use App\Community;
+use App\Vote;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -101,6 +102,85 @@ class PostController extends Controller
       
     return redirect(route('front.communities.show', ['community' => $community]))
     ->with('message', 'Votre message a bien été publié.');
+  }
+  
+  public function vote(Post $post, Request $request)
+  {
+    // cannot vote if unauthenticated
+    if (!Auth::check()) {
+      return response()->json([
+        'success' => false,
+        'reason' => 'unauthenticated',
+        'redirect' => route('front.users.login'),
+      ]);
+    }
+    
+    // check that the correct "rating" parameters were passed through
+    if ($request->input('rating') != 'up' && $request->input('rating') != 'down') {
+      return response()->json([
+        'success' => false,
+        'reason' => 'wrong rating parameters',
+      ]);
+    }
+    
+    $user = Auth::user();
+    $votes = $post->votes->where('user', $user);
+    
+    if ($votes->count() > 1) {
+      foreach ($votes as $vote) {
+        $vote->delete();
+      }
+      return response()->json([
+        'success' => false,
+        'reason' => 'User had too many votes for this post. All votes deleted',
+        'state' => 'none',
+      ]);
+    } elseif ($votes->count() == 0) {
+      $vote = new Vote;
+      $vote->up = $request->input('rating') == 'up' ? true : false;
+      $vote->user()->associate($user);
+      $vote->post()->associate($post);
+      $vote->save();
+      
+      $message = $request->input('rating') == 'up' ? 'was no vote, now upvoted' : 'was no vote, now downvoted';
+      $state = $request->input('rating') == 'up' ? 'up' : 'down';
+      
+      return response()->json([
+        'success' => true,
+        'message' => $message,
+        'state' => $state,
+      ]);
+    } else {
+      // $votes->count() == 1
+      
+      $vote = $votes->first();
+      
+      if ($vote->up && $request->input('rating') == 'up') {
+        $vote->delete();
+        $message = 'Was already upvoted. Upvote deleted.';
+        $state = 'none';
+      } else if ($vote->up && $request->input('rating') == 'down') {
+        $vote->up = false;
+        $vote->save();
+        $message = 'Was Upvoted, now downvoted';
+        $state = 'down';
+      } else if (!$vote->up && $request->input('rating') == 'up') {
+        $vote->up = true;
+        $vote->save();
+        $message = 'Was downvoted, now upvoted';
+        $state = 'up';
+      } else if (!$vote->up && $request->input('rating') == 'down') {
+        $vote->delete();
+        $message = 'Was already downvoted. Downvote deleted.';
+        $state = 'none';
+      }
+      
+      return response()->json([
+        'success' => true,
+        'message' => $message,
+        'state' => $state,
+      ]);
+    }
   }
   
   public function getVoteCount(Post $post)

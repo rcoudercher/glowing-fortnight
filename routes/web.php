@@ -69,24 +69,15 @@ Route::name('front.')->group(function() {
     Route::get('r/{community:display_name}/publier', 'Front\PostController@create')->name('create')->middleware('auth');
     Route::post('r/{community:display_name}/publier', 'Front\PostController@store')->name('store')->middleware('auth');
     Route::get('r/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
-    Route::get('{post:hash}/vote-count', 'Front\PostController@getVoteCount');
-    Route::post('{post:hash}/vote-post', 'Front\VoteController@postVote');
+    Route::get('post/{post:hash}/vote-count', 'Front\PostController@getVoteCount');
+    Route::post('post/{post:hash}/vote', 'Front\PostController@vote');
   });
   
   // comment routes
   Route::name('comments.')->group(function() {
     Route::post('r/{community:display_name}/{post:hash}/{slug}', 'Front\CommentController@store')->name('store')->middleware('auth');
-  });
-  
-  // vote routes
-  Route::name('votes.')->group(function() {
-    // Route::post('r/{community:display_name}/{post:hash}/{slug}/post-up', 'Front\VoteController@postUp')->name('post.up');
-    // Route::post('r/{community:display_name}/{post:hash}/{slug}/post-down', 'Front\VoteController@postDown')->name('post.down');
-    
-    
-    
-    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-up', 'Front\VoteController@commentUp')->name('comment.up');
-    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-down', 'Front\VoteController@commentDown')->name('comment.down');
+    Route::get('comment/{comment:hash}/vote-count', 'Front\CommentController@getVoteCount');
+    Route::post('comment/{comment:hash}/vote', 'Front\CommentController@vote');
   });
   
   // settings routes

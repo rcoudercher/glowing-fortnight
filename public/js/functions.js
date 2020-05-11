@@ -1,4 +1,4 @@
-function postVote(el, rating) {
+function vote(el, type, rating) {
   
   // input validation
   
@@ -7,17 +7,27 @@ function postVote(el, rating) {
     return console.log("Invalid function parameter: 'el' was null.");
   }
   
+  // type = "post", "comment"
+  if (type != "post" && type != "comment") {
+    return console.log("Invalid function parameter: 'type' must be 'post' or 'comment'.");
+  }
+  
   // rating = "up", "down"
   if (rating != "up" && rating != "down") {
     return console.log("Invalid function parameter: 'rating' must be 'up' or 'down'.");
   }
   
   var wrapper = el.closest(".voteWrapper");
-  var hash = wrapper.parentNode.getAttribute("data-post");
+  var hash = wrapper.parentNode.getAttribute("data-hash");
   
   var protocol = window.location.protocol;
   var host = window.location.host;    
-  var url = protocol + "//" + host + "/" + hash + "/" + "vote-post";
+  
+  if (type == "post") {
+    var url = protocol + "//" + host + "/post/" + hash + "/vote";
+  } else {
+    var url = protocol + "//" + host + "/comment/" + hash + "/vote";
+  }
       
   // creates a formData variable to indicate to the controller if user wants to up or down vote the post
   var formData = new FormData();
@@ -30,12 +40,13 @@ function postVote(el, rating) {
   var csrf = document.getElementsByName("csrf-token").item(0).getAttribute("content");
   var xhr = new XMLHttpRequest();
   xhr.responseType = "json";
-  xhr.open("post", url);    
+  xhr.open("POST", url);    
   xhr.setRequestHeader("x-csrf-token", csrf);
   xhr.onreadystatechange = function () {
     if(xhr.readyState === 4 && xhr.status === 200) {
       // if request was successful, we store the JSON response in a "response" variable
       var response = xhr.response;
+      
       if (response === null) {
         return console.log("Request failed: response was null");
       }
@@ -50,8 +61,8 @@ function postVote(el, rating) {
       
       console.log(response);
       
-      var up = wrapper.children.item(0);
-      var down = wrapper.children.item(2);
+      var up = wrapper.firstElementChild;
+      var down = wrapper.lastElementChild;
       
       if (response["state"] == "up") {
         up.classList.add("active");
@@ -66,7 +77,7 @@ function postVote(el, rating) {
       
     } else if(xhr.status >= 500) {
       // internal server error
-      console.log("internal server error");
+      console.log("500 (Internal Server Error)");
     } else if(xhr.status >= 402 && xhr.status <= 420) {
       // error
       console.log("error 402 to 420");
@@ -78,15 +89,26 @@ function postVote(el, rating) {
   xhr.send(formData);
 }
 
-function refreshVoteCounter(el) {
+function refreshVoteCounter(el, type) {
   // el = clicked element
+  
+  // type = "post", "comment"
+  if (type != "post" && type != "comment") {
+    return console.log("Invalid function parameter: 'type' must be 'post' or 'comment'.");
+  }
+  
   var wrapper = el.closest(".voteWrapper");  
-  var hash = wrapper.parentNode.getAttribute("data-post");
+  var hash = wrapper.parentNode.getAttribute("data-hash");
   
   // create post url
   var protocol = window.location.protocol;
-  var host = window.location.host;    
-  var url = protocol + "//" + host + "/" + hash + "/" + "vote-count";  
+  var host = window.location.host;
+  
+  if (type == "post") {
+    var url = protocol + "//" + host + "/post/" + hash + "/vote-count";
+  } else {
+    var url = protocol + "//" + host + "/comment/" + hash + "/vote-count";
+  } 
   
   var csrf = document.getElementsByName("csrf-token").item(0).getAttribute("content");
   var xhr = new XMLHttpRequest();
@@ -101,7 +123,13 @@ function refreshVoteCounter(el) {
         return console.log("Request failed: response was null");
       }
       console.log(response);
-      var counter = wrapper.children.item(1);
+      
+      if (type == "post") {
+        var counter = wrapper.children.item(1);
+      } else {
+        var counter = document.getElementById("counter-" + hash);
+      }
+      
       counter.textContent = response["counter"];
       
     } else if(xhr.status >= 500) {
@@ -117,3 +145,5 @@ function refreshVoteCounter(el) {
   };
   xhr.send();
 }
+
+
