@@ -102,4 +102,11 @@ class PostController extends Controller
     return redirect(route('front.communities.show', ['community' => $community]))
     ->with('message', 'Votre message a bien été publié.');
   }
+  
+  public function getVoteCount(Post $post)
+  {
+    return response()->json([
+      'counter' => $post->voteCount(),
+    ]);
+  }
 }

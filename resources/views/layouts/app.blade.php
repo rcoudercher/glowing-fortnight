@@ -7,6 +7,7 @@
     <title>@yield('title') / {{ config('app.name', 'Laravel') }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">    
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/functions.js') }}" type="text/javascript"></script>
     @yield('scripts')
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2302d04f5e.js" crossorigin="anonymous"></script>

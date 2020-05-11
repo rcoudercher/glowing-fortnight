@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+use App\Post;
+
 class PageController extends Controller
 {
   public function test()
@@ -13,6 +16,13 @@ class PageController extends Controller
   
   public function test2()
   {
-    return view('pages.test');
+    $post = Post::find(3);
+    
+    $votes = $post->votes->where('user', Auth::user());
+    $vote = $votes->first();
+    
+    // dd($vote->up);
+    
+    return view('pages.test2', compact('post'));
   }
 }

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Post;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +69,8 @@ Route::name('front.')->group(function() {
     Route::get('r/{community:display_name}/publier', 'Front\PostController@create')->name('create')->middleware('auth');
     Route::post('r/{community:display_name}/publier', 'Front\PostController@store')->name('store')->middleware('auth');
     Route::get('r/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
+    Route::get('{post:hash}/vote-count', 'Front\PostController@getVoteCount');
+    Route::post('{post:hash}/vote-post', 'Front\VoteController@postVote');
   });
   
   // comment routes
@@ -76,10 +80,13 @@ Route::name('front.')->group(function() {
   
   // vote routes
   Route::name('votes.')->group(function() {
-    Route::post('r/{community:display_name}/{post:hash}/{slug}/post-up', 'Front\VoteController@postUp')->name('post.up')->middleware('auth');
-    Route::post('r/{community:display_name}/{post:hash}/{slug}/post-down', 'Front\VoteController@postDown')->name('post.down')->middleware('auth');
-    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-up', 'Front\VoteController@commentUp')->name('comment.up')->middleware('auth');
-    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-down', 'Front\VoteController@commentDown')->name('comment.down')->middleware('auth');
+    // Route::post('r/{community:display_name}/{post:hash}/{slug}/post-up', 'Front\VoteController@postUp')->name('post.up');
+    // Route::post('r/{community:display_name}/{post:hash}/{slug}/post-down', 'Front\VoteController@postDown')->name('post.down');
+    
+    
+    
+    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-up', 'Front\VoteController@commentUp')->name('comment.up');
+    Route::post('r/{community:display_name}/{post:hash}/{slug}/comment-down', 'Front\VoteController@commentDown')->name('comment.down');
   });
   
   // settings routes

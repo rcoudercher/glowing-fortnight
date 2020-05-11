@@ -39,6 +39,11 @@ class Post extends Model
     return $this->votes->where('up', false);
   }
   
+  public function voteCount()
+  {
+    return $this->upVotes()->count() - $this->downVotes()->count();
+  }
+  
   public function wilsonScore()
   {
     // $pos = positive votes
@@ -58,6 +63,11 @@ class Post extends Model
     $phat = $pos/$n;
     
     return ($phat + $z*$z/(2*$n) - $z * sqrt(($phat*(1-$phat) + $z*$z/(4*$n))/$n))/(1 + $z*$z/$n);
+  }
+  
+  public function getEncryptedHash()
+  {
+    return encrypt($this->hash);
   }
   
   public function rootComments()

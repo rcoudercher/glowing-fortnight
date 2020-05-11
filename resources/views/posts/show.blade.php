@@ -33,17 +33,11 @@
       <div id="left" class="lg:w-2/3">
         
         <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded">
-          <div class="flex">
-            <div>
-              <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('up-post').submit();">
-                <i class="fas fa-arrow-up"></i>
-                <form id="up-post" action="{{ route('front.votes.post.up', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="POST" class="hidden">@csrf</form>
-              </div>
-              <div class="p-1 text-center">{{ $post->upVotes()->count() - $post->downVotes()->count() }}</div>
-              <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('down-post').submit();">
-                <i class="fas fa-arrow-down"></i>
-                <form id="down-post" action="{{ route('front.votes.post.down', ['community' => $community, 'post' => $post, 'slug' => $slug]) }}" method="POST" class="hidden">@csrf</form>
-              </div>
+          <div class="flex" data-post="{{ $post->hash }}">
+            <div class="voteWrapper">
+              <div id="postUp" class="voteBtn{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+              <div class="p-1 text-center">{{ $post->voteCount() }}</div>
+              <div id="postDown" class="voteBtn{{ $post->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
@@ -293,6 +287,22 @@ for (const el of replyBtns) {
     }
   });
 }
+
+// vote buttons
+var postUp = document.getElementById("postUp");
+var postDown = document.getElementById("postDown");
+
+postUp.addEventListener('click', function(e) {
+  var target = e.target || e.srcElement;
+  postVote(target, 'up');
+  refreshVoteCounter(target);
+});
+
+postDown.addEventListener('click', function(e) {
+  var target = e.target || e.srcElement;
+  postVote(target, 'down');
+  refreshVoteCounter(target);
+});
 
 </script>
   

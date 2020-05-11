@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vote extends Model
 {
+  use SoftDeletes;
+  
   // allows mass assignment on any field of the model
   protected $guarded = [];
   

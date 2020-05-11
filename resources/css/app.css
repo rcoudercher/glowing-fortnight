@@ -186,13 +186,30 @@
   
   /* vote buttons */
   .voteBtn {
-    @apply bg-gray-200 px-2 py-1 text-center rounded cursor-pointer;
+    @apply px-2 py-1 text-center rounded cursor-pointer;
   }
   
   .voteBtn:hover {
-    @apply bg-gray-300;
+    @apply bg-gray-200 text-red-800;
   }
   
+  .voteBtn.active {
+    @apply text-red-700
+  }
+  
+  .voteBtn.active:hover {
+    @apply bg-gray-300 text-red-700
+  }
+  
+  
+  .card {
+    @apply flex px-5 py-5 mb-5 border border-solid border-gray-400 bg-white shadow rounded;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .card:hover {
+    @apply border-gray-500
+  }
   
   
   

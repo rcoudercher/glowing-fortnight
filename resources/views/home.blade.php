@@ -2,23 +2,20 @@
 
 @section('title', 'Accueil')
 
+@section('scripts')
+@endsection
+
 @section('content')
   <div class="bg-gray-300">
     <div class="container mx-auto pt-8">
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
           @foreach ($posts as $post)
-            <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded flex cursor-pointer" onclick="window.location.href='{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}'">
-              <div>
-                <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('u{{ $post->hash }}').submit();">
-                  <i class="fas fa-arrow-up"></i>
-                  <form id="u{{ $post->hash }}" action="{{ route('front.votes.post.up', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST" class="hidden">@csrf</form>
-                </div>
-                <div class="p-1 text-center">{{ $post->upVotes()->count() - $post->downVotes()->count() }}</div>
-                <div class="voteBtn" onclick="event.preventDefault(); document.getElementById('d{{ $post->hash }}').submit();">
-                  <i class="fas fa-arrow-down"></i>
-                  <form id="d{{ $post->hash }}" action="{{ route('front.votes.post.down', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST" class="hidden">@csrf</form>
-                </div>
+            <div class="card post cursor-pointer" data-post="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+              <div class="voteWrapper">
+                <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+                <div class="p-1 text-center">{{ $post->voteCount() }}</div>
+                <div class="voteBtn downVote{{ $post->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
               </div>
               <div class="mx-5">
                 <div class="mb-4 text-sm">
@@ -62,17 +59,57 @@
         <div id="right" class="lg:ml-6 lg:w-1/3">
           <div class="bg-white shadow p-4 mb-5 rounded">
             <div>
-              <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+              <div class="">
+                some text
+              </div>
             </div>
           </div>
           @include('components.footer')
         </div>
       </div>
     </div>
-    
     @component('components.who')
     @endcomponent
-    
-    
   </div>
+  <script>
+    // vote buttons
+    var upVoteBtns = document.getElementsByClassName("upVote");
+    var downVoteBtns = document.getElementsByClassName("downVote");
+    
+    for (var i = 0; i < upVoteBtns.length; i++) {
+      upVoteBtns.item(i).addEventListener('click', function(e) {
+        var target = e.target || e.srcElement;
+        postVote(target, 'up');
+        refreshVoteCounter(target);
+        e.stopPropagation();
+      });
+    }
+    
+    for (var i = 0; i < downVoteBtns.length; i++) {
+      downVoteBtns.item(i).addEventListener('click', function(e) {
+        var target = e.target || e.srcElement;
+        postVote(target, 'down');
+        refreshVoteCounter(target);
+        e.stopPropagation();
+      });
+    }
+    
+    // links to posts
+    var posts = document.getElementsByClassName("post");
+    console.log(posts);
+    var protocol = window.location.protocol;
+    var host = window.location.host;
+    
+    for (var i = 0; i < posts.length; i++) {
+      posts.item(i).addEventListener('click', function() {
+        var display_name = posts.item(i).getAttribute("data-community");
+        var hash = posts.item(i).getAttribute("data-post");
+        var slug = posts.item(i).getAttribute("data-slug");
+        var url = protocol + "//" + host + "/r/" + display_name + "/" + hash + "/" + slug;
+        window.location.href=url;
+      });
+      
+    }
+
+  </script>
 @endsection

@@ -1125,7 +1125,6 @@ video {
 /* vote buttons */
 
 .voteBtn {
-  background-color: #edf2f7;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   padding-top: 0.25rem;
@@ -1136,7 +1135,37 @@ video {
 }
 
 .voteBtn:hover {
+  background-color: #edf2f7;
+  color: #9b2c2c;
+}
+
+.voteBtn.active {
+  color: #c53030
+}
+
+.voteBtn.active:hover {
   background-color: #e2e8f0;
+  color: #c53030
+}
+
+.card {
+  display: flex;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #cbd5e0;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border-radius: 0.25rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.card:hover {
+  border-color: #a0aec0
 }
 
 /* --------------- */

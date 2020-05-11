@@ -20,6 +20,7 @@ class CreateVotesTable extends Migration
             $table->unsignedBigInteger('comment_id')->nullable();
             $table->boolean('up');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
