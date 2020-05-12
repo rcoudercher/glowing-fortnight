@@ -48,13 +48,10 @@ class SettingsController extends Controller
   
   public function showCommunities()
   {
-    if (!Auth::check()) {
-      return redirect(route('home'))->with('error', 'Vous devez être connecté pour accéder à cette page.');
-    }
     $user = Auth::user();
-    $moderatorCommunities = $user->moderatorCommunities;
-    $nonModeratorCommunities = $user->nonModeratorCommunities;
-    return view('settings.show-communities', compact('moderatorCommunities', 'nonModeratorCommunities'));
+    $adminCommunities = $user->adminCommunities;
+    $nonAdminCommunities = $user->nonAdminCommunities;
+    return view('settings.show-communities', compact('adminCommunities', 'nonAdminCommunities'));
   }
   
   public function editUserPassword()

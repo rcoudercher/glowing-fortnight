@@ -24,11 +24,11 @@
         @foreach ($posts as $post)
           
           
-          <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded flex cursor-pointer" onclick="window.location.href='{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}'">
-            <div>
-              <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↑</div>
-              <div class="p-1 text-center">7.9k</div>
-              <div class="bg-gray-200 hover:bg-gray-300 p-1 text-center rounded-lg">↓</div>
+          <div class="card post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+            <div class="voteWrapper">
+              <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+              <div class="p-1 text-center">{{ $post->voteCount() }}</div>
+              <div class="voteBtn downVote{{ $post->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
@@ -117,6 +117,49 @@
     </div>
   </div>
 </div>
+
+
+<script>
+  // vote buttons
+  var upVoteBtns = document.getElementsByClassName("upVote");
+  var downVoteBtns = document.getElementsByClassName("downVote");
+  
+  for (var i = 0; i < upVoteBtns.length; i++) {
+    upVoteBtns.item(i).addEventListener("click", function(e) {
+      var target = e.target || e.srcElement;
+      vote(target, "post", "up");
+      refreshVoteCounter(target, "post");
+      e.stopPropagation();
+    });
+  }
+  
+  for (var i = 0; i < downVoteBtns.length; i++) {
+    downVoteBtns.item(i).addEventListener("click", function(e) {
+      var target = e.target || e.srcElement;
+      vote(target, "post", "down");
+      refreshVoteCounter(target, "post");
+      e.stopPropagation();
+    });
+  }
+  
+  // links to posts
+  var posts = document.getElementsByClassName("post");
+  var protocol = window.location.protocol;
+  var host = window.location.host;
+  
+  for (var i = 0; i < posts.length; i++) {
+    let display_name = posts.item(i).getAttribute("data-community");
+    let hash = posts.item(i).getAttribute("data-hash");
+    let slug = posts.item(i).getAttribute("data-slug");
+    let url = protocol + "//" + host + "/r/" + display_name + "/" + hash + "/" + slug;
+    posts.item(i).addEventListener("click", function() {
+      
+      window.location.href=url;
+    });
+    
+  }
+
+</script>
   
   
 @endsection

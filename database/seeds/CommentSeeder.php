@@ -12,7 +12,7 @@ class CommentSeeder extends Seeder
     public function run()
     {
       // first wave of coments without parent_id
-      factory(App\Comment::class, 50)->create()->each(function($comment) {
+      factory(App\Comment::class, 60)->create()->each(function($comment) {
         $comment->user()->associate(App\User::all()->random());
         $post = App\Post::all()->random();
         $comment->post()->associate($post);
@@ -20,7 +20,7 @@ class CommentSeeder extends Seeder
       });
             
       // second wave of coments with parent_id
-      factory(App\Comment::class, 10)->create()->each(function($comment) {
+      factory(App\Comment::class, 20)->create()->each(function($comment) {
         $comment->user()->associate(App\User::all()->random());
         
         

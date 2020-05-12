@@ -42,14 +42,6 @@ class User extends Authenticatable
     
     // other functions
     
-    public function isModerator(Community $community)
-    {
-      return $this->moderatorCommunities->contains($community);  
-    }
-    
-    
-    
-    
     // relationships functions
     
     // the badges that belong to the user
@@ -61,17 +53,22 @@ class User extends Authenticatable
     // the subs that this user belongs to
     public function communities()
     {
-      return $this->belongsToMany('App\Community');
+      return $this->belongsToMany('App\Community')->withPivot('admin')->withTimestamps();
     }
     
-    public function moderatorCommunities()
+    public function adminCommunities()
     {
-      return $this->belongsToMany('App\Community')->wherePivot('moderator', 1);
+      return $this->belongsToMany('App\Community')->wherePivot('admin', true);
     }
     
-    public function nonModeratorCommunities()
+    public function nonAdminCommunities()
     {
-      return $this->belongsToMany('App\Community')->wherePivot('moderator', 0);
+      return $this->belongsToMany('App\Community')->wherePivot('admin', false);
+    }
+    
+    public function isAdmin(Community $community)
+    {
+      return $this->adminCommunities->contains($community);  
     }
     
     public function posts()

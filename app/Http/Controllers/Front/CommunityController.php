@@ -20,7 +20,7 @@ class CommunityController extends Controller
   }
   
   public function show(Community $community)
-  {
+  {    
     $posts = $community->posts->sortByDesc(function($post) {
       return $post->wilsonScore();
     });
@@ -104,10 +104,10 @@ class CommunityController extends Controller
     
     $community = Community::create($validator);
     
-    // the user who created the community becomes its first member and moderator
+    // the user who created the community becomes its first member and admin
     $community->creator()->associate($user);
     $community->save();
-    $community->users()->attach($user, ['moderator' => true]);
+    $community->users()->attach($user, ['admin' => true]);
     
     return redirect(route('front.communities.show', ['community' => $community]))
     ->with('message', 'Votre communauté a bien été créée. A vous de jouer !');

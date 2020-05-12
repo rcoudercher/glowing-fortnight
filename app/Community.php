@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\User;
+
 class Community extends Model
 {
   // allows mass assignment on any field of the model
@@ -16,7 +18,22 @@ class Community extends Model
   
   public function users()
   {
-    return $this->belongsToMany('App\User');
+    return $this->belongsToMany('App\User')->withPivot('admin')->withTimestamps();
+  }
+  
+  public function admins()
+  {
+    return $this->belongsToMany('App\User')->wherePivot('admin', true);
+  }
+  
+  public function nonAdmins()
+  {
+    return $this->belongsToMany('App\User')->wherePivot('admin', false);
+  }
+  
+  public function isAdmin(User $user)
+  {
+    return $this->admins->contains($user);
   }
   
   public function posts()

@@ -24,7 +24,7 @@
                   </div>
                 </div>
               </div>
-            @elseif (!Auth::user()->isModerator($community))
+            @elseif (!Auth::user()->isAdmin($community))
               <p class="mt-8">Cette page est réservée aux modérateurs de cette communautés.</p>
               <div class="mt-4">
                 <a class="btn btn-black" href="#">Contacter les modérateurs</a>
@@ -68,7 +68,7 @@
                     <tr>
                       <td class="border px-4 py-2">créateur</td>
                       <td class="border px-4 py-2">
-                        <a class="hover:underline" href="{{ route('front.users.show', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a>
+                        <a class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a>
                       </td>
                     </tr>
                     <tr>

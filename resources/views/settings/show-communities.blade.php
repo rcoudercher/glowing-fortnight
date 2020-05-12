@@ -12,15 +12,15 @@
     <div class="md:flex-auto">
       <h3 class="title h3">Communautés que vous administrez :</h3>
       <div>
-      @if ($moderatorCommunities->count() != 0)
+      @if ($adminCommunities->count() != 0)
         <ul>
-        @foreach ($moderatorCommunities as $moderatorCommunity)
+        @foreach ($adminCommunities as $adminCommunity)
         <li class="py-3 flex">
           <div>
-            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $moderatorCommunity]) }}">r/{{ $moderatorCommunity->display_name }}</a>
+            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $adminCommunity]) }}">k/{{ $adminCommunity->display_name }}</a>
           </div>
           <div>
-            <a class="btn-xsm btn-black" href="{{ route('front.communities.admin', ['community' => $moderatorCommunity]) }}">administrer</a>
+            <a class="btn-xsm btn-black" href="{{ route('front.communities.admin', ['community' => $adminCommunity]) }}">administrer</a>
           </div>
         </li>
         @endforeach
@@ -33,11 +33,11 @@
     <div class="md:flex-auto">
       <h3 class="title h3">Autres communautés dont vous êtes membre :</h3>
       <div>
-        @if ($nonModeratorCommunities->count() != 0)
+        @if ($nonAdminCommunities->count() != 0)
           <ul>
-            @foreach ($nonModeratorCommunities as $nonModeratorCommunity)
+            @foreach ($nonAdminCommunities as $nonAdminCommunity)
               <li class="py-3">
-                <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $nonModeratorCommunity]) }}">r/{{ $nonModeratorCommunity->display_name }}</a>
+                <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $nonAdminCommunity]) }}">k/{{ $nonAdminCommunity->display_name }}</a>
               </li>
             @endforeach
           </ul>
