@@ -203,12 +203,16 @@
   
   
   .card {
-    @apply flex px-5 py-5 mb-5 border border-solid border-gray-400 bg-white shadow rounded;
+    @apply px-5 py-5 mb-5 border border-solid border-gray-400 bg-white shadow rounded;
     font-family: 'Roboto', sans-serif;
   }
   
-  .card:hover {
-    @apply border-gray-500
+  .link {
+    @apply text-blue-600;
+  }
+  
+  .link:hover {
+    @apply underline;
   }
   
   

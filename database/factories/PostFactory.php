@@ -5,7 +5,6 @@
 use App\Post;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 $factory->define(Post::class, function (Faker $faker) {
     
@@ -18,7 +17,7 @@ $factory->define(Post::class, function (Faker $faker) {
     'title' => $title,
   ];
   
-  switch (Arr::random([1,2,3])) {
+  switch (random_int(1,3)) {
     
     case 1:
       $data['type'] = 1;

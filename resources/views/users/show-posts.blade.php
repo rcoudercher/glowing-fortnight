@@ -24,7 +24,7 @@
         @foreach ($posts as $post)
           
           
-          <div class="card post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+          <div class="card flex post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
             <div class="voteWrapper">
               <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
               <div class="p-1 text-center">{{ $post->voteCount() }}</div>
@@ -32,7 +32,7 @@
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
-                u/{{ $user->display_name }} a publié sur <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
+                u/{{ $user->display_name }} a publié sur <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
               </div>
               <div class="mb-4">
                 <a href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">
@@ -67,7 +67,7 @@
         @endforeach
       </div>
       <div id="right" class="lg:ml-6 lg:w-1/3">
-        <div class="bg-white shadow p-4 mb-5 rounded">
+        <div class="card">
           <div class="bg-red-300">
             <h3>A propos de cet utilisateur</h3>
           </div>
@@ -95,7 +95,7 @@
           </div>
         </div>
         
-        <div class="bg-white shadow p-4 mb-5 rounded">
+        <div class="card">
           <h3 class="title h3">Trophés</h3>
           @foreach ($user->trophies as $trophy)
             

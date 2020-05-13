@@ -32,7 +32,7 @@
     <div class="lg:flex">
       <div id="left" class="lg:w-2/3">
         
-        <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow px-5 py-5 mb-5 rounded">
+        <div class="card">
           <div class="flex" data-hash="{{ $post->hash }}">
             <div class="voteWrapper">
               <div id="postUp" class="voteBtn{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
@@ -41,7 +41,7 @@
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
-                <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>
+                <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a>
                  - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
               </div>
               <div class="mb-4">
@@ -170,9 +170,9 @@
 
       </div>
       <div id="right" class="lg:ml-6 lg:w-1/3">
-        <div class="bg-white shadow p-4 mb-5 rounded">
+        <div class="card">
           <div>
-            <div class="mb-4">r/{{ $community->display_name }}</div>
+            <div class="mb-4">k/{{ $community->display_name }}</div>
             <div id="description">{{ $community->description }}</div>
           </div>
         </div>

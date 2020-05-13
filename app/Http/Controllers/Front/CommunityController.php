@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 use App\Community;
+use App\CommunityRule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -61,8 +62,13 @@ class CommunityController extends Controller
     return back()->with('message', 'Vous avez bien quitté r/'.$community->name);
   }
   
-  public function admin(Community $community)
+  public function showAdminDashboard(Community $community)
   {
+    if (!Auth::user()->isAdmin($community)) {
+      return redirect(route('front.communities.show', ['community' => $community]))
+      ->with('error', 'Cette page est réservée aux administrateurs de la communauté.');
+    }
+    
     $lastComment = $community->comments->sortBy('created_at')->last();
     return view('communities.admin', compact('community', 'lastComment'));  
   }
@@ -138,7 +144,7 @@ class CommunityController extends Controller
     
     $community->update($validator); // update model
     
-    return redirect(route('front.communities.admin', ['community' => $community]))
+    return redirect(route('front.communities.admin.dashboard', ['community' => $community]))
     ->with('message', 'Modifications enregistrées.');
   }
 }

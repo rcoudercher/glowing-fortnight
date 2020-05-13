@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Community;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CommunityRuleController extends Controller
 {
@@ -42,6 +43,17 @@ class CommunityRuleController extends Controller
       'community_id' => ['required', 'integer', 'exists:App\Community,id'],
     ];
     $validator = Validator::make($data, $rules)->validate();
+    
+    
+    // find unique hash
+    $hashes = CommunityRule::all()->pluck('hash');
+    $hash = Str::random(6);
+    while ($hashes->contains($hash)) {
+      $hash = Str::random(6);
+    }
+    // end find unique hash
+    
+    $validator['hash'] = $hash; 
     
     $communityRule = CommunityRule::create($validator);
       

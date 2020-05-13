@@ -62,7 +62,7 @@
         @endforeach
       </div>
       <div id="right" class="lg:ml-6 lg:w-1/3">
-        <div class="bg-white shadow p-4 mb-5 rounded">
+        <div class="card">
           <div class="bg-red-300">
             <h3>A propos de cet utilisateur</h3>
           </div>
@@ -90,7 +90,7 @@
           </div>
         </div>
         
-        <div class="bg-white shadow p-4 mb-5 rounded">
+        <div class="card">
           <h3 class="title h3">Trophés</h3>
           @foreach ($user->trophies as $trophy)
             

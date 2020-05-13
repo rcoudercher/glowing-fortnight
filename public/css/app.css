@@ -1149,7 +1149,6 @@ video {
 }
 
 .card {
-  display: flex;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   padding-top: 1.25rem;
@@ -1164,8 +1163,12 @@ video {
   font-family: 'Roboto', sans-serif;
 }
 
-.card:hover {
-  border-color: #a0aec0
+.link {
+  color: #3182ce;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 
 /* --------------- */

@@ -17,6 +17,7 @@ class CreateCommunityRulesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->unsignedBigInteger('community_id')->nullable();
+            $table->string('hash')->unique(); // 6 characters (alphanumeric, i.e. 62 possibilities each) = 56.800.235.584 possibilities
             $table->string('title');
             $table->text('description')->nullable();
             $table->smallInteger('order');

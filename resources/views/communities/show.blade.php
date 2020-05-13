@@ -11,12 +11,12 @@
       </div>
       <div class="ml-8" style="font-family: 'Roboto', sans-serif;">
         <h1 class="title h1">{{ $community->title ?? $community->display_name }}</h1>
-        <h2 class="title h2 mt-4">r/{{ $community->display_name }}</h2>
+        <h2 class="title h2 mt-4">k/{{ $community->display_name }}</h2>
       </div>
       <div class="ml-8">
         
         @if ($community->isAdmin(Auth::user()))
-          <a class="btn btn-blue mr-6" href="{{ route('front.communities.admin', ['community' => $community]) }}">admin</a>
+          <a class="btn btn-blue mr-6" href="{{ route('front.communities.admin.dashboard', ['community' => $community]) }}">admin</a>
         @endif
         
         @guest
@@ -64,10 +64,10 @@
     <div class="container mx-auto pt-8">
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
-          <div class="bg-white shadow px-5 py-5 mb-5 rounded flex">
+          <div class="card flex">
             <input type="text" value="Publier un message" onclick="window.location.href='{{ route('front.posts.create', ['community' => $community]) }}'" class="hover:border-solid hover:border-blue-800 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
           </div>
-          <div class="bg-white shadow px-5 py-5 mb-5 rounded flex">various filters</div>
+          <div class="card flex">various filters</div>
           @if ($posts->count() == 0)
             <div class="card">
               no posts in this comunity yet
@@ -75,7 +75,7 @@
           @else
             @foreach ($posts as $post)
               
-              <div class="card post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+              <div class="card flex post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
                 <div class="voteWrapper">
                   <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
                   <div class="p-1 text-center">{{ $post->voteCount() }}</div>
@@ -119,9 +119,9 @@
           @endif
         </div>
         <div id="right" class="lg:ml-6 lg:w-1/3">
-          <div class="bg-white shadow p-4 mb-5 rounded">
+          <div class="card">
             <div class="bg-red-300">
-              <h3>A propos de r/{{ $community->display_name }}</h3>
+              <h3>A propos de k/{{ $community->display_name }}</h3>
             </div>
             <div>
               <div class="mb-2">{{ $community->description }}</div>
@@ -131,6 +131,7 @@
               <div><a href="#" class="btn btn-indigo">Publier un message</a></div>
             </div>
           </div>
+          @include('components.community-rules')
           @include('components.footer')
         </div>
       </div>

@@ -11,7 +11,7 @@
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
           @foreach ($posts as $post)
-            <div class="card post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+            <div class="card flex post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
               <div class="voteWrapper">
                 <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
                 <div class="p-1 text-center">{{ $post->voteCount() }}</div>
@@ -19,7 +19,7 @@
               </div>
               <div class="mx-5">
                 <div class="mb-4 text-sm">
-                  <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>
+                  <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a>
                    - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
                 </div>
                 <div class="mb-4">

@@ -11,7 +11,7 @@
           
           <div class="border-solid border border-gray-400 bg-white shadow p-5 mb-5 rounded" style="font-family: 'Roboto', sans-serif;">
             
-            <h1 class="title h1 mb-8">Administration de r/{{ $community->display_name }}</h1>
+            <h1 class="title h1 mb-8">Administration de k/{{ $community->display_name }}</h1>
             
             <h2 class="title h2 mb-8">Modifier la commnauté</h2>
             <form action="{{ route('front.communities.update', ['community' => $community]) }}" method="POST">
@@ -70,7 +70,7 @@
         </div>
         <div id="right" class="lg:ml-6 lg:w-1/3">
           <div class="bg-white shadow p-4 mb-5 rounded">
-            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">r/{{ $community->display_name }}</a>
+            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
           </div>
           @include('components.footer')
         </div>

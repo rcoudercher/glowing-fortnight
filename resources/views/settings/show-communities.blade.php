@@ -20,7 +20,7 @@
             <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $adminCommunity]) }}">k/{{ $adminCommunity->display_name }}</a>
           </div>
           <div>
-            <a class="btn-xsm btn-black" href="{{ route('front.communities.admin', ['community' => $adminCommunity]) }}">administrer</a>
+            <a class="btn-xsm btn-black" href="{{ route('front.communities.admin.dashboard', ['community' => $adminCommunity]) }}">administrer</a>
           </div>
         </li>
         @endforeach

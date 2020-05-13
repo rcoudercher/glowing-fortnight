@@ -46,17 +46,34 @@ Route::name('front.')->group(function() {
     Route::patch('config/compte/supprimer', 'Front\UserController@destroy')->name('destroy')->middleware('auth');
   });
   
+  
+  // community rule routes
+  Route::name('community-rules.')->group(function() {
+    Route::group(['prefix' => 'k/{community:display_name}/admin/regle', 'middleware' => 'auth'], function() {
+      // Route::get('/', 'Front\CommunityRuleController@index')->name('index');
+      Route::get('creer', 'Front\CommunityRuleController@create')->name('create');
+      Route::post('/', 'Front\CommunityRuleController@store')->name('store');
+      // Route::get('{community_rule:hash}', 'Front\CommunityRuleController@show')->name('show');
+      Route::get('{community_rule:hash}/modifier', 'Front\CommunityRuleController@edit')->name('edit');
+      Route::patch('{community_rule:hash}', 'Front\CommunityRuleController@update')->name('update');
+      Route::delete('{community_rule:hash}', 'Front\CommunityRuleController@destroy')->name('destroy');
+      
+      Route::get('{community_rule:hash}/up', 'Front\CommunityRuleController@up')->name('up');
+      Route::get('{community_rule:hash}/down', 'Front\CommunityRuleController@down')->name('down');
+    });
+  });
+  
   // community routes
   Route::name('communities.')->group(function () {
-    Route::get('r', 'Front\CommunityController@index')->name('index');
+    Route::get('k', 'Front\CommunityController@index')->name('index');
     
     Route::get('config/communautes/creer', 'Front\CommunityController@create')->name('create')->middleware('auth');
     Route::post('config/communautes/creer', 'Front\CommunityController@store')->name('store')->middleware('auth');
     
-    Route::prefix('r/{community:display_name}')->group(function() {
+    Route::prefix('k/{community:display_name}')->group(function() {
       Route::get('/', 'Front\CommunityController@show')->name('show');
       Route::patch('/', 'Front\CommunityController@update')->name('update')->middleware('auth');
-      Route::get('admin', 'Front\CommunityController@admin')->name('admin');
+      Route::get('admin', 'Front\CommunityController@showAdminDashboard')->name('admin.dashboard')->middleware('auth');
       Route::get('modifier', 'Front\CommunityController@edit')->name('edit')->middleware('auth');
       Route::post('quitter', 'Front\CommunityController@leave')->name('leave');
       Route::post('rejoindre', 'Front\CommunityController@join')->name('join');

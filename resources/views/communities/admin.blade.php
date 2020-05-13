@@ -8,29 +8,8 @@
     <div class="container mx-auto pt-8">
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
-          <div class="border-solid border border-gray-400 bg-white shadow p-5 mb-5 rounded" style="font-family: 'Roboto', sans-serif;">
-            
-            <h1 class="title h1">Administration de r/{{ $community->display_name }}</h1>
-            
-            
-            @if (!Auth::check())
-              <div class="border-2 border-gray-600 rounded p-4 mt-8">
-                <div class="flex">
-                  <div class="flex-grow">
-                    <p>Page réservée aux modérateurs de cette communauté :</p>
-                  </div>
-                  <div>
-                    <a class="btn btn-black" href="{{ route('login') }}">Connexion</a>
-                  </div>
-                </div>
-              </div>
-            @elseif (!Auth::user()->isAdmin($community))
-              <p class="mt-8">Cette page est réservée aux modérateurs de cette communautés.</p>
-              <div class="mt-4">
-                <a class="btn btn-black" href="#">Contacter les modérateurs</a>
-              </div>
-            @else
-              
+          <div class="card">
+            <h1 class="title h1">Administration de k/{{ $community->display_name }}</h1>
               <h3 class="title h3 mt-8">Activité</h3>
               
               <div class="mt-4">
@@ -42,15 +21,63 @@
                     </tr>
                     <tr>
                       <td class="border px-4 py-2">Dernier commentaire</td>
-                      <td class="border px-4 py-2">{{ $lastComment->content ?? 'aucun commentaire'}}</td>
+                      <td class="border px-4 py-2">{!! $lastComment->content ?? 'aucun commentaire' !!}</td>
                     </tr>
                   </tobody>
                 </table>
               </div>
               
-              <h3 class="title h3 mt-8">Règles</h3>
+              <h3 class="title h3 my-6">Règles</h3>
               
+              @if ($community->communityRules->count() == 0)
+                <p>Cette communauté n'a encore aucun règle</p>
+              @else
+
+                <table class="table-auto w-full">
+                  <tbody>
+                    <tr class="bg-gray-200">
+                      <td class="border px-4 py-2 text-center">ordre</td>
+                      <td class="border px-4 py-2 text-center">mont.</td>
+                      <td class="border px-4 py-2 text-center">desc.</td>
+                      <td class="border px-4 py-2">titre</td>
+                      <td class="border px-4 py-2 text-center">modifier</td>
+                      <td class="border px-4 py-2 text-center">supprimer</td>
+                    </tr>
+                    
+                    @foreach ($community->communityRules->sortBy('order') as $rule)
+                      <tr>
+                        <td class="border px-4 py-2 text-center">{{ $rule->order }}</td>
+                        <td class="border px-4 py-2 text-center">
+                          <a class="link" href="{{ route('front.community-rules.up', ['community' => $community, 'community_rule' => $rule]) }}">haut</a>
+                        </td>
+                        <td class="border px-4 py-2 text-center">
+                          <a class="link" href="{{ route('front.community-rules.down', ['community' => $community, 'community_rule' => $rule]) }}">bas</a>
+                        </td>
+                        <td class="border px-4 py-2">{{ $rule->title }}</td>
+                        <td class="border px-4 py-2 text-center"><a class="link" href="{{ route('front.community-rules.edit', ['community' => $community, 'community_rule' => $rule]) }}">modifier</a></td>
+                        <td class="border px-4 py-2 text-center">                          
+                          <a class="link" href="{{ route('front.community-rules.destroy', ['community' => $community, 'community_rule' => $rule]) }}" onclick="event.preventDefault(); 
+                            document.getElementById('destroy-{{ $rule->hash }}').submit();">supprimer</a>
+                          <form id="destroy-{{ $rule->hash }}" action="{{ route('front.community-rules.destroy', ['community' => $community, 'community_rule' => $rule]) }}" method="POST" class="hidden">
+                            @method('DELETE')
+                            @csrf
+                          </form>
+                        </td>
+                      </tr>
+                    @endforeach
+                    
+                  </tobody>
+                </table>
+                
+              @endif
               
+              @if ($community->communityRules->count() < 10)
+                <p class="mt-6">
+                  <a class="link" href="{{ route('front.community-rules.create', ['community' => $community]) }}">créer une nouvelle règle</a>
+                </p>
+              @else
+                <p class="mt-6">Nombre maximum de règle autorisé : 10</p>
+              @endif
               
               <h3 class="title h3 mt-8">Informations</h3>
               
@@ -94,13 +121,13 @@
               <div class="mt-6">
                 <a class="btn-sm btn-blue" href="{{ route('front.communities.edit', ['community' => $community]) }}">Modifier</a>
               </div>
-            @endif
           </div>
         </div>
         <div id="right" class="lg:ml-6 lg:w-1/3">
-          <div class="bg-white shadow p-4 mb-5 rounded">
+          <div class="card">
             <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">r/{{ $community->display_name }}</a>
           </div>
+          @include('components.community-rules')
           @include('components.footer')
         </div>
       </div>
