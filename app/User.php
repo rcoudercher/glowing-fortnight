@@ -81,4 +81,8 @@ class User extends Authenticatable
         return $this->hasMany('App\Comment');
     }
     
+    public function communityRules()
+    {
+      return $this->hasMany('App\CommunityRule', 'creator_id');
+    }
 }

@@ -3,7 +3,7 @@
 @section('title', 'Details for community id '.$community->id)
 
 @section('content')
-  <h1>Details for community id {{ $community->id }}</h1>
+  <h1>Details for k/{{ $community->display_name }}</h1>
   
   <nav class="nav pb-3">
     <a class="nav-link" href="{{ route('communities.edit', ['community' => $community]) }}">Edit</a>

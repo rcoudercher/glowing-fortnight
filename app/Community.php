@@ -45,4 +45,9 @@ class Community extends Model
   {
     return $this->hasManyThrough('App\Comment', 'App\Post');
   }
+  
+  public function rules()
+  {
+    return $this->hasMany('App\CommunityRule');
+  }
 }

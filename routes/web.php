@@ -114,6 +114,8 @@ Route::prefix('admin')->group(function() {
     Route::resource('posts', 'PostController');
     Route::resource('communities', 'CommunityController');
     Route::resource('users', 'UserController');
+    Route::resource('community-rules', 'CommunityRuleController');
+    
   });
   
   

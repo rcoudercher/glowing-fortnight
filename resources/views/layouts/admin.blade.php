@@ -27,6 +27,8 @@
           <li class="nav-item"><a class="nav-link" href="{{ route('posts.index') }}">Posts</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('communities.index') }}">Communities</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('community-rules.index') }}">Rules</a></li>
+          
           
           <li class="nav-item"><a class="nav-link" href="{{ route('front.home') }}">// FRONT //</a></li>
         </ul>

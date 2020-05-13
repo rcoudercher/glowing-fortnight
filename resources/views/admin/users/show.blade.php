@@ -3,7 +3,7 @@
 @section('title', 'Details for user id '.$user->id)
 
 @section('content')
-  <h1>Details for user id {{ $user->id }}</h1>
+  <h1>Details for u/{{ $user->display_name }}</h1>
   
   <nav class="nav pb-3">
     <a class="nav-link" href="{{ route('users.edit', ['user' => $user]) }}">Edit</a>
@@ -24,6 +24,10 @@
       <tr>
         <th scope="row">name</th>
         <td>{{ $user->name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">display_name</th>
+        <td>{{ $user->display_name }}</td>
       </tr>
       <tr>
         <th scope="row">email</th>

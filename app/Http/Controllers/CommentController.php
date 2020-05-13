@@ -41,7 +41,6 @@ class CommentController extends Controller
       
       $validator['hash'] = $hash;
       
-      
       Comment::create($validator);
 
       return redirect(route('comments.index'))->with('message', 'Comment created successfully.');
