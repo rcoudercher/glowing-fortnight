@@ -22,32 +22,3 @@
     @endforeach
   </div>
 </div>
-
-
-
-
-
-<script type="text/javascript">
-
-
-  function toggleDescription(el) {
-    // el = clicked element
-    if (el === null) {
-      return console.log("Invalid function parameter: 'el' was null.");
-    }
-    var description = el.closest(".wrapper").lastElementChild;    
-    description.classList.toggle("hidden");
-    console.log("request successful");
-  }
-
-  var rules = document.getElementById("rulesBox").children;
-  
-  for (var i = 0; i < rules.length; i++) {
-    rules.item(i).addEventListener("click", function(e) {
-      var target = e.target || e.srcElement;
-      toggleDescription(target);
-    });
-    
-  }
-  
-</script>

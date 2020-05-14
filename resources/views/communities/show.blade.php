@@ -2,6 +2,34 @@
 
 @section('title', $community->display_name)
 
+@section('scripts')
+  <script type="text/javascript">
+  
+  
+  window.addEventListener("DOMContentLoaded", function() {
+    
+    toggleShareOptionsDropdown();
+    copyPostLinkToClipboard();
+    addCardLinksToPosts();
+    
+    
+    
+    var rules = document.getElementById("rulesBox").children;
+    for (var i = 0; i < rules.length; i++) {
+      rules.item(i).addEventListener("click", function(e) {
+        var target = e.target || e.srcElement;    
+        var description = target.closest(".wrapper").lastElementChild;
+        description.classList.toggle("hidden");
+      });
+    }
+    
+    
+  });
+  
+  
+  </script>
+@endsection
+
 @section('content')
   
   <div id="hero" class="bg-white w-screen shadow">
@@ -15,7 +43,7 @@
       </div>
       <div class="ml-8">
         
-        @if ($community->isAdmin(Auth::user()))
+        @if (!is_null(Auth::user()) && $community->isAdmin(Auth::user()))
           <a class="btn btn-blue mr-6" href="{{ route('front.communities.admin.dashboard', ['community' => $community]) }}">admin</a>
         @endif
         
@@ -107,7 +135,16 @@
                   @endswitch
                   <div class="flex text-sm">
                     <div><a class="hover:underline" href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">{{ $post->comments->count() }} commentaires</a></div>
-                    <div class="ml-4 hover:underline">Partager</div>
+                    <div class="relative inline-block text-left">
+                      <div class="ml-4 hover:underline shareBtn">Partager</div>
+                      <div class="wrapper origin-top-left absolute left-0 mt-2 w-40 rounded-md shadow-lg hidden">
+                        <div class="rounded-md bg-white shadow-xs">
+                          <div class="py-1">
+                            <span data-link="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" class="copyLinkBtn block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">copier lien</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="ml-4 hover:underline">Sauvegarder</div>
                   </div>
                   <div class="mt-2 text-sm">
@@ -160,23 +197,6 @@
         refreshVoteCounter(target, "post");
         e.stopPropagation();
       });
-    }
-    
-    // links to posts
-    var posts = document.getElementsByClassName("post");
-    var protocol = window.location.protocol;
-    var host = window.location.host;
-    
-    for (var i = 0; i < posts.length; i++) {
-      let display_name = posts.item(i).getAttribute("data-community");
-      let hash = posts.item(i).getAttribute("data-hash");
-      let slug = posts.item(i).getAttribute("data-slug");
-      let url = protocol + "//" + host + "/r/" + display_name + "/" + hash + "/" + slug;
-      posts.item(i).addEventListener("click", function() {
-        
-        window.location.href=url;
-      });
-      
     }
 
   </script>

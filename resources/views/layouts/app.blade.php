@@ -35,7 +35,7 @@
               <div class="relative inline-block text-left">
                 <div>
                   <span class="rounded-md shadow-sm">
-                    <button onclick="dropdown()" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                    <button id="menu" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
                       {{ Auth::user()->display_name }}
                       <svg class="-mr-1 ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -63,39 +63,36 @@
       </div>
     </nav>
     
-    @if (session()->has('message'))
-      <div id="notif-container" class="absolute top-0 right-0 mr-5 mt-24 w-1/4">
-        <div class="py-3 pl-6 pr-3 rounded-lg bg-green-300 shadow-lg mb-4">
+    <div id="notifWrapper" class="fixed top-0 right-0 mr-5 mt-5 w-2/3 sm:w-1/4 z-50">
+      @if (session()->has('message'))
+        <div class="notification py-3 pl-6 pr-3 rounded-lg bg-green-300 shadow-lg mb-4">
           <div class="flex items-center justify-between flex-wrap">
             <div class="w-full flex-1 flex items-center sm:w-0">
               <p class="text-green-900">{{ session()->get('message') }}</p>
             </div>
             <div class="flex-shrink-0">
-                <div class="rounded-md shadow-sm closeX cursor-pointer">
+                <div class="rounded-md shadow-sm closeNotifBtn cursor-pointer">
                   <span class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">X</span>
                 </div>
               </div>
           </div>
         </div>
-      </div>
-    @endif
-    
-    @if (session()->has('error'))
-      <div id="notif-container" class="absolute top-0 right-0 mr-5 mt-24 w-1/4">
-        <div class="py-3 pl-6 pr-3 rounded-lg bg-red-300 shadow-lg mb-4">
+      @endif
+      @if (session()->has('error'))
+        <div class="notification py-3 pl-6 pr-3 rounded-lg bg-red-300 shadow-lg mb-4">
           <div class="flex items-center justify-between flex-wrap">
             <div class="w-full flex-1 flex items-center sm:w-0">
               <p class="text-green-red">{{ session()->get('error') }}</p>
             </div>
             <div class="flex-shrink-0">
-                <div class="rounded-md shadow-sm closeX cursor-pointer">
+                <div class="rounded-md shadow-sm closeNotifBtn cursor-pointer">
                   <span class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded text-gray-900 bg-white hover:text-gray-600 focus:outline-none focus:shadow-outline transition ease-in-out duration-150">X</span>
                 </div>
               </div>
           </div>
         </div>
-      </div>
-    @endif
+      @endif
+    </div>
     
     @include('components.modals.login')
     
@@ -119,34 +116,22 @@
     
     @auth
       <script>
-        // show/hide dropdown menu
-        function dropdown() {
-          var x = document.getElementById("dropdown");
-          if (x.classList.contains("hidden")) {
-            x.classList.remove("hidden");
-          } else {        
-            x.classList.add("hidden");
-          }
-        }
+        // show/hide menu dropdown
+        var menu = document.getElementById("menu");
+        var dropdown = document.getElementById("dropdown");
+        menu.addEventListener("click", function() {
+          dropdown.classList.toggle("hidden");
+        });
       </script>
     @endauth
+    
+    @if (session()->has('message') || session()->has('error'))
+      <script>
+        addRemoveElementsClickListener("closeNotifBtn", "notification");
+        setElementTimeout("notification", 4000);
+      </script>
+    @endif
 
-    <script>
-    // close notifications
-      var remove = function(){
-        this.parentNode.parentNode.parentNode.remove();
-      };
-      var closeX = document.querySelectorAll('div.closeX');
-      for (var i = 0, len = closeX.length; i < len; i++) {
-        closeX[i].addEventListener('click', remove, false);
-      }
-      // make notifications disappear by themselves after 4 seconds
-      setTimeout(function(){    
-        for (var i = 0, len = closeX.length; i < len; i++) {
-          closeX[i].parentNode.parentNode.parentNode.remove();
-        }
-        
-      }, 4000);
-    </script>
+
   </body>
 </html>

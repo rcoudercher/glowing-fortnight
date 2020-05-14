@@ -32,7 +32,7 @@ class Community extends Model
   }
   
   public function isAdmin(User $user)
-  {
+  {  
     return $this->admins->contains($user);
   }
   

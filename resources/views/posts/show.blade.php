@@ -23,6 +23,15 @@
       }
     });
   </script>
+  
+  <script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", function() {
+      toggleShareOptionsDropdown();
+      copyPostLinkToClipboard();
+    });
+  </script>
+  
+  
 @endsection
 
 @section('content')
@@ -67,7 +76,16 @@
               
               <div class="flex text-sm pb-8">
                 <div>{{ $post->comments->count() }} commentaires</div>
-                <div class="ml-4 hover:underline">Partager</div>
+                <div class="relative inline-block text-left cursor-pointer">
+                  <div class="ml-4 hover:underline shareBtn">Partager</div>
+                  <div class="wrapper origin-top-left absolute left-0 mt-2 w-40 rounded-md shadow-lg hidden z-50">
+                    <div class="rounded-md bg-white shadow-xs">
+                      <div class="py-1">
+                        <span data-link="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" class="copyLinkBtn block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">copier lien</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="ml-4 hover:underline">Sauvegarder</div>
               </div>
             </div>
@@ -293,6 +311,21 @@ for (var i = 0; i < commentDowns.length; i++) {
     var target = e.target || e.srcElement;
     vote(target, "comment", "down");
     refreshVoteCounter(target, "comment");
+  });
+}
+
+
+
+
+// share buttons
+var shareBtns = document.getElementsByClassName("shareBtn");
+console.log(shareBtns);
+for (var i = 0; i < shareBtns.length; i++) {
+  posts.item(i).addEventListener("click", function(e) {
+    var target = e.target || e.srcElement;
+    showShareOptions(target);
+    e.stopPropagation();
+    
   });
 }
 

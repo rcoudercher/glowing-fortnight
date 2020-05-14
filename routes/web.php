@@ -83,9 +83,9 @@ Route::name('front.')->group(function() {
   
   // post routes
   Route::name('posts.')->group(function() {
-    Route::get('r/{community:display_name}/publier', 'Front\PostController@create')->name('create')->middleware('auth');
-    Route::post('r/{community:display_name}/publier', 'Front\PostController@store')->name('store')->middleware('auth');
-    Route::get('r/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
+    Route::get('k/{community:display_name}/publier', 'Front\PostController@create')->name('create')->middleware('auth');
+    Route::post('k/{community:display_name}/publier', 'Front\PostController@store')->name('store')->middleware('auth');
+    Route::get('k/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
     Route::get('post/{post:hash}/vote-count', 'Front\PostController@getVoteCount');
     Route::post('post/{post:hash}/vote', 'Front\PostController@vote');
   });
