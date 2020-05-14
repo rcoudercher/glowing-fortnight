@@ -2,6 +2,14 @@
 
 @section('title', 'Administration de r/'.$community->display_name)
 
+@section('scripts')
+  <script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", function() {
+      toggleCommunityRuleDescription();
+    });
+  </script>
+@endsection
+
 @section('content')
   
   <div class="bg-gray-300 min-h-screen">
@@ -125,7 +133,7 @@
         </div>
         <div id="right" class="lg:ml-6 lg:w-1/3">
           <div class="card">
-            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">r/{{ $community->display_name }}</a>
+            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
           </div>
           @include('components.community-rules')
           @include('components.footer')

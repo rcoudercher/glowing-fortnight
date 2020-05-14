@@ -351,3 +351,22 @@ function addCardLinksToPosts() {
   }
 }
 
+function toggleCommunityRuleDescription() {
+  
+  var rules = document.getElementById("rulesBox").children;
+  
+  if (rules.length == 0) {
+    return console.log("toggleCommunityRuleDescription() error: no rules found");
+  }
+  
+  for (var i = 0; i < rules.length; i++) {
+    
+    rules.item(i).addEventListener("click", function(e) {
+      var target = e.target || e.srcElement;    
+      var description = target.closest(".wrapper").lastElementChild;
+      description.classList.toggle("hidden");
+    });
+    
+  }
+}
+
