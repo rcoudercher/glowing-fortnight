@@ -127,14 +127,14 @@ class MessageController extends Controller
     $message->isAncestor() ? $ancestor = $message : $ancestor = $message->ancestor();
         
     // then create new message
-    $message = new Message;
-    $message->hash = $this->findUniqueMessageHash();
-    $message->sender()->associate(Auth::user());
-    $message->receiver()->associate($message->sender);
-    $message->ancestor_id = $ancestor->id;
-    $message->title = 'Re: '.$ancestor->title;
-    $message->content = $request->input('message');
-    $message->save();
+    $reply = new Message;
+    $reply->hash = $this->findUniqueMessageHash();
+    $reply->from_id = Auth::user()->id;
+    $reply->to_id = $message->sender->id;
+    $reply->ancestor_id = $ancestor->id;
+    $reply->title = 'Re: '.$ancestor->title;
+    $reply->content = $request->input('message');
+    $reply->save();
     
     return redirect(route('messages.inbox'))->with('message', 'Réponse envoyée');
   }
