@@ -34,11 +34,11 @@
         @foreach ($posts as $post)
           
           
-          <div class="card flex post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
-            <div class="voteWrapper">
-              <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
-              <div class="p-1 text-center">{{ $post->voteCount() }}</div>
-              <div class="voteBtn downVote{{ $post->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
+          <div class="card flex post wrapper cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+            <div class="">
+              <div class="voteBtn upVote arrowUp {{ $post->upVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+              <div class="p-1 text-center"><span class="counter">{{ $post->voteCount() }}</span></div>
+              <div class="voteBtn downVote arrowDown {{ $post->downVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-down"></i></div>
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">

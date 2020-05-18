@@ -84,7 +84,7 @@ class CommentController extends Controller
     
     $comment->save();
     
-    return redirect(route('front.posts.show', ['community' => $community, 'post' => $post, 'slug' => $post->slug]))
+    return redirect(route('posts.show', ['community' => $community, 'post' => $post, 'slug' => $post->slug]))
     ->with('message', 'Votre commentaire a bien été publié.');
   }
   
@@ -95,7 +95,7 @@ class CommentController extends Controller
       return response()->json([
         'success' => false,
         'reason' => 'unauthenticated',
-        'redirect' => route('front.users.login'),
+        'redirect' => route('users.login'),
       ]);
     }
     

@@ -1,5 +1,5 @@
 function vote(el, type, rating) {
-  
+    
   // input validation
   
   // el = clicked element
@@ -17,8 +17,8 @@ function vote(el, type, rating) {
     return console.log("Invalid function parameter: 'rating' must be 'up' or 'down'.");
   }
   
-  var wrapper = el.closest(".voteWrapper");
-  var hash = wrapper.parentNode.getAttribute("data-hash");
+  var wrapper = el.closest(".wrapper");
+  var hash = wrapper.getAttribute("data-hash");
   
   var protocol = window.location.protocol;
   var host = window.location.host;    
@@ -61,8 +61,8 @@ function vote(el, type, rating) {
       
       console.log(response);
       
-      var up = wrapper.firstElementChild;
-      var down = wrapper.lastElementChild;
+      var up = wrapper.querySelector(".arrowUp");
+      var down = wrapper.querySelector(".arrowDown");
       
       if (response["state"] == "up") {
         up.classList.add("active");
@@ -97,8 +97,8 @@ function refreshVoteCounter(el, type) {
     return console.log("Invalid function parameter: 'type' must be 'post' or 'comment'.");
   }
   
-  var wrapper = el.closest(".voteWrapper");  
-  var hash = wrapper.parentNode.getAttribute("data-hash");
+  var wrapper = el.closest(".wrapper");  
+  var hash = wrapper.getAttribute("data-hash");
   
   // create post url
   var protocol = window.location.protocol;
@@ -124,12 +124,7 @@ function refreshVoteCounter(el, type) {
       }
       console.log(response);
       
-      if (type == "post") {
-        var counter = wrapper.children.item(1);
-      } else {
-        var counter = document.getElementById("counter-" + hash);
-      }
-      
+      var counter = wrapper.querySelector(".counter");
       counter.textContent = response["counter"];
       
     } else if(xhr.status >= 500) {
@@ -385,6 +380,72 @@ function linkToMessage(className) {
       console.log(url);
       window.location.href=url;
     });
+  }
+}
+
+function toggleReplyToCommentForms() {
+  
+  var elements = document.getElementsByClassName("replyBtn");
+  var csrf = document.getElementsByName("csrf-token").item(0).getAttribute("content");
+  
+  for (var i = 0; i < elements.length; i++) {
+    
+    let el = elements.item(i);
+    
+    el.addEventListener("click", function() {
+      
+      if (el.hasAttribute("data-reply")) {
+        
+        // if the comment has already a reply form, remove it
+        el.removeAttribute("data-reply");
+        el.parentNode.classList.toggle("mb-4");
+        el.classList.toggle("bg-gray-300")
+        var parent = el.parentNode.parentNode;
+        parent.removeChild(parent.lastChild);
+        
+      } else {
+        
+        // if the comment doesn't have a reply form, add one
+        el.setAttribute("data-reply", "");
+        
+        // create a form
+        var f = document.createElement("form");
+        f.setAttribute("method", "post");
+        f.setAttribute("action", window.location.href);
+
+        var t = document.createElement("input");
+        t.setAttribute("type", "hidden");
+        t.setAttribute("name", "_token");
+        t.setAttribute("value", csrf);
+        
+        var h = document.createElement("input");
+        h.setAttribute("type", "hidden");
+        h.setAttribute("name", "parent_id");
+        h.setAttribute("value", el.getAttribute("data-hash"));
+        
+        var i = document.createElement("textarea");
+        i.classList.add("reply", "form-input", "w-full", "whitespace-pre");
+        i.setAttribute("name", "content");
+        
+        var s = document.createElement("input");
+        s.setAttribute("type", "submit");
+        s.setAttribute("value", "répondre");
+        s.classList.add("btn-sm", "btn-blue", "mt-2", "cursor-pointer", "w-24");
+
+        f.appendChild(t);
+        f.appendChild(h);
+        f.appendChild(i);
+        f.appendChild(s);
+        // end create form
+          
+        el.parentNode.parentNode.appendChild(f);
+        
+        // re-style the reply button
+        el.parentNode.classList.toggle("mb-4");
+        el.classList.toggle("bg-gray-300");
+      }
+    });
+    
   }
 }
 

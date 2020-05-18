@@ -24,6 +24,10 @@ class UserController extends Controller
   
   public function showComments(User $user)
   {
+    // $comment = $user->comments->first();
+    // dd($comment->parent());
+    
+    
     $comments = $user->comments->sortByDesc('created_at');
     return view('users.show-comments', compact('user', 'comments'));
   }

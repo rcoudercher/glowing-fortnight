@@ -3,35 +3,51 @@
 @section('title', $post->title)
 
 @section('scripts')
-  <script src="https://cdn.tiny.cloud/1/qkzidnm9epp85gb91fk89jbherl7rr6e8xna4bt3056xvvtx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-  <script>
-    tinymce.init({
-      selector: '#main',
-      plugins: 'link lists paste',
-      toolbar: 'bold italic strikethrough | link blockquote | bullist numlist',
-      toolbar_location: 'bottom',
-      menubar: false,
-      branding: false,
-      statusbar: false,
-      link_title: false,
-      target_list: false,
-      link_assume_external_targets: 'http',
-      // strip all tags from what is pasted
-      paste_preprocess: function(plugin, args) {
-        console.log(args.content);        
-        args.content = args.content.replace(/(<([^>]+)>)/ig,"");
-      }
-    });
-  </script>
-  
   <script type="text/javascript">
     window.addEventListener("DOMContentLoaded", function() {
+      
       toggleShareOptionsDropdown();
       copyPostLinkToClipboard();
+      toggleReplyToCommentForms();
+      
+      // post vote buttons
+      var postUp = document.getElementById("postUp");
+      var postDown = document.getElementById("postDown");
+      
+      postUp.addEventListener('click', function(e) {
+        var target = e.target || e.srcElement;
+        vote(target, "post", "up");
+        refreshVoteCounter(target, "post");
+      });
+      
+      postDown.addEventListener("click", function(e) {
+        var target = e.target || e.srcElement;
+        vote(target, "post", "down");
+        refreshVoteCounter(target, "post");
+      });
+
+      // comment vote buttons
+      var commentUps = document.getElementsByClassName("commentUp");
+      var commentDowns = document.getElementsByClassName("commentDown");
+      
+      for (var i = 0; i < commentUps.length; i++) {
+        commentUps.item(i).addEventListener("click", function(e) {
+          var target = e.target || e.srcElement;
+          vote(target, "comment", "up");
+          refreshVoteCounter(target, "comment");
+        });
+      }
+      
+      for (var i = 0; i < commentDowns.length; i++) {
+        commentDowns.item(i).addEventListener("click", function(e) {
+          var target = e.target || e.srcElement;
+          vote(target, "comment", "down");
+          refreshVoteCounter(target, "comment");
+        });
+      }
+      
     });
   </script>
-  
-  
 @endsection
 
 @section('content')
@@ -42,11 +58,11 @@
       <div id="left" class="lg:w-2/3">
         
         <div class="card">
-          <div class="flex" data-hash="{{ $post->hash }}">
-            <div class="voteWrapper">
-              <div id="postUp" class="voteBtn{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
-              <div class="p-1 text-center">{{ $post->voteCount() }}</div>
-              <div id="postDown" class="voteBtn{{ $post->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
+          <div class="flex wrapper" data-hash="{{ $post->hash }}">
+            <div class="">
+              <div id="postUp" class="arrowUp voteBtn{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+              <div class="p-1 text-center"><span class="counter">{{ $post->voteCount() }}</span></div>
+              <div id="postDown" class="arrowDown voteBtn{{ $post->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
@@ -72,7 +88,6 @@
                   </div>
                 @break
               @endswitch
-              
               
               <div class="flex text-sm pb-8">
                 <div>{{ $post->comments->count() }} commentaires</div>
@@ -118,74 +133,67 @@
             </form>
           @endauth
           
-          
-          <div class="mt-8 text-base leading-snug">
+          <div class="mt-8">
+            
             @foreach ($rootComments as $comment)
               <div class="mb-6">
-                <div class="flex mb-6" data-hash="{{ $comment->hash }}">
-                  <div class="voteWrapper">
-                    <div class="commentUp voteBtn{{ $comment->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
-                    <div class="commentDown voteBtn{{ $comment->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
+                
+                <div class="flex wrapper" data-hash="{{ $comment->hash }}">
+                  <div class="">
+                    image
                   </div>
-                  <div class="ml-6 w-full">
-                    <div class="text-sm mb-2 flex">
+                  <div class="ml-4">
+                    <div class="flex mb-2 text-sm">
                       <div class="">
-                        <a  class="hover:underline" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                        <a class="font-bold" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                       </div>
-                      <div class="ml-2"><span id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span> votes</div>
                       <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
                     </div>
-                    <div class="mb-2">
-                      {!! $comment->content !!}
+                    <div class="mb-3">
+                      <p class="whitespace-pre-wrap text-base leading-snug">{{ $comment->content }}</p>
                     </div>
-                    <div class="flex text-sm">
-                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn" data-hash="{{ $comment->getEncryptedHash() }}">répondre</div>
-                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><span>partager</span></div>
-                      <div class="px-2 py-1 hover:bg-gray-200 rounded cursor-pointer ml-2"><a href="">signaler</a></div>
+                    <div class="flex items-center">
+                      <div class="voteBtn arrowUp commentUp {{ $comment->upVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+                      <div class="ml-2"><span class="counter" id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span></div>
+                      <div class="ml-2 voteBtn arrowDown commentDown {{ $comment->downVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-down"></i></div>
+                      <div class="ml-4 uppercase text-sm px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn" data-hash="{{ $comment->getEncryptedHash() }}">répondre</div>
                     </div>
-                    <div class="mt-2 text-sm">
-                      Wilson score : {{ $comment->wilsonScore() }}
-                    </div>
+                    
+                    @if ($comment->hasChildren())
+                      @foreach ($comment->children() as $comment)
+                        <div class="flex wrapper mt-4" data-hash="{{ $comment->hash }}">
+                          <div class="">
+                            image
+                          </div>
+                          <div class="ml-4 flex-grow">
+                            <div class="flex mb-2 text-sm">
+                              <div class="">
+                                <a class="font-bold" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                              </div>
+                              <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
+                            </div>
+                            <div class="mb-3">
+                              <p class="whitespace-pre-wrap text-base leading-snug">{{ $comment->content }}</p>
+                            </div>
+                            <div class="flex items-center">
+                              <div class="voteBtn arrowUp commentUp {{ $comment->upVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+                              <div class="ml-2"><span class="counter" id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span></div>
+                              <div class="ml-2 voteBtn arrowDown commentDown {{ $comment->downVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-down"></i></div>
+                              <div class="ml-4 uppercase text-sm px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn" data-hash="{{ $comment->getEncryptedHash() }}">répondre</div>
+                            </div>
+                          </div>
+                        </div>
+                      @endforeach
+                    @endif
+                    
                   </div>
                 </div>
                 
-                @if ($comment->children()->count() != 0)
-                  @foreach ($comment->children() as $comment)
-                    <div class="mb-6 ml-6">
-                      <div class="flex" data-hash="{{ $comment->hash }}">
-                        <div class="voteWrapper">
-                          <div class="commentUp voteBtn{{ $comment->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
-                          <div class="commentDown voteBtn{{ $comment->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
-                        </div>
-                        <div class="ml-6 w-full">
-                          <div class="text-sm mb-2 flex">
-                            <div class="">
-                              <a  class="hover:underline" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
-                            </div>
-                            <div class="ml-2"><span id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span> votes</div>
-                            <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
-                          </div>
-                          <div class="mb-2">
-                            {!! $comment->content !!}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  @endforeach
-                @endif
-                
-                
               </div>
-              
-
-              
             @endforeach
+            
           </div>
-          
         </div>
-        
-        
-
       </div>
       <div id="right" class="lg:ml-6 lg:w-1/3">
         <div class="card">
@@ -200,138 +208,4 @@
   </div>
 </div>
 
-
-<script type="text/javascript">
-var replyBtns = document.querySelectorAll('.replyBtn');
-var csrf = document.getElementsByName('csrf-token').item(0).getAttribute("content");
-
-for (const el of replyBtns) {
-  
-  el.addEventListener('click', function() {
-    
-    if (el.hasAttribute("data-reply")) {
-      
-      el.removeAttribute("data-reply");
-      el.parentNode.classList.toggle('mb-4');
-      el.classList.toggle('bg-gray-300')
-      
-      var parent = el.parentNode.parentNode;
-      parent.removeChild(parent.lastChild);
-      
-    } else {
-      
-      el.setAttribute("data-reply", "");
-      
-      // create a form
-        var f = document.createElement("form");
-        f.setAttribute('method',"post");
-        f.setAttribute('action',"{{ route('comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}");
-
-        var t = document.createElement("input");
-        t.setAttribute('type',"hidden");
-        t.setAttribute('name',"_token");
-        t.setAttribute('value', csrf);
-        
-        var h = document.createElement("input");
-        h.setAttribute('type',"hidden");
-        h.setAttribute('name',"parent_id");
-        h.setAttribute('value', el.getAttribute('data-hash'));
-        
-        var i = document.createElement("textarea");
-        i.classList.add('reply');
-        i.setAttribute('name',"content");
-        
-        var s = document.createElement("input");
-        s.setAttribute('type',"submit");
-        s.setAttribute('value',"répondre");
-        s.classList.add('btn-sm', 'btn-blue', 'mt-2', 'cursor-pointer', 'w-24');
-
-        f.appendChild(t);
-        f.appendChild(h);
-        f.appendChild(i);
-        f.appendChild(s);
-      // end create form
-        
-      el.parentNode.parentNode.appendChild(f);
-      
-      el.parentNode.classList.toggle('mb-4');
-      el.classList.toggle('bg-gray-300')
-      
-      tinymce.init({
-        selector: '.reply',
-        plugins: 'link lists paste',
-        toolbar: 'bold italic strikethrough | link',
-        toolbar_location: 'bottom',
-        menubar: false,
-        branding: false,
-        statusbar: false,
-        link_title: false,
-        target_list: false,
-        link_assume_external_targets: 'http',
-        // strip all tags from what is pasted
-        paste_preprocess: function(plugin, args) {
-          console.log(args.content);        
-          args.content = args.content.replace(/(<([^>]+)>)/ig,"");
-        }
-      });  
-    }
-  });
-}
-
-// post vote buttons
-var postUp = document.getElementById("postUp");
-var postDown = document.getElementById("postDown");
-
-postUp.addEventListener('click', function(e) {
-  var target = e.target || e.srcElement;
-  vote(target, "post", "up");
-  refreshVoteCounter(target, "post");
-});
-
-postDown.addEventListener("click", function(e) {
-  var target = e.target || e.srcElement;
-  vote(target, "post", "down");
-  refreshVoteCounter(target, "post");
-});
-
-// comment vote buttons
-var commentUps = document.getElementsByClassName("commentUp");
-var commentDowns = document.getElementsByClassName("commentDown");
-
-for (var i = 0; i < commentUps.length; i++) {
-  commentUps.item(i).addEventListener("click", function(e) {
-    var target = e.target || e.srcElement;
-    vote(target, "comment", "up");
-    refreshVoteCounter(target, "comment");
-  });
-}
-
-for (var i = 0; i < commentDowns.length; i++) {
-  commentDowns.item(i).addEventListener("click", function(e) {
-    var target = e.target || e.srcElement;
-    vote(target, "comment", "down");
-    refreshVoteCounter(target, "comment");
-  });
-}
-
-
-
-
-// share buttons
-var shareBtns = document.getElementsByClassName("shareBtn");
-console.log(shareBtns);
-for (var i = 0; i < shareBtns.length; i++) {
-  posts.item(i).addEventListener("click", function(e) {
-    var target = e.target || e.srcElement;
-    showShareOptions(target);
-    e.stopPropagation();
-    
-  });
-}
-
-
-
-</script>
-  
-  
 @endsection

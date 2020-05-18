@@ -13,6 +13,27 @@
     addCardLinksToPosts();
     toggleCommunityRuleDescription();
     
+    // vote buttons
+    var upVoteBtns = document.getElementsByClassName("upVote");
+    var downVoteBtns = document.getElementsByClassName("downVote");
+    
+    for (var i = 0; i < upVoteBtns.length; i++) {
+      upVoteBtns.item(i).addEventListener("click", function(e) {
+        var target = e.target || e.srcElement;
+        vote(target, "post", "up");
+        refreshVoteCounter(target, "post");
+        e.stopPropagation();
+      });
+    }
+    
+    for (var i = 0; i < downVoteBtns.length; i++) {
+      downVoteBtns.item(i).addEventListener("click", function(e) {
+        var target = e.target || e.srcElement;
+        vote(target, "post", "down");
+        refreshVoteCounter(target, "post");
+        e.stopPropagation();
+      });
+    }
     
   });
   
@@ -93,11 +114,11 @@
           @else
             @foreach ($posts as $post)
               
-              <div class="card flex post cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
-                <div class="voteWrapper">
-                  <div class="voteBtn upVote{{ $post->upVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-up"></i></div>
-                  <div class="p-1 text-center">{{ $post->voteCount() }}</div>
-                  <div class="voteBtn downVote{{ $post->downVotes()->contains('user', Auth::user()) ? ' active' : '' }}"><i class="fas fa-arrow-down"></i></div>
+              <div class="card flex post wrapper cursor-pointer" data-hash="{{ $post->hash }}" data-community="{{ $post->community->display_name }}" data-slug="{{ $post->slug }}">
+                <div class="">
+                  <div class="voteBtn upVote arrowUp {{ $post->upVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+                  <div class="p-1 text-center"><span class="counter">{{ $post->voteCount() }}</span></div>
+                  <div class="voteBtn downVote arrowDown {{ $post->downVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-down"></i></div>
                 </div>
                 <div class="mx-5">
                   <div class="mb-4 text-sm">
@@ -164,33 +185,5 @@
       </div>
     </div>
   </div>
-  
-  
-  <script>
-    // vote buttons
-    var upVoteBtns = document.getElementsByClassName("upVote");
-    var downVoteBtns = document.getElementsByClassName("downVote");
-    
-    for (var i = 0; i < upVoteBtns.length; i++) {
-      upVoteBtns.item(i).addEventListener("click", function(e) {
-        var target = e.target || e.srcElement;
-        vote(target, "post", "up");
-        refreshVoteCounter(target, "post");
-        e.stopPropagation();
-      });
-    }
-    
-    for (var i = 0; i < downVoteBtns.length; i++) {
-      downVoteBtns.item(i).addEventListener("click", function(e) {
-        var target = e.target || e.srcElement;
-        vote(target, "post", "down");
-        refreshVoteCounter(target, "post");
-        e.stopPropagation();
-      });
-    }
-
-  </script>
-
-  
   
 @endsection

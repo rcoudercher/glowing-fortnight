@@ -25,8 +25,8 @@ class Comment extends Model
   }
   
   public function parent()
-  {
-    return $this->belongsTo('App\Comment');
+  {    
+    return Comment::find($this->parent_id);
   }
   
   public function votes()
@@ -78,6 +78,11 @@ class Comment extends Model
   public function children()
   {
     return Comment::where('parent_id', $this->id)->get();
+  }
+  
+  public function hasChildren()
+  {    
+    return $this->children()->count() == 0 ? false : true;
   }
   
   public function isChild()

@@ -31,7 +31,7 @@
               </div>
               <div class="border-b border-gray-400 p-4">
                 <div class="mb-2">
-                  <a class="hover:underline text-sm" href="{{ route('users.show.posts', ['user' => $comment->parent->user]) }}">u/{{ $comment->parent->user->display_name }}</a> a commenté :
+                  <a class="hover:underline text-sm" href="{{ route('users.show.posts', ['user' => $comment->parent()->user()]) }}">u/{{ $comment->parent()->user->display_name }}</a> a commenté :
                 </div>
                 <div class="">
                   {!! $comment->parent->content !!}

@@ -10,7 +10,7 @@
     <script src="{{ asset('js/functions.js') }}" type="text/javascript"></script>
     @yield('scripts')
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    {{-- <script src="https://kit.fontawesome.com/2302d04f5e.js" crossorigin="anonymous"></script> --}}
+    <script src="https://kit.fontawesome.com/2302d04f5e.js" crossorigin="anonymous"></script>
   </head>
   <body class="antialiased leading-none">
     <nav class="bg-blue-900 shadow py-5">
