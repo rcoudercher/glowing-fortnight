@@ -6,82 +6,97 @@ use App\Message;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+  public function index()
+  {
+    $messages = Message::paginate(200);
+    return view('admin.messages.index', compact('messages'));
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+  public function create()
+  {
+    $message = new Message(); // passes an empty model to the view
+    $users = User::all();
+    return view('admin.messages.create', compact('message', 'users'));
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+  public function store(Request $request)
+  {
+    $data = [
+      'from_id' => $request->input('from_id'),
+      'to_id' => $request->input('to_id'),
+      'title' => $request->input('title'),
+      'content' => $request->input('content'),
+    ];
+    $rules = [
+      'from_id' => ['required', 'integer', 'exists:App\User,id'],
+      'to_id' => ['required', 'integer', 'exists:App\User,id'],
+      'title' => ['required', 'string', 'max:100'],
+      'content' => ['required', 'string', 'max:1000'],
+    ];
+    $validator = Validator::make($data, $rules)->validate();
+    
+    $validator['hash'] = $this->findUniqueMessageHash(); 
+    
+    $message = Message::create($validator);
+      
+    return redirect(route('admin.messages.show', ['message' => $message]))
+    ->with('message', 'Message created successfully');
+  }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Message $message)
-    {
-        //
-    }
+  public function show(Message $message)
+  {
+    return view('admin.messages.show', compact('message'));
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Message $message)
-    {
-        //
-    }
+  public function edit(Message $message)
+  {
+    $users = User::all();
+    return view('admin.messages.edit', compact('message', 'users'));
+  }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
+  public function update(Request $request, Message $message)
+  {
+    $data = [
+      'from_id' => $request->input('from_id'),
+      'to_id' => $request->input('to_id'),
+      'title' => $request->input('title'),
+      'content' => $request->input('content'),
+    ];
+    $rules = [
+      'from_id' => ['required', 'integer', 'exists:App\User,id'],
+      'to_id' => ['required', 'integer', 'exists:App\User,id'],
+      'title' => ['required', 'string', 'max:100'],
+      'content' => ['required', 'string', 'max:1000'],
+    ];
+    $validator = Validator::make($data, $rules)->validate();
+    
+    $message->update($validator);
+    
+    // return view
+    return redirect(route('admin.messages.show', ['message' => $message]))
+    ->with('message', 'Message updated successfully.');
+  }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Message  $message
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Message $message)
-    {
-        //
-    }
+  public function destroy(Message $message)
+  {
+    $message->delete();
+    return redirect(route('admin.messages.index'))
+    ->with('message', 'Message deleted successfully.');
+  }
+  
+  private function findUniqueMessageHash()
+  {
+    $hashes = Message::all()->pluck('hash');
+    $hash = Str::random(12);
+    while ($hashes->contains($hash)) {
+      $hash = Str::random(12);
+    }    
+    return $hash;
+  }
 }

@@ -1,5 +1,3 @@
-@csrf
-
 <div class="form-group">
   <label for="creator_id">creator</label>
   <select class="custom-select" name="creator_id">

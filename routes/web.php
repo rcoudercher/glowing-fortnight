@@ -65,7 +65,6 @@ Route::name('communities.')->group(function () {
     Route::post('quitter', 'Front\CommunityController@leave')->name('leave');
     Route::post('rejoindre', 'Front\CommunityController@join')->name('join');
   });
-  
 });
 
 // post routes
