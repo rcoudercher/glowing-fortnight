@@ -15,8 +15,8 @@
       <div class="bg-blueprint-grid h-24 sm:w-1/6 sm:min-h-screen sm:p-8"></div>
       <div class="mt-8 px-8 container mx-auto" style="font-family: 'Roboto', sans-serif;">
         <div class="mb-8 flex">
-          <p class="flex-grow text-xl underline"><a href="{{ route('front.home') }}">← accueil</a></p>
-          <p class="text-sm">Déjà membre ? <a class="text-blue-600 hover:underline font-bold" href="{{ route('front.users.login') }}">CONNEXION</a></p>
+          <p class="flex-grow text-xl underline"><a href="{{ route('home') }}">← accueil</a></p>
+          <p class="text-sm">Déjà membre ? <a class="text-blue-600 hover:underline font-bold" href="{{ route('users.login') }}">CONNEXION</a></p>
         </div>
         <div class="max-w-lg">
           <div class="mb-5">
@@ -25,7 +25,7 @@
           <h1 class="title h1 mb-5">Inscription</h1>
           <p class="mb-4 leading-snug">By having a Reddit account, you can join, vote, and comment on all your favorite Reddit content.</p>
           <div class="mb-6">
-            <form method="POST" action="{{ route('front.users.store') }}">
+            <form method="POST" action="{{ route('users.store') }}">
               @csrf
               <div class="mb-6">
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>

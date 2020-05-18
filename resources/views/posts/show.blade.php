@@ -50,8 +50,8 @@
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
-                <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a>
-                 - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
+                <a class="hover:underline font-semibold" href="{{ route('communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a>
+                 - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
               </div>
               <div class="mb-4">
                 <h3 class="title h3">{{ $post->title }}</h3>
@@ -81,7 +81,7 @@
                   <div class="wrapper origin-top-left absolute left-0 mt-2 w-40 rounded-md shadow-lg hidden z-50">
                     <div class="rounded-md bg-white shadow-xs">
                       <div class="py-1">
-                        <span data-link="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" class="copyLinkBtn block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">copier lien</a>
+                        <span data-link="{{ route('posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" class="copyLinkBtn block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">copier lien</a>
                       </div>
                     </div>
                   </div>
@@ -106,7 +106,7 @@
           @endguest
           
           @auth
-            <form action="{{ route('front.comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST">
+            <form action="{{ route('comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST">
               @csrf
               <div class="mb-6">
                 <textarea id="main" placeholder="Qu'en pensez-vous ?" class="bg-gray-300 form-input w-full @error('content') border-red-500 @enderror" name="content" id="content" rows="4" cols="80">{{ old('content') }}</textarea>
@@ -130,7 +130,7 @@
                   <div class="ml-6 w-full">
                     <div class="text-sm mb-2 flex">
                       <div class="">
-                        <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                        <a  class="hover:underline" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                       </div>
                       <div class="ml-2"><span id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span> votes</div>
                       <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
@@ -160,7 +160,7 @@
                         <div class="ml-6 w-full">
                           <div class="text-sm mb-2 flex">
                             <div class="">
-                              <a  class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                              <a  class="hover:underline" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
                             </div>
                             <div class="ml-2"><span id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span> votes</div>
                             <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
@@ -225,7 +225,7 @@ for (const el of replyBtns) {
       // create a form
         var f = document.createElement("form");
         f.setAttribute('method',"post");
-        f.setAttribute('action',"{{ route('front.comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}");
+        f.setAttribute('action',"{{ route('comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}");
 
         var t = document.createElement("input");
         t.setAttribute('type',"hidden");

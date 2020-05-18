@@ -13,27 +13,27 @@
               <div class="py-5 border-b-2 border-gray-500">
                 <div class="flex mb-3">
                   <h3 class="title h3 hover:underline flex-grow">
-                    <a href="{{ route('front.communities.show', ['community' => $community]) }}">r/{{ $community->name }}: {{ substr($community->title, 0, 40) }}</a>
+                    <a href="{{ route('communities.show', ['community' => $community]) }}">r/{{ $community->name }}: {{ substr($community->title, 0, 40) }}</a>
                   </h3>
                   <div>
                     @guest                      
-                      <a class="btn-xsm btn-black" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
+                      <a class="btn-xsm btn-black" href="{{ route('communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
                         document.getElementById('join-community-form-{{ $loop->iteration }}').submit();">Rejoindre</a>
-                      <form id="join-community-form-{{ $loop->iteration }}" action="{{ route('front.communities.join', ['community' => $community]) }}" method="POST" class="hidden">
+                      <form id="join-community-form-{{ $loop->iteration }}" action="{{ route('communities.join', ['community' => $community]) }}" method="POST" class="hidden">
                         @csrf
                       </form>
                     @endguest
                     @auth
                       @if ($community->users->contains(Auth::user()))
-                        <a class="btn-xsm btn-green" onmouseover="leave(this)" onmouseout="member(this)" href="{{ route('front.communities.leave', ['community' => $community]) }}" onclick="event.preventDefault();
+                        <a class="btn-xsm btn-green" onmouseover="leave(this)" onmouseout="member(this)" href="{{ route('communities.leave', ['community' => $community]) }}" onclick="event.preventDefault();
                           document.getElementById('leave-community-form-{{ $loop->iteration }}').submit();">Membre</a>
-                        <form id="leave-community-form-{{ $loop->iteration }}" action="{{ route('front.communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
+                        <form id="leave-community-form-{{ $loop->iteration }}" action="{{ route('communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
                           @csrf
                         </form>
                       @else
-                        <a class="btn-xsm btn-black" href="{{ route('front.communities.join', ['community' => $community]) }}" onclick="event.preventDefault();
+                        <a class="btn-xsm btn-black" href="{{ route('communities.join', ['community' => $community]) }}" onclick="event.preventDefault();
                           document.getElementById('join-community-form-{{ $loop->iteration }}').submit();">Rejoindre</a>
-                        <form id="join-community-form-{{ $loop->iteration }}" action="{{ route('front.communities.join', ['community' => $community]) }}" method="POST" class="hidden">
+                        <form id="join-community-form-{{ $loop->iteration }}" action="{{ route('communities.join', ['community' => $community]) }}" method="POST" class="hidden">
                           @csrf
                         </form>
                         

@@ -23,7 +23,7 @@
           <div id="left" class="lg:w-2/3">
             <div class="card flex-col">
               <h1 class="title h2 mb-6">Créer une nouvelle règle pour k/{{ $community->display_name }}</h1>
-              <form class="" action="{{ route('front.community-rules.store', ['community' => $community]) }}" method="POST">
+              <form class="" action="{{ route('community-rules.store', ['community' => $community]) }}" method="POST">
                 @include('community-rules.form')
                 <button type="submit" class="btn btn-blue">Créer</button>
               </form>
@@ -31,7 +31,7 @@
           </div>
           <div id="right" class="lg:ml-6 lg:w-1/3">
             <div class="bg-white shadow p-4 mb-5 rounded">
-              <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
+              <a class="hover:underline" href="{{ route('communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
             </div>
             @include('components.footer')
           </div>

@@ -6,10 +6,10 @@
   <h1>Details for community rule id {{ $communityRule->id }}</h1>
   
   <nav class="nav pb-3">
-    <a class="nav-link" href="{{ route('community-rules.edit', ['community_rule' => $communityRule]) }}">Edit</a>
-    <a class="nav-link" href="{{ route('community-rules.destroy', ['community_rule' => $communityRule]) }}" onclick="event.preventDefault(); 
+    <a class="nav-link" href="{{ route('admin.community-rules.edit', ['community_rule' => $communityRule]) }}">Edit</a>
+    <a class="nav-link" href="{{ route('admin.community-rules.destroy', ['community_rule' => $communityRule]) }}" onclick="event.preventDefault(); 
       document.getElementById('destroy-form').submit();">Delete</a>
-    <form id="destroy-form" action="{{ route('community-rules.destroy', ['community_rule' => $communityRule]) }}" method="POST" class="hidden">
+    <form id="destroy-form" action="{{ route('admin.community-rules.destroy', ['community_rule' => $communityRule]) }}" method="POST" class="hidden">
       @method('DELETE')
       @csrf
     </form>
@@ -23,11 +23,11 @@
       </tr>
       <tr>
         <th scope="row">creator</th>
-        <td><a href="{{ route('users.show', ['user' => $communityRule->creator]) }}">u/{{ $communityRule->creator->display_name }}</a></td>
+        <td><a href="{{ route('admin.users.show', ['user' => $communityRule->creator]) }}">u/{{ $communityRule->creator->display_name }}</a></td>
       </tr>
       <tr>
         <th scope="row">community</th>
-        <td><a href="{{ route('communities.show', ['community' => $communityRule->community]) }}">k/{{ $communityRule->community->display_name }}</a></td>
+        <td><a href="{{ route('admin.communities.show', ['community' => $communityRule->community]) }}">k/{{ $communityRule->community->display_name }}</a></td>
       </tr>
       <tr>
         <th scope="row">order</th>

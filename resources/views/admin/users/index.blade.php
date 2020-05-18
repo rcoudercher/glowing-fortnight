@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Users index</h1>
-  <p><a href="{{ route('users.create') }}">Add new user</a></p>
+  <p><a href="{{ route('admin.users.create') }}">Add new user</a></p>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -19,7 +19,7 @@
     @foreach ($users as $user)
       <tr>
         <th scope="row">{{ $user->id }}</th>
-        <td><a href="{{ route('users.update', ['user' => $user]) }}">{{ $user->name }}</a></td>
+        <td><a href="{{ route('admin.users.update', ['user' => $user]) }}">{{ $user->name }}</a></td>
         <td>{{ $user->email }}</td>
         <td>{{ $user->created_at }}</td>
         <td>{{ $user->updated_at }}</td>

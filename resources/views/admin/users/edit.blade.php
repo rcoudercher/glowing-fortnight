@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Edit details for user id {{ $user->id }}</h1>
-  <form action="{{ route('users.update', ['user' => $user]) }}" method="POST">
+  <form action="{{ route('admin.users.update', ['user' => $user]) }}" method="POST">
     @method('PATCH')
     @include('admin.users.form')
     <button type="submit" class="btn btn-primary">Save</button>

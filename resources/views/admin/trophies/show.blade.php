@@ -6,10 +6,10 @@
   <h1>Details for trophy id {{ $trophy->id }}</h1>
   
   <nav class="nav pb-3">
-    <a class="nav-link" href="{{ route('trophies.edit', ['trophy' => $trophy]) }}">Edit</a>
-    <a class="nav-link" href="{{ route('trophies.destroy', ['trophy' => $trophy]) }}" onclick="event.preventDefault(); 
+    <a class="nav-link" href="{{ route('admin.trophies.edit', ['trophy' => $trophy]) }}">Edit</a>
+    <a class="nav-link" href="{{ route('admin.trophies.destroy', ['trophy' => $trophy]) }}" onclick="event.preventDefault(); 
       document.getElementById('destroy-form').submit();">Delete</a>
-    <form id="destroy-form" action="{{ route('trophies.destroy', ['trophy' => $trophy]) }}" method="POST" class="hidden">
+    <form id="destroy-form" action="{{ route('admin.trophies.destroy', ['trophy' => $trophy]) }}" method="POST" class="hidden">
       @method('DELETE')
       @csrf
     </form>

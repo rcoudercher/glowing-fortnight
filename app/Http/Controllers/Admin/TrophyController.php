@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Trophy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
 class TrophyController extends Controller
 {
@@ -38,7 +39,7 @@ class TrophyController extends Controller
     
     $this->storeImage($trophy);
     
-    return redirect(route('trophies.index'))->with('message', 'Trophy created successfully.');
+    return redirect(route('admin.trophies.index'))->with('message', 'Trophy created successfully.');
   }
 
   public function show(Trophy $trophy)
@@ -61,13 +62,13 @@ class TrophyController extends Controller
     
     $this->storeImage($trophy);
     
-    return redirect(route('trophies.show', ['trophy' => $trophy]))->with('message', 'Trophy updated successfully.');
+    return redirect(route('admin.trophies.show', ['trophy' => $trophy]))->with('message', 'Trophy updated successfully.');
   }
 
   public function destroy(Trophy $trophy)
   {
     $trophy->delete();
-    return redirect(route('trophies.index'))->with('message', 'Trophy deleted successfully.');
+    return redirect(route('admin.trophies.index'))->with('message', 'Trophy deleted successfully.');
   }
   
   private function storeImage($trophy)

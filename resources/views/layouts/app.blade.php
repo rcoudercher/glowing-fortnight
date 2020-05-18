@@ -10,27 +10,29 @@
     <script src="{{ asset('js/functions.js') }}" type="text/javascript"></script>
     @yield('scripts')
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/2302d04f5e.js" crossorigin="anonymous"></script>
+    {{-- <script src="https://kit.fontawesome.com/2302d04f5e.js" crossorigin="anonymous"></script> --}}
   </head>
   <body class="antialiased leading-none">
     <nav class="bg-blue-900 shadow py-5">
       <div class="container mx-auto px-6 md:px-0">
         <div class="flex items-center justify-center">
           <div class="mr-6">
-            <a href="{{ route('front.home') }}" class="text-lg font-semibold text-gray-100 no-underline">{{ config('app.name', 'REDDIT') }}</a>
+            <a href="{{ route('home') }}" class="text-lg font-semibold text-gray-100 no-underline">{{ config('app.name', 'REDDIT') }}</a>
           </div>
           <div class="flex-1">
             <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('admin.dashboard') }}">ADMIN</a>
-            <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('front.communities.index') }}">Communautés</a>
+            <a class="no-underline hover:underline text-gray-300 text-sm p-3" href="{{ route('communities.index') }}">Communautés</a>
             
           </div>
           <div class="flex-1 text-right">
             @guest              
               <a id="loginBtn" class="no-underline hover:underline text-gray-300 text-sm p-3 cursor-pointer">Connexion</a>
             @if (Route::has('register'))
-              <a class="no-underline hover:underline text-gray-300 text-sm p-3 cursor-pointer" href="{{ route('front.users.create') }}">Inscription</a>
+              <a class="no-underline hover:underline text-gray-300 text-sm p-3 cursor-pointer" href="{{ route('users.create') }}">Inscription</a>
             @endif
             @else
+              <a class="no-underline hover:underline text-gray-300 hover:text-white p-3" href="{{ route('messages.inbox') }}">INBOX</a>
+              
               {{-- dropdown menu with options if user is logged in --}}
               <div class="relative inline-block text-left">
                 <div>
@@ -46,13 +48,13 @@
                 <div id="dropdown" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg hidden">
                   <div class="rounded-md bg-white shadow-xs">
                     <div class="py-1">
-                      <a href="{{ route('front.users.show.posts', ['user' => Auth::user()]) }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Mon Profil</a>
-                      <a href="{{ route('front.settings.account') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Configuration</a>                      
+                      <a href="{{ route('users.show.posts', ['user' => Auth::user()]) }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Mon Profil</a>
+                      <a href="{{ route('settings.account') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Configuration</a>                      
                     </div>
                     <div class="border-t border-gray-100"></div>
                     <div class="py-1">
-                      <a href="{{ route('front.users.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Déconnexion</a>
-                      <form id="logout-form" action="{{ route('front.users.logout') }}" method="POST" class="hidden">{{ csrf_field() }}</form>
+                      <a href="{{ route('users.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">Déconnexion</a>
+                      <form id="logout-form" action="{{ route('users.logout') }}" method="POST" class="hidden">{{ csrf_field() }}</form>
                     </div>
                   </div>
                 </div>

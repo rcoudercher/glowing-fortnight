@@ -6,10 +6,10 @@
   <h1>Details for post id {{ $post->id }}</h1>
   
   <nav class="nav pb-3">
-    <a class="nav-link" href="{{ route('posts.edit', ['post' => $post]) }}">Edit</a>
-    <a class="nav-link" href="{{ route('posts.destroy', ['post' => $post]) }}" onclick="event.preventDefault(); 
+    <a class="nav-link" href="{{ route('admin.posts.edit', ['post' => $post]) }}">Edit</a>
+    <a class="nav-link" href="{{ route('admin.posts.destroy', ['post' => $post]) }}" onclick="event.preventDefault(); 
       document.getElementById('destroy-form').submit();">Delete</a>
-    <form id="destroy-form" action="{{ route('posts.destroy', ['post' => $post]) }}" method="POST" class="hidden">
+    <form id="destroy-form" action="{{ route('admin.posts.destroy', ['post' => $post]) }}" method="POST" class="hidden">
       @method('DELETE')
       @csrf
     </form>
@@ -27,7 +27,7 @@
       </tr>
       <tr>
         <th scope="row">community</th>
-        <td><a href="{{ route('communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a></td>
+        <td><a href="{{ route('admin.communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a></td>
       </tr>
       <tr>
         <th scope="row">notification</th>

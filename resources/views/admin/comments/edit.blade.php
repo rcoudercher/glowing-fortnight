@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Edit details for comment id {{ $comment->id }}</h1>
-  <form action="{{ route('comments.update', ['comment' => $comment]) }}" method="POST">
+  <form action="{{ route('admin.comments.update', ['comment' => $comment]) }}" method="POST">
     @method('PATCH')
     @include('admin.comments.form')
     <button type="submit" class="btn btn-primary">Save</button>

@@ -34,10 +34,10 @@
             </form>
           </div>
           <div class="mb-2">
-            <a class="text-sm text-blue-600 hover:underline" href="{{ route('front.users.password.request') }}">Mot de passe oublié</a>
+            <a class="text-sm text-blue-600 hover:underline" href="{{ route('users.password.request') }}">Mot de passe oublié</a>
           </div>
           <div class="">
-            <p class="text-sm">Nouveau sur Kommus ? <a class="text-blue-600 hover:underline font-bold" href="{{ route('front.users.create') }}">INSCRIPTION</a></p>
+            <p class="text-sm">Nouveau sur Kommus ? <a class="text-blue-600 hover:underline font-bold" href="{{ route('users.create') }}">INSCRIPTION</a></p>
           </div>
         </div>
       </div>

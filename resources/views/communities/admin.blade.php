@@ -56,17 +56,17 @@
                       <tr>
                         <td class="border px-4 py-2 text-center">{{ $rule->order }}</td>
                         <td class="border px-4 py-2 text-center">
-                          <a class="link" href="{{ route('front.community-rules.up', ['community' => $community, 'community_rule' => $rule]) }}">haut</a>
+                          <a class="link" href="{{ route('community-rules.up', ['community' => $community, 'community_rule' => $rule]) }}">haut</a>
                         </td>
                         <td class="border px-4 py-2 text-center">
-                          <a class="link" href="{{ route('front.community-rules.down', ['community' => $community, 'community_rule' => $rule]) }}">bas</a>
+                          <a class="link" href="{{ route('community-rules.down', ['community' => $community, 'community_rule' => $rule]) }}">bas</a>
                         </td>
                         <td class="border px-4 py-2">{{ $rule->title }}</td>
-                        <td class="border px-4 py-2 text-center"><a class="link" href="{{ route('front.community-rules.edit', ['community' => $community, 'community_rule' => $rule]) }}">modifier</a></td>
+                        <td class="border px-4 py-2 text-center"><a class="link" href="{{ route('community-rules.edit', ['community' => $community, 'community_rule' => $rule]) }}">modifier</a></td>
                         <td class="border px-4 py-2 text-center">                          
-                          <a class="link" href="{{ route('front.community-rules.destroy', ['community' => $community, 'community_rule' => $rule]) }}" onclick="event.preventDefault(); 
+                          <a class="link" href="{{ route('community-rules.destroy', ['community' => $community, 'community_rule' => $rule]) }}" onclick="event.preventDefault(); 
                             document.getElementById('destroy-{{ $rule->hash }}').submit();">supprimer</a>
-                          <form id="destroy-{{ $rule->hash }}" action="{{ route('front.community-rules.destroy', ['community' => $community, 'community_rule' => $rule]) }}" method="POST" class="hidden">
+                          <form id="destroy-{{ $rule->hash }}" action="{{ route('community-rules.destroy', ['community' => $community, 'community_rule' => $rule]) }}" method="POST" class="hidden">
                             @method('DELETE')
                             @csrf
                           </form>
@@ -81,7 +81,7 @@
               
               @if ($community->communityRules->count() < 10)
                 <p class="mt-6">
-                  <a class="link" href="{{ route('front.community-rules.create', ['community' => $community]) }}">créer une nouvelle règle</a>
+                  <a class="link" href="{{ route('community-rules.create', ['community' => $community]) }}">créer une nouvelle règle</a>
                 </p>
               @else
                 <p class="mt-6">Nombre maximum de règle autorisé : 10</p>
@@ -103,7 +103,7 @@
                     <tr>
                       <td class="border px-4 py-2">créateur</td>
                       <td class="border px-4 py-2">
-                        <a class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a>
+                        <a class="hover:underline" href="{{ route('users.show.posts', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a>
                       </td>
                     </tr>
                     <tr>
@@ -127,13 +127,13 @@
                 </table>
               </div>
               <div class="mt-6">
-                <a class="btn-sm btn-blue" href="{{ route('front.communities.edit', ['community' => $community]) }}">Modifier</a>
+                <a class="btn-sm btn-blue" href="{{ route('communities.edit', ['community' => $community]) }}">Modifier</a>
               </div>
           </div>
         </div>
         <div id="right" class="lg:ml-6 lg:w-1/3">
           <div class="card">
-            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
+            <a class="hover:underline" href="{{ route('communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
           </div>
           @include('components.community-rules')
           @include('components.footer')

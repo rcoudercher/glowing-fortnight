@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -47,7 +48,7 @@ class PostController extends Controller
       
       $post = Post::create($validator);      
 
-      return redirect(route('posts.index'))->with('message', 'Post created successfully.');
+      return redirect(route('admin.posts.index'))->with('message', 'Post created successfully.');
     }
 
     public function show(Post $post)
@@ -77,13 +78,13 @@ class PostController extends Controller
       $post->update($validator);
       
       // return view
-      return redirect(route('posts.show', ['post' => $post]))
+      return redirect(route('admin.posts.show', ['post' => $post]))
       ->with('message', 'Post updated successfully.');
     }
 
     public function destroy(Post $post)
     {
       $post->delete();
-      return redirect(route('posts.index'))->with('message', 'Post deleted successfully.');
+      return redirect(route('admin.posts.index'))->with('message', 'Post deleted successfully.');
     }
 }

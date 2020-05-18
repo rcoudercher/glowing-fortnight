@@ -370,3 +370,21 @@ function toggleCommunityRuleDescription() {
   }
 }
 
+function linkToMessage(className) {
+  
+  var elements = document.getElementsByClassName(className);
+    
+  if (elements.length == 0) {
+    return console.log("linkToMessage() error: no elements found");
+  }
+  
+  for (var i = 0; i < elements.length; i++) {
+    elements.item(i).addEventListener("click", function(e) {
+      let target = e.target || e.srcElement;
+      let url = target.closest("." + className).getAttribute("data-link");
+      console.log(url);
+      window.location.href=url;
+    });
+  }
+}
+

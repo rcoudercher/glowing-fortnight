@@ -17,10 +17,10 @@
         @foreach ($adminCommunities as $adminCommunity)
         <li class="py-3 flex">
           <div>
-            <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $adminCommunity]) }}">k/{{ $adminCommunity->display_name }}</a>
+            <a class="hover:underline" href="{{ route('communities.show', ['community' => $adminCommunity]) }}">k/{{ $adminCommunity->display_name }}</a>
           </div>
           <div>
-            <a class="btn-xsm btn-black" href="{{ route('front.communities.admin.dashboard', ['community' => $adminCommunity]) }}">administrer</a>
+            <a class="btn-xsm btn-black" href="{{ route('communities.admin.dashboard', ['community' => $adminCommunity]) }}">administrer</a>
           </div>
         </li>
         @endforeach
@@ -37,7 +37,7 @@
           <ul>
             @foreach ($nonAdminCommunities as $nonAdminCommunity)
               <li class="py-3">
-                <a class="hover:underline" href="{{ route('front.communities.show', ['community' => $nonAdminCommunity]) }}">k/{{ $nonAdminCommunity->display_name }}</a>
+                <a class="hover:underline" href="{{ route('communities.show', ['community' => $nonAdminCommunity]) }}">k/{{ $nonAdminCommunity->display_name }}</a>
               </li>
             @endforeach
           </ul>
@@ -49,7 +49,7 @@
   </div>
   
   <div>
-    <a class="btn btn-blue" href="{{ route('front.communities.create') }}">Créer une communauté</a>
+    <a class="btn btn-blue" href="{{ route('communities.create') }}">Créer une communauté</a>
   </div>
   
 

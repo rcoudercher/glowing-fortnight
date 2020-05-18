@@ -68,7 +68,7 @@
             <div class="border-b-2 border-gray-900 my-6"></div>
             
             <div>
-              <form action="{{ route('front.posts.create', ['community' => $community]) }}" method="post" enctype="multipart/form-data">
+              <form action="{{ route('posts.create', ['community' => $community]) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 
                 <input type="hidden" 

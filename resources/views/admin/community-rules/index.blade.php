@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Community rules index</h1>
-  <p><a href="{{ route('community-rules.create') }}">Add new community rule</a></p>
+  <p><a href="{{ route('admin.community-rules.create') }}">Add new community rule</a></p>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -21,9 +21,9 @@
     @foreach ($communityRules as $rule)
       <tr>
         <th scope="row">{{ $rule->id }}</th>
-        <td><a href="{{ route('community-rules.show', ['community_rule' => $rule]) }}">show</a></td>
-        <td><a href="{{ route('users.show', ['user' => $rule->creator]) }}">u/{{ $rule->creator->display_name }}</a></td>
-        <td><a href="{{ route('communities.show', ['community' => $rule->community]) }}">k/{{ $rule->community->display_name }}</a></td>
+        <td><a href="{{ route('admin.community-rules.show', ['community_rule' => $rule]) }}">show</a></td>
+        <td><a href="{{ route('admin.users.show', ['user' => $rule->creator]) }}">u/{{ $rule->creator->display_name }}</a></td>
+        <td><a href="{{ route('admin.communities.show', ['community' => $rule->community]) }}">k/{{ $rule->community->display_name }}</a></td>
         <td>{{ $rule->title }}</td>
         <td>{{ $rule->created_at }}</td>
         <td>{{ $rule->updated_at }}</td>

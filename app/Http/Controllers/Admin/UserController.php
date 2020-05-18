@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\User;
 use App\Trophy;
@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 
 
 class UserController extends Controller
@@ -56,7 +57,7 @@ class UserController extends Controller
       // saves related models in pivot tables
       $user->trophies()->attach($request->input('trophies'));
 
-      return redirect(route('users.index'))->with('message', 'User created successfully.');
+      return redirect(route('admin.users.index'))->with('message', 'User created successfully.');
     }
 
     public function show(User $user)
@@ -86,13 +87,13 @@ class UserController extends Controller
       // update related models
       $user->trophies()->sync($request->input('trophies'));
       
-      return redirect(route('users.show', ['user' => $user]))->with('message', 'User updated successfully.');
+      return redirect(route('admin.users.show', ['user' => $user]))->with('message', 'User updated successfully.');
     }
 
     public function destroy(User $user)
     {
       $user->delete();
-      return redirect(route('users.index'))->with('message', 'User deleted successfully.');
+      return redirect(route('admin.users.index'))->with('message', 'User deleted successfully.');
       
       
       // other things to do when a user is deleted

@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Add new user</h1>
-  <form method="POST" action="{{ route('users.store') }}">
+  <form method="POST" action="{{ route('admin.users.store') }}">
     @include('admin.users.form')
     
     <hr>

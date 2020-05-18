@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 
 use Auth;
 use App\Post;
+use App\Http\Controllers\Controller;
 
 class PageController extends Controller
 {

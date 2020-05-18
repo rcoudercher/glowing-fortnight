@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Posts index</h1>
-  <p><a href="{{ route('posts.create') }}">Add new post</a></p>
+  <p><a href="{{ route('admin.posts.create') }}">Add new post</a></p>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -28,7 +28,7 @@
         <td>{{ $post->notification }}</td>
         <td>{{ $post->public }}</td>
         <td>{{ $post->hash }}</td>
-        <td><a href="{{ route('posts.update', ['post' => $post]) }}">{{ $post->title }}</a></td>
+        <td><a href="{{ route('admin.posts.update', ['post' => $post]) }}">{{ $post->title }}</a></td>
         <td>{{ $post->type }}</td>
         <td>{{ $post->created_at }}</td>
       </tr>

@@ -6,10 +6,10 @@
   <h1>Details for k/{{ $community->display_name }}</h1>
   
   <nav class="nav pb-3">
-    <a class="nav-link" href="{{ route('communities.edit', ['community' => $community]) }}">Edit</a>
-    <a class="nav-link" href="{{ route('communities.destroy', ['community' => $community]) }}" onclick="event.preventDefault(); 
+    <a class="nav-link" href="{{ route('admin.communities.edit', ['community' => $community]) }}">Edit</a>
+    <a class="nav-link" href="{{ route('admin.communities.destroy', ['community' => $community]) }}" onclick="event.preventDefault(); 
       document.getElementById('destroy-form').submit();">Delete</a>
-    <form id="destroy-form" action="{{ route('communities.destroy', ['community' => $community]) }}" method="POST" class="hidden">
+    <form id="destroy-form" action="{{ route('admin.communities.destroy', ['community' => $community]) }}" method="POST" class="hidden">
       @method('DELETE')
       @csrf
     </form>
@@ -23,7 +23,7 @@
       </tr>
       <tr>
         <th scope="row">creator</th>
-        <td><a href="{{ route('users.show', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a></td>
+        <td><a href="{{ route('admin.users.show', ['user' => $community->creator]) }}">u/{{ $community->creator->display_name }}</a></td>
       </tr>
       <tr>
         <th scope="row">type</th>

@@ -1171,6 +1171,14 @@ video {
   text-decoration: underline;
 }
 
+.messageNavLink {
+  color: #3182ce;
+}
+
+.messageNavLink:hover {
+  text-decoration: underline;
+}
+
 /* --------------- */
 
 /**

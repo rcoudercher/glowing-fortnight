@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Trophies index</h1>
-  <p><a href="{{ route('trophies.create') }}">Add new trophy</a></p>
+  <p><a href="{{ route('admin.trophies.create') }}">Add new trophy</a></p>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -18,7 +18,7 @@
     @foreach ($trophies as $trophy)
       <tr>
         <th scope="row">{{ $trophy->id }}</th>
-        <td><a href="{{ route('trophies.update', ['trophy' => $trophy]) }}">{{ $trophy->name }}</a></td>
+        <td><a href="{{ route('admin.trophies.update', ['trophy' => $trophy]) }}">{{ $trophy->name }}</a></td>
         <td>{{ $trophy->image }}</td>
         <td>{{ $trophy->created_at }}</td>
       </tr>

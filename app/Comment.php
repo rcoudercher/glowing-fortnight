@@ -82,12 +82,6 @@ class Comment extends Model
   
   public function isChild()
   {
-    if (is_null($this->parent_id)) {
-      return false;
-    } else {
-      return true;
-    }
+    return is_null($this->parent_id) ? false : true;
   }
-  
-  
 }

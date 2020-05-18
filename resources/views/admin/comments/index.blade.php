@@ -4,7 +4,7 @@
 
 @section('content')
   <h1>Comments index</h1>
-  <p><a href="{{ route('comments.create') }}">Add new comment</a></p>
+  <p><a href="{{ route('admin.comments.create') }}">Add new comment</a></p>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -22,8 +22,8 @@
     <tbody>
     @foreach ($comments as $comment)
       <tr>
-        <td><a href="{{ route('comments.update', ['comment' => $comment]) }}">show</a></td>
-        <td><a href="{{ route('comments.edit', ['comment' => $comment]) }}">edit</a></td>
+        <td><a href="{{ route('admin.comments.update', ['comment' => $comment]) }}">show</a></td>
+        <td><a href="{{ route('admin.comments.edit', ['comment' => $comment]) }}">edit</a></td>
         <th>{{ $comment->id }}</th>
         <td>{{ $comment->user_id }}</td>
         <td>{{ $comment->post_id }}</td>

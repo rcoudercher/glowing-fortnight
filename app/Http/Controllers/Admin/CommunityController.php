@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Community;
 use Illuminate\Http\Request;
@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Auth;
+use App\Http\Controllers\Controller;
 
 class CommunityController extends Controller
 {
@@ -60,7 +61,7 @@ class CommunityController extends Controller
     
     Community::create($validator);
 
-    return redirect(route('communities.index'))->with('message', 'Community created successfully.');
+    return redirect(route('admin.communities.index'))->with('message', 'Community created successfully.');
   }
 
   public function show(Community $community)
@@ -104,7 +105,7 @@ class CommunityController extends Controller
     // update model
     $community->update($validator);
     
-    return redirect(route('communities.show', ['community' => $community]))
+    return redirect(route('admin.communities.show', ['community' => $community]))
     ->with('message', 'Community updated successfully.');
     
   }
@@ -112,7 +113,7 @@ class CommunityController extends Controller
   public function destroy(Community $community)
   {
     $community->delete();
-    return redirect(route('communities.index'))->with('message', 'Community deleted successfully.');
+    return redirect(route('admin.communities.index'))->with('message', 'Community deleted successfully.');
   }
   
 }

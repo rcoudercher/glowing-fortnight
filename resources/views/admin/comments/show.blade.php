@@ -6,10 +6,10 @@
   <h1>Details for comment id {{ $comment->id }}</h1>
   
   <nav class="nav pb-3">
-    <a class="nav-link" href="{{ route('comments.edit', ['comment' => $comment]) }}">Edit</a>
-    <a class="nav-link" href="{{ route('comments.destroy', ['comment' => $comment]) }}" onclick="event.preventDefault(); 
+    <a class="nav-link" href="{{ route('admin.comments.edit', ['comment' => $comment]) }}">Edit</a>
+    <a class="nav-link" href="{{ route('admin.comments.destroy', ['comment' => $comment]) }}" onclick="event.preventDefault(); 
       document.getElementById('destroy-form').submit();">Delete</a>
-    <form id="destroy-form" action="{{ route('comments.destroy', ['comment' => $comment]) }}" method="POST" class="hidden">
+    <form id="destroy-form" action="{{ route('admin.comments.destroy', ['comment' => $comment]) }}" method="POST" class="hidden">
       @method('DELETE')
       @csrf
     </form>

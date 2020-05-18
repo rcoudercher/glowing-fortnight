@@ -22,15 +22,14 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           
-          <li class="nav-item"><a class="nav-link" href="{{ route('trophies.index') }}">Trophies</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('comments.index') }}">Comments</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('posts.index') }}">Posts</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('communities.index') }}">Communities</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('community-rules.index') }}">Rules</a></li>
-          
-          
-          <li class="nav-item"><a class="nav-link" href="{{ route('front.home') }}">// FRONT //</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.trophies.index') }}">Trophies</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.comments.index') }}">Comments</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.posts.index') }}">Posts</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.communities.index') }}">Communities</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.users.index') }}">Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.community-rules.index') }}">Rules</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.messages.index') }}">Messages</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">// FRONT //</a></li>
         </ul>
         {{-- <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

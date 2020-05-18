@@ -18,8 +18,8 @@
       </div>
       <div class="mx-5">
         <div class="mb-4 text-sm">
-          <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>
-           - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('front.users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
+          <a class="hover:underline font-semibold" href="{{ route('communities.show', ['community' => $post->community]) }}">r/{{ $post->community->display_name }}</a>
+           - Publié par <a class="hover:underline" href="{{ $post->user->deleted ? '#' : route('users.show.posts', ['user' => $post->user]) }}">u/{{ $post->user->deleted ? '[supprimé]' : $post->user->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
         </div>
         <div class="mb-4">
           <h3 class="title h3">{{ $post->title }}</h3>

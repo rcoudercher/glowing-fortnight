@@ -6,10 +6,10 @@
   <h1>Details for u/{{ $user->display_name }}</h1>
   
   <nav class="nav pb-3">
-    <a class="nav-link" href="{{ route('users.edit', ['user' => $user]) }}">Edit</a>
-    <a class="nav-link" href="{{ route('users.destroy', ['user' => $user]) }}" onclick="event.preventDefault(); 
+    <a class="nav-link" href="{{ route('admin.users.edit', ['user' => $user]) }}">Edit</a>
+    <a class="nav-link" href="{{ route('admin.users.destroy', ['user' => $user]) }}" onclick="event.preventDefault(); 
       document.getElementById('destroy-form').submit();">Delete</a>
-    <form id="destroy-form" action="{{ route('users.destroy', ['user' => $user]) }}" method="POST" class="hidden">
+    <form id="destroy-form" action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST" class="hidden">
       @method('DELETE')
       @csrf
     </form>

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 
 class CommentController extends Controller
 {
@@ -27,7 +28,7 @@ class CommentController extends Controller
       $validator = request()->validate([
         'user_id' => 'required|integer',
         'post_id' => 'required|integer',
-        'parent_id' => 'required|integer',
+        'parent_id' => 'nullable|integer',
         'content' => 'required',
       ]);
       
@@ -43,7 +44,8 @@ class CommentController extends Controller
       
       Comment::create($validator);
 
-      return redirect(route('comments.index'))->with('message', 'Comment created successfully.');
+      return redirect(route('admin.comments.index'))
+      ->with('message', 'Comment created successfully.');
     }
 
     public function show(Comment $comment)
@@ -61,7 +63,7 @@ class CommentController extends Controller
       $validator = Validator::make($request->all(), [
         'user_id' => 'required|integer',
         'post_id' => 'required|integer',
-        'parent_id' => 'required|integer',
+        'parent_id' => 'nullable|integer',
         'content' => 'required',
       ])->validate();
 
@@ -69,12 +71,14 @@ class CommentController extends Controller
       $comment->update($validator);
       
       // return view
-      return redirect(route('comments.show', ['comment' => $comment]))->with('message', 'Comment updated successfully.');
+      return redirect(route('admin.comments.show', ['comment' => $comment]))
+      ->with('message', 'Comment updated successfully.');
     }
 
     public function destroy(Comment $comment)
     {
       $comment->delete();
-      return redirect(route('comments.index'))->with('message', 'Comment deleted successfully.');
+      return redirect(route('admin.comments.index'))
+      ->with('message', 'Comment deleted successfully.');
     }
 }

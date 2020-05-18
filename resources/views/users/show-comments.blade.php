@@ -7,10 +7,10 @@
     <div class="container mx-auto py-3">
       <div class="flex">
         <div class="">
-          <a class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $user]) }}">Publications</a>
+          <a class="hover:underline" href="{{ route('users.show.posts', ['user' => $user]) }}">Publications</a>
         </div>
         <div class="ml-6">
-          <a class="hover:underline" href="{{ route('front.users.show.comments', ['user' => $user]) }}">Commentaires</a>
+          <a class="hover:underline" href="{{ route('users.show.comments', ['user' => $user]) }}">Commentaires</a>
         </div>
       </div>
     </div>
@@ -27,11 +27,11 @@
             
             <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow mb-5 rounded">
               <div class="border-b border-gray-400 p-4">
-                u/{{ $user->display_name }} <span class="text-sm">a participé a</span> <a class="hover:underline text-blue-500" href="{{ route('front.posts.show', ['community' => $comment->community, 'post' => $comment->post, 'slug' => $comment->post->slug]) }}">{{ $comment->post->title }}</a>
+                u/{{ $user->display_name }} <span class="text-sm">a participé a</span> <a class="hover:underline text-blue-500" href="{{ route('posts.show', ['community' => $comment->community, 'post' => $comment->post, 'slug' => $comment->post->slug]) }}">{{ $comment->post->title }}</a>
               </div>
               <div class="border-b border-gray-400 p-4">
                 <div class="mb-2">
-                  <a class="hover:underline text-sm" href="{{ route('front.users.show.posts', ['user' => $comment->parent->user]) }}">u/{{ $comment->parent->user->display_name }}</a> a commenté :
+                  <a class="hover:underline text-sm" href="{{ route('users.show.posts', ['user' => $comment->parent->user]) }}">u/{{ $comment->parent->user->display_name }}</a> a commenté :
                 </div>
                 <div class="">
                   {!! $comment->parent->content !!}
@@ -47,7 +47,7 @@
             
             <div style="font-family: 'Roboto', sans-serif;" class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow mb-5 rounded">
               <div class="border-b border-gray-400 p-4">
-                u/{{ $user->display_name }} <span class="text-sm">a participé a</span> <a class="hover:underline text-blue-500" href="{{ route('front.posts.show', ['community' => $comment->community, 'post' => $comment->post, 'slug' => $comment->post->slug]) }}">{{ $comment->post->title }}</a>
+                u/{{ $user->display_name }} <span class="text-sm">a participé a</span> <a class="hover:underline text-blue-500" href="{{ route('posts.show', ['community' => $comment->community, 'post' => $comment->post, 'slug' => $comment->post->slug]) }}">{{ $comment->post->title }}</a>
               </div>
               <div class="p-4">
                 {!! $comment->content !!}

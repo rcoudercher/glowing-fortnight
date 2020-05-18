@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\CommunityRule;
 use Illuminate\Http\Request;
@@ -9,6 +9,7 @@ use App\User;
 use App\Community;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 
 class CommunityRuleController extends Controller
 {
@@ -57,7 +58,7 @@ class CommunityRuleController extends Controller
     
     $communityRule = CommunityRule::create($validator);
       
-    return redirect(route('community-rules.show', ['community_rule' => $communityRule]))
+    return redirect(route('admin.community-rules.show', ['community_rule' => $communityRule]))
     ->with('message', 'Community rule created successfully');
   }
 
@@ -95,14 +96,14 @@ class CommunityRuleController extends Controller
     $communityRule->update($validator);
     
     // return view
-    return redirect(route('community-rules.show', ['community_rule' => $communityRule]))
+    return redirect(route('admin.community-rules.show', ['community_rule' => $communityRule]))
     ->with('message', 'Community rule updated successfully.');
   }
 
   public function destroy(CommunityRule $communityRule)
   {
     $communityRule->delete();
-    return redirect(route('community-rules.index'))
+    return redirect(route('admin.community-rules.index'))
     ->with('message', 'Community rule deleted successfully.');
   }
 }

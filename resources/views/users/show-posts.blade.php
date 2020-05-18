@@ -17,10 +17,10 @@
     <div class="container mx-auto py-3">
       <div class="flex">
         <div class="">
-          <a class="hover:underline" href="{{ route('front.users.show.posts', ['user' => $user]) }}">Publications</a>
+          <a class="hover:underline" href="{{ route('users.show.posts', ['user' => $user]) }}">Publications</a>
         </div>
         <div class="ml-6">
-          <a class="hover:underline" href="{{ route('front.users.show.comments', ['user' => $user]) }}">Commentaires</a>
+          <a class="hover:underline" href="{{ route('users.show.comments', ['user' => $user]) }}">Commentaires</a>
         </div>
       </div>
     </div>
@@ -42,10 +42,10 @@
             </div>
             <div class="mx-5">
               <div class="mb-4 text-sm">
-                u/{{ $user->display_name }} a publié sur <a class="hover:underline font-semibold" href="{{ route('front.communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
+                u/{{ $user->display_name }} a publié sur <a class="hover:underline font-semibold" href="{{ route('communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a>, il y a {{ now()->diffInHours($post->created_at) }} heures
               </div>
               <div class="mb-4">
-                <a href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">
+                <a href="{{ route('posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">
                   <h3 class="title h3">{{ $post->title }}</h3>
                 </a>
               </div>
@@ -67,13 +67,13 @@
               @endswitch
               
               <div class="flex text-sm">
-                <div><a class="hover:underline" href="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">{{ $post->comments->count() }} commentaires</a></div>
+                <div><a class="hover:underline" href="{{ route('posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}">{{ $post->comments->count() }} commentaires</a></div>
                 <div class="relative inline-block text-left">
                   <div class="ml-4 hover:underline shareBtn">Partager</div>
                   <div class="wrapper origin-top-left absolute left-0 mt-2 w-40 rounded-md shadow-lg hidden">
                     <div class="rounded-md bg-white shadow-xs">
                       <div class="py-1">
-                        <span data-link="{{ route('front.posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" class="copyLinkBtn block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">copier lien</a>
+                        <span data-link="{{ route('posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]) }}" class="copyLinkBtn block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">copier lien</a>
                       </div>
                     </div>
                   </div>

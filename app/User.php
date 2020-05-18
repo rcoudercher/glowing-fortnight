@@ -85,4 +85,29 @@ class User extends Authenticatable
     {
       return $this->hasMany('App\CommunityRule', 'creator_id');
     }
+    
+    public function sentMessages()
+    {
+      return $this->hasMany('App\Message', 'from_id');
+    }
+    
+    public function receivedMessages()
+    {
+      return $this->hasMany('App\Message', 'to_id');
+    }
+    
+    public function messages()
+    {
+      return $this->sentMessages->merge($this->receivedMessages);
+    }
+    
+    public function unreadMessages()
+    {
+      return $this->receivedMessages()->whereNull('read_at');
+    }
+    
+    public function archivedMessages()
+    {
+      return $this->messages()->whereNotNull('archived_at');
+    }
 }
