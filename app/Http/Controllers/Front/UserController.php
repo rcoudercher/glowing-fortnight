@@ -65,10 +65,10 @@ class UserController extends Controller
     
     // log new user in
     if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-      return redirect(route('front.home'))->with('message', 'Votre compte a bien été créé. Bienvenue !');
+      return redirect(route('home'))->with('message', 'Votre compte a bien été créé. Bienvenue !');
     }
     
-    return redirect(route('front.home'))->with('error', 'Une erreur s\'est produite.');
+    return redirect(route('home'))->with('error', 'Une erreur s\'est produite.');
   }
   
   public function destroy(Request $request)
@@ -84,7 +84,7 @@ class UserController extends Controller
       $decrypted = decrypt($request->input('key'));
     } catch (DecryptException $e) {
       Auth::guard('web')->logout();
-      return redirect(route('front.home'))->with('error', 'Echec de la suppression du compte. Veuillez essayer de nouveau.');
+      return redirect(route('home'))->with('error', 'Echec de la suppression du compte. Veuillez essayer de nouveau.');
     }
     
     $user = Auth::user();
@@ -92,7 +92,7 @@ class UserController extends Controller
     // check if logged user id matches the decrypted key
     if ($user->id != $decrypted) {
       Auth::guard('web')->logout();
-      return redirect(route('front.home'))
+      return redirect(route('home'))
       ->with('error', 'Echec de la suppression du compte. Veuillez essayer de nouveau.');
     }
     
@@ -129,6 +129,6 @@ class UserController extends Controller
     // log the user out for the last time
     Auth::guard('web')->logout();        
     
-    return redirect(route('front.home'))->with('message', 'Votre compte a bien été supprimé.');
+    return redirect(route('home'))->with('message', 'Votre compte a bien été supprimé.');
   }
 }

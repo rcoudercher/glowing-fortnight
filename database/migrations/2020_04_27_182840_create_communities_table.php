@@ -16,7 +16,10 @@ class CreateCommunitiesTable extends Migration
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_id')->nullable();
-            $table->smallInteger('type')->default(1); // 1: public, 2: private, 3: restricted
+            $table->smallInteger('type')->default(1); // 1: public, 2: restricted, 3: private
+            $table->boolean('mod_members')->default(0); // whether users can join this community freely or only upon request
+            $table->boolean('mod_posts')->default(0); // wheter new posts are moderated or not
+            $table->boolean('mod_comments')->default(0); // wheter new comments are moderated or not
             $table->string('hash')->unique(); // unique string community identifier       
             $table->string('name')->unique();
             $table->string('display_name')->unique();

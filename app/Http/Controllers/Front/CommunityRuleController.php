@@ -21,7 +21,7 @@ class CommunityRuleController extends Controller
     public function create(Community $community)
     {
       if (!Auth::user()->isAdmin($community)) {
-        return redirect(route('front.communities.show', ['community' => $community]))
+        return redirect(route('communities.show', ['community' => $community]))
         ->with('error', 'Cette page est réservée aux administrateurs de la communauté.');
       }
       
@@ -32,7 +32,7 @@ class CommunityRuleController extends Controller
     public function store(Community $community, Request $request)
     {
       if (!Auth::user()->isAdmin($community)) {
-        return redirect(route('front.communities.show', ['community' => $community]))
+        return redirect(route('communities.show', ['community' => $community]))
         ->with('error', 'Cette action est réservée aux administrateurs de la communauté.');
       }
       
@@ -68,7 +68,7 @@ class CommunityRuleController extends Controller
           
       $communityRule = CommunityRule::create($validator);
       
-      return redirect(route('front.communities.admin.dashboard', ['community' => $community]))
+      return redirect(route('communities.admin.dashboard', ['community' => $community]))
       ->with('message', 'Nouvelle règle bien créée');
     }
 
@@ -81,7 +81,7 @@ class CommunityRuleController extends Controller
     {
       // if logged in user isn't one of the community admins, redirect to community show
       if (!Auth::user()->isAdmin($community)) {
-        return redirect(route('front.communities.show', ['community' => $community]))
+        return redirect(route('communities.show', ['community' => $community]))
         ->with('error', 'Cette action est réservée aux administrateurs de la communauté.');
       }
       
@@ -106,7 +106,7 @@ class CommunityRuleController extends Controller
       
       $communityRule->update($validator); // update model
       
-      return redirect(route('front.communities.admin.dashboard', ['community' => $community]))
+      return redirect(route('communities.admin.dashboard', ['community' => $community]))
       ->with('message', 'Modifications enregistrées.');
     }
 
@@ -119,7 +119,7 @@ class CommunityRuleController extends Controller
       }
       
       $communityRule->delete();
-      return redirect(route('front.communities.admin.dashboard', ['community' => $community]))
+      return redirect(route('communities.admin.dashboard', ['community' => $community]))
       ->with('message', 'Règle bien suprimée.');
     }
     
@@ -139,7 +139,7 @@ class CommunityRuleController extends Controller
       $communityRule->order -= 1;
       $communityRule->save();
       
-      return redirect(route('front.communities.admin.dashboard', ['community' => $community]))
+      return redirect(route('communities.admin.dashboard', ['community' => $community]))
       ->with('message', 'Ordre des règles bien changé.');
     }
     
@@ -159,7 +159,7 @@ class CommunityRuleController extends Controller
       $communityRule->order += 1;
       $communityRule->save();
       
-      return redirect(route('front.communities.admin.dashboard', ['community' => $community]))
+      return redirect(route('communities.admin.dashboard', ['community' => $community]))
       ->with('message', 'Ordre des règles bien changé.');
     }
 }

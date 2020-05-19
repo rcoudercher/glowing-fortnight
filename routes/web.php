@@ -37,7 +37,7 @@ Route::name('users.')->group(function() {
   Route::patch('config/compte/supprimer', 'Front\UserController@destroy')->name('destroy')->middleware('auth');
 });
 
-// community rule routes
+// rule routes
 Route::name('community-rules.')->group(function() {
   Route::group(['prefix' => 'k/{community:display_name}/admin/regle', 'middleware' => 'auth'], function() {
     // Route::get('/', 'Front\CommunityRuleController@index')->name('index');
@@ -61,6 +61,8 @@ Route::name('communities.')->group(function () {
     Route::get('/', 'Front\CommunityController@show')->name('show');
     Route::patch('/', 'Front\CommunityController@update')->name('update')->middleware('auth');
     Route::get('admin', 'Front\CommunityController@showAdminDashboard')->name('admin.dashboard')->middleware('auth');
+    Route::get('admin/config', 'Front\CommunityController@editSettings')->name('settings.edit')->middleware('auth');
+    Route::patch('admin/config', 'Front\CommunityController@updateSettings')->name('settings.update')->middleware('auth');
     Route::get('modifier', 'Front\CommunityController@edit')->name('edit')->middleware('auth');
     Route::post('quitter', 'Front\CommunityController@leave')->name('leave');
     Route::post('rejoindre', 'Front\CommunityController@join')->name('join');
@@ -103,7 +105,7 @@ Route::name('messages.')->group(function() {
   });
 });
 
-// settings routes
+// user settings routes
 Route::name('settings.')->group(function () {
   Route::group(['prefix' => 'config', 'middleware' => 'auth'], function() {
     Route::get('compte', 'Front\SettingsController@account')->name('account');

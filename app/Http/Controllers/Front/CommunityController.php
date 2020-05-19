@@ -41,7 +41,7 @@ class CommunityController extends Controller
     
     // check if the user isn't already a member of the community he's now requesting to join
     if ($communities->contains($community)) {
-      return redirect(route('front.communities.show', ['community' => $community]))
+      return redirect(route('communities.show', ['community' => $community]))
       ->with('error', 'Vous êtes déja membre de cette communauté.');
     }
         
@@ -65,7 +65,7 @@ class CommunityController extends Controller
   public function showAdminDashboard(Community $community)
   {
     if (!Auth::user()->isAdmin($community)) {
-      return redirect(route('front.communities.show', ['community' => $community]))
+      return redirect(route('communities.show', ['community' => $community]))
       ->with('error', 'Cette page est réservée aux administrateurs de la communauté.');
     }
     
@@ -115,7 +115,7 @@ class CommunityController extends Controller
     $community->save();
     $community->users()->attach($user, ['admin' => true]);
     
-    return redirect(route('front.communities.show', ['community' => $community]))
+    return redirect(route('communities.show', ['community' => $community]))
     ->with('message', 'Votre communauté a bien été créée. A vous de jouer !');
   }
   
@@ -127,14 +127,12 @@ class CommunityController extends Controller
   public function update(Request $request, Community $community)
   {    
     $data = [
-      'type' => $request->input('type'),      
       'title' => $request->input('title'),
       'description' => $request->input('description'),
       'submission_text' => $request->input('submission_text'),
     ];
     
     $rules = [
-      'type' => ['required', 'integer', 'min:1', 'max:3'],
       'title' => ['nullable', 'string'],
       'description' => ['nullable', 'string'],
       'submission_text' => ['nullable', 'string'],
@@ -144,7 +142,45 @@ class CommunityController extends Controller
     
     $community->update($validator); // update model
     
-    return redirect(route('front.communities.admin.dashboard', ['community' => $community]))
+    return redirect(route('communities.admin.dashboard', ['community' => $community]))
     ->with('message', 'Modifications enregistrées.');
+  }
+  
+  public function editSettings(Community $community)
+  {
+    if (!Auth::user()->isAdmin($community)) {
+      return redirect(route('communities.show', ['community' => $community]))
+      ->with('error', 'Cette page est réservée aux administrateurs de la communauté.');
+    }
+    
+    return view('communities.settings', compact('community'));  
+  }
+  
+  public function updateSettings(Request $request, Community $community)
+  {
+    if (!Auth::user()->isAdmin($community)) {
+      return redirect(route('communities.show', ['community' => $community]))
+      ->with('error', 'Cette action est réservée aux administrateurs de la communauté.');
+    }
+    
+    // input validation
+    $data = [
+      'type' => $request->input('type'),
+      'mod_members' => $request->input('mod_members'),
+      'mod_posts' => $request->input('mod_posts'),
+      'mod_comments' => $request->input('mod_comments'),
+    ];
+    $rules = [
+      'type' => ['required', 'integer', 'min:1', 'max:3'],
+      'mod_members' => ['required', 'boolean'],
+      'mod_posts' => ['required', 'boolean'],
+      'mod_comments' => ['required', 'boolean'],
+    ];
+    $validator = Validator::make($data, $rules)->validate();
+    
+    $community->update($validator); // update model
+    
+    return redirect(route('communities.admin.dashboard', ['community' => $community]))
+    ->with('message', 'Configuration modifiée');
   }
 }

@@ -101,7 +101,7 @@ class PostController extends Controller
     $post->community()->associate($community);
     $post->save();
       
-    return redirect(route('front.communities.show', ['community' => $community]))
+    return redirect(route('communities.show', ['community' => $community]))
     ->with('message', 'Votre message a bien été publié.');
   }
   
@@ -112,7 +112,7 @@ class PostController extends Controller
       return response()->json([
         'success' => false,
         'reason' => 'unauthenticated',
-        'redirect' => route('front.users.login'),
+        'redirect' => route('users.login'),
       ]);
     }
     

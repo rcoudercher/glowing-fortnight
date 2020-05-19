@@ -1,5 +1,3 @@
-@csrf
-
 <div class="form-group">
   <label for="creator_id">creator_id</label>
   <input type="text" name="creator_id" class="form-control" id="creator_id" value="{{ old('creator_id') ?? $community->creator_id }}" required autofocus>

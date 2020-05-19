@@ -30,9 +30,7 @@
             </div>
           </div>
           <div id="right" class="lg:ml-6 lg:w-1/3">
-            <div class="bg-white shadow p-4 mb-5 rounded">
-              <a class="hover:underline" href="{{ route('communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
-            </div>
+            @include('components.community-admin-nav')
             @include('components.footer')
           </div>
         </div>

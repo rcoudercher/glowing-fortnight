@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Administration de r/'.$community->display_name)
+@section('title', 'Administration de k/'.$community->display_name)
 
 @section('scripts')
   <script type="text/javascript">
@@ -132,9 +132,7 @@
           </div>
         </div>
         <div id="right" class="lg:ml-6 lg:w-1/3">
-          <div class="card">
-            <a class="hover:underline" href="{{ route('communities.show', ['community' => $community]) }}">k/{{ $community->display_name }}</a>
-          </div>
+          @include('components.community-admin-nav')
           @include('components.community-rules')
           @include('components.footer')
         </div>

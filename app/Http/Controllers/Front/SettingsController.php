@@ -81,10 +81,10 @@ class SettingsController extends Controller
       
       // also send an email to the user
       
-      return redirect(route('front.users.settings.index'))->with('message', 'Mot de passe modifié avec succès.');
+      return redirect(route('users.settings.index'))->with('message', 'Mot de passe modifié avec succès.');
     }
     
-    return redirect(route('front.users.settings.password.edit'))->with('message', 'Echec de la mise à jour. Ancien mot de passe incorrect.');
+    return redirect(route('users.settings.password.edit'))->with('message', 'Echec de la mise à jour. Ancien mot de passe incorrect.');
   }
   
   

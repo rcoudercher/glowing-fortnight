@@ -20,6 +20,10 @@ $factory->define(Community::class, function (Faker $faker) {
   
     return [
       'creator_id' => $faker->randomDigitNot(0),
+      'type' => random_int(1,3),
+      'mod_members' => random_int(0,1),
+      'mod_posts' => random_int(0,1),
+      'mod_comments' => random_int(0,1),
       'hash' => $hash,
       'name' => Str::lower($name),
       'display_name' => $name,

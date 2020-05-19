@@ -19,25 +19,6 @@
               @csrf
               
               <div class="flex flex-wrap mb-6">
-                <p class="text-gray-700 text-sm font-bold">Type :</p>
-                <div class="px-2">
-                  <input class="ml-2" type="radio" id="type1" name="type" value="1" {{ $community->type == 1 ? 'checked' : '' }}>
-                  <label class="ml-1" for="type1">Public</label>
-                </div>
-                <div class="px-2">
-                  <input class="ml-2" type="radio" id="type2" name="type" value="2" {{ $community->type == 2 ? 'checked' : '' }}>
-                  <label class="ml-1" for="type2">Privé</label>
-                </div>
-                <div class="px-2">
-                  <input class="ml-2" type="radio" id="type3" name="type" value="3" {{ $community->type == 3 ? 'checked' : '' }}>
-                  <label class="ml-1" for="type3">Restreint</label>
-                </div>
-                @error('type')
-                  <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
-                @enderror
-              </div>
-              
-              <div class="flex flex-wrap mb-6">
                 <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Titre</label>
                 <input type="title" class="bg-gray-300 form-input w-full @error('title') border-red-500 @enderror" name="title" value="{{ old('title') ?? $community->title }}">
                 @error('name')

@@ -173,9 +173,21 @@
             </div>
             <div>
               <div class="mb-2">{{ $community->description }}</div>
+              <div class="mb-2">
+                @switch($community->type)
+                  @case(1)
+                    <span title="Tout le monde a accès au contenu de la communauté et tout le monde peut participer.">Communauté publique</span>
+                    @break
+                  @case(2)
+                    <span title="Tout le monde a accès au contenu de la communauté mais seuls les membres peuvent participer.">Communauté restreinte</span>
+                    @break
+                  @case(3)
+                    <span title="Seuls les membres ont accès au contenu de la communauté et peuvent y participer.">Communauté privée</span>
+                    @break
+                @endswitch
+              </div>
               <div class="mb-2">{{ $community->users->count() }} membres</div>
-              <div class="mb-2">15 membres en ligne</div>
-              <div class="mb-2">community créé le {{ $community->created_at }}</div>
+              <div class="mb-2">communauté créée le {{ $community->created_at }}</div>
               <div><a href="#" class="btn btn-indigo">Publier un message</a></div>
             </div>
           </div>
