@@ -57,7 +57,7 @@
     </button>
 
     @if (Route::has('password.request'))
-    <a class="text-sm text-blue-500 hover:text-blue-700 whitespace-no-wrap no-underline ml-auto" href="{{ route('front.users.password.request') }}">
+    <a class="text-sm text-blue-500 hover:text-blue-700 whitespace-no-wrap no-underline ml-auto" href="{{ route('users.password.request') }}">
     Mot de passe oublié ?
     </a>
     @endif
@@ -65,7 +65,7 @@
     @if (Route::has('register'))
     <p class="w-full text-xs text-center text-gray-700 mt-8 -mb-4">
     Nouveau ?
-    <a class="text-blue-500 hover:text-blue-700 no-underline" href="{{ route('front.users.create') }}">
+    <a class="text-blue-500 hover:text-blue-700 no-underline" href="{{ route('users.create') }}">
     INSCRIPTION
     </a>
     </p>

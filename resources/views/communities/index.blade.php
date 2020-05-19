@@ -46,7 +46,23 @@
                 <div class="mb-3">
                   <p class="leading-snug">{{ $community->description }}</p>
                 </div>
-                <p>{{ $community->users->count() }} membres - Créée le {{ $community->created_at->format('d/m/y') }}</p>
+                <div class="flex">
+                  <div class="">{{ $community->users->count() }} membres</div>
+                  <div class="ml-3">Créée le {{ $community->created_at->format('d/m/y') }}</div>
+                  <div class="ml-3">
+                    @switch($community->type)
+                      @case(1)
+                        <span title="Tout le monde a accès au contenu de la communauté et tout le monde peut participer.">publique</span>
+                        @break
+                      @case(2)
+                        <span title="Tout le monde a accès au contenu de la communauté mais seuls les membres peuvent participer.">restreinte</span>
+                        @break
+                      @case(3)
+                        <span title="Seuls les membres ont accès au contenu de la communauté et peuvent y participer.">privée</span>
+                        @break
+                    @endswitch
+                  </div>
+                </div>
               </div>
             @endforeach
           </div>

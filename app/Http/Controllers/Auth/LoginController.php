@@ -43,6 +43,6 @@ class LoginController extends Controller
     public function userLogout()
     {
       Auth::guard('web')->logout();
-      return redirect(route('front.home'))->with('message', 'Vous avez bien été déconnecté.');
+      return redirect(route('home'))->with('message', 'Vous avez bien été déconnecté.');
     }
 }

@@ -21,7 +21,7 @@ class CommunityController extends Controller
   }
   
   public function show(Community $community)
-  {    
+  {
     $posts = $community->posts->sortByDesc(function($post) {
       return $post->wilsonScore();
     });
@@ -30,33 +30,19 @@ class CommunityController extends Controller
     
   public function join(Community $community)
   {
-    if (!Auth::check()) {
-      return redirect(route('login'))
-      ->with('error', 'Vous devez être connecté pour rejoindre une communauté.');
-    }
-    
-    $user = Auth::user(); // retrieve logged in user
-    
+    $user = Auth::user();
     $communities = $user->communities; // retrieve user's communities
-    
-    // check if the user isn't already a member of the community he's now requesting to join
+    // check if the user isn't already a member of the community he's requesting to join
     if ($communities->contains($community)) {
       return redirect(route('communities.show', ['community' => $community]))
       ->with('error', 'Vous êtes déja membre de cette communauté.');
     }
-        
     $user->communities()->attach($community); // attach this new community
-    
     return back()->with('message', 'Vous faites maintenant partie de r/'.$community->name);
   }
   
   public function leave(Community $community)
-  {
-    if (!Auth::check()) {
-      return redirect(route('login'))
-      ->with('error', 'Vous devez être connecté pour quitter une communauté.');
-    }
-    
+  {  
     $user = Auth::user();
     $user->communities()->detach($community);
     return back()->with('message', 'Vous avez bien quitté r/'.$community->name);
@@ -131,13 +117,11 @@ class CommunityController extends Controller
       'description' => $request->input('description'),
       'submission_text' => $request->input('submission_text'),
     ];
-    
     $rules = [
       'title' => ['nullable', 'string'],
       'description' => ['nullable', 'string'],
       'submission_text' => ['nullable', 'string'],
     ];
-    
     $validator = Validator::make($data, $rules)->validate();
     
     $community->update($validator); // update model

@@ -44,13 +44,13 @@ class User extends Authenticatable
     
     // relationships functions
     
-    // the badges that belong to the user
+    // the trophies this user has got
     public function trophies()
     {
       return $this->belongsToMany('App\Trophy');
     }
     
-    // the subs that this user belongs to
+    // the communities this user belongs to
     public function communities()
     {
       return $this->belongsToMany('App\Community')->withPivot('admin')->withTimestamps();
@@ -69,6 +69,11 @@ class User extends Authenticatable
     public function isAdmin(Community $community)
     {
       return $this->adminCommunities->contains($community);  
+    }
+    
+    public function isMember(Community $community)
+    {
+      return $this->communities->contains($community);  
     }
     
     public function posts()

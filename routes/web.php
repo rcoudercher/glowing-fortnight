@@ -64,8 +64,8 @@ Route::name('communities.')->group(function () {
     Route::get('admin/config', 'Front\CommunityController@editSettings')->name('settings.edit')->middleware('auth');
     Route::patch('admin/config', 'Front\CommunityController@updateSettings')->name('settings.update')->middleware('auth');
     Route::get('modifier', 'Front\CommunityController@edit')->name('edit')->middleware('auth');
-    Route::post('quitter', 'Front\CommunityController@leave')->name('leave');
-    Route::post('rejoindre', 'Front\CommunityController@join')->name('join');
+    Route::post('leave', 'Front\CommunityController@leave')->name('leave')->middleware('auth');
+    Route::post('join', 'Front\CommunityController@join')->name('join')->middleware('auth');
   });
 });
 
