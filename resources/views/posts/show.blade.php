@@ -8,7 +8,7 @@
       
       toggleShareOptionsDropdown();
       copyPostLinkToClipboard();
-      toggleReplyToCommentForms();
+      toggleReplyToCommentForms("replyBtn");
       
       // post vote buttons
       var postUp = document.getElementById("postUp");
@@ -121,10 +121,10 @@
           @endguest
           
           @auth
-            <form action="{{ route('comments.store', ['community' => $community, 'post' => $post, 'slug' => $post->slug]) }}" method="POST">
+            <form action="{{ route('comments.store', ['post' => $post]) }}" method="POST">
               @csrf
               <div class="mb-6">
-                <textarea id="main" placeholder="Qu'en pensez-vous ?" class="bg-gray-300 form-input w-full @error('content') border-red-500 @enderror" name="content" id="content" rows="4" cols="80">{{ old('content') }}</textarea>
+                <textarea id="main" placeholder="Ajouter un commentaire public..." class="bg-gray-300 form-input w-full @error('content') border-red-500 @enderror" name="content" id="content" rows="4" cols="80">{{ old('content') }}</textarea>
               </div>
               @error('content')
                 <p class="text-red-500 text-xs italic mt-4">{{ $message }}</p>
@@ -138,7 +138,7 @@
             @foreach ($rootComments as $comment)
               <div class="mb-6">
                 
-                <div class="flex wrapper" data-hash="{{ $comment->hash }}">
+                <div class="flex wrapper" data-hash="{{ $comment->hash }}" data-type="root" data-name="{{ $comment->user->display_name }}">
                   <div class="">
                     image
                   </div>
@@ -156,38 +156,37 @@
                       <div class="voteBtn arrowUp commentUp {{ $comment->upVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-up"></i></div>
                       <div class="ml-2"><span class="counter" id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span></div>
                       <div class="ml-2 voteBtn arrowDown commentDown {{ $comment->downVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-down"></i></div>
-                      <div class="ml-4 uppercase text-sm px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn" data-hash="{{ $comment->getEncryptedHash() }}">répondre</div>
-                    </div>
-                    
-                    @if ($comment->hasChildren())
-                      @foreach ($comment->children() as $comment)
-                        <div class="flex wrapper mt-4" data-hash="{{ $comment->hash }}">
-                          <div class="">
-                            image
-                          </div>
-                          <div class="ml-4 flex-grow">
-                            <div class="flex mb-2 text-sm">
-                              <div class="">
-                                <a class="font-bold" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
-                              </div>
-                              <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
-                            </div>
-                            <div class="mb-3">
-                              <p class="whitespace-pre-wrap text-base leading-snug">{{ $comment->content }}</p>
-                            </div>
-                            <div class="flex items-center">
-                              <div class="voteBtn arrowUp commentUp {{ $comment->upVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-up"></i></div>
-                              <div class="ml-2"><span class="counter" id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span></div>
-                              <div class="ml-2 voteBtn arrowDown commentDown {{ $comment->downVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-down"></i></div>
-                              <div class="ml-4 uppercase text-sm px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn" data-hash="{{ $comment->getEncryptedHash() }}">répondre</div>
-                            </div>
-                          </div>
-                        </div>
-                      @endforeach
-                    @endif
-                    
+                      <div class="ml-4 uppercase text-sm px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn">répondre</div>
+                    </div>              
                   </div>
                 </div>
+                
+                @if ($comment->hasChildren())
+                  @foreach ($comment->children() as $comment)
+                    <div class="flex wrapper ml-12 mt-4" data-hash="{{ $comment->hash }}" data-type="child" data-name="{{ $comment->user->display_name }}">
+                      <div class="">
+                        image
+                      </div>
+                      <div class="ml-4 flex-grow">
+                        <div class="flex mb-2 text-sm">
+                          <div class="">
+                            <a class="font-bold" href="{{ route('users.show.posts', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a>
+                          </div>
+                          <div class="ml-2">il y a {{ now()->diffInHours($comment->created_at) }} heures</div>
+                        </div>
+                        <div class="mb-3">
+                          <p class="whitespace-pre-wrap text-base leading-snug">{{ $comment->content }}</p>
+                        </div>
+                        <div class="flex items-center">
+                          <div class="voteBtn arrowUp commentUp {{ $comment->upVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-up"></i></div>
+                          <div class="ml-2"><span class="counter" id="counter-{{ $comment->hash }}">{{ $comment->voteCount() }}</span></div>
+                          <div class="ml-2 voteBtn arrowDown commentDown {{ $comment->downVotes()->contains('user', Auth::user()) ? 'active' : '' }}"><i class="fas fa-arrow-down"></i></div>
+                          <div class="ml-4 uppercase text-sm px-2 py-1 hover:bg-gray-200 rounded cursor-pointer replyBtn">répondre</div>
+                        </div>
+                      </div>
+                    </div>
+                  @endforeach
+                @endif
                 
               </div>
             @endforeach

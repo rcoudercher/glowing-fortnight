@@ -17,7 +17,8 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable(); // user who wrote this comment
             $table->unsignedBigInteger('post_id')->nullable(); // post this comment is related to
-            $table->unsignedBigInteger('parent_id')->nullable(); // comment this comment is related to. Null if root comment, i.e. is a direct reply to a post
+            $table->unsignedBigInteger('ancestor_id')->nullable(); // null if root comment, i.e. is a direct reply to a post
+            $table->unsignedBigInteger('parent_id')->nullable(); // comment this comment is a reply to, parent comment can be a child comment
             $table->string('hash')->unique(); // 7 characters (alphanumeric, i.e. 62 possibilities each) = 3.521.614.606.208 possibilities
             $table->bigInteger('up_votes')->default(0);
             $table->bigInteger('down_votes')->default(0);

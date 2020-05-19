@@ -78,7 +78,8 @@ Route::name('posts.')->group(function() {
 
 // comment routes
 Route::name('comments.')->group(function() {
-  Route::post('k/{community:display_name}/{post:hash}/{slug}', 'Front\CommentController@store')->name('store')->middleware('auth');
+  Route::post('comment/{post:hash}', 'Front\CommentController@store')->name('store')->middleware('auth');
+  Route::post('reply/{comment:hash}', 'Front\CommentController@reply')->name('reply')->middleware('auth');
   Route::get('comment/{comment:hash}/vote-count', 'Front\CommentController@getVoteCount')->name('vote-count');
   Route::post('comment/{comment:hash}/vote', 'Front\CommentController@vote')->name('vote');
 });

@@ -22,6 +22,7 @@ class PostController extends Controller
       abort(404); // if slugs aren't matching, then throw a 404
     }
     
+    // sort comments by descending Wilson scores
     $rootComments = $post->rootComments->sortByDesc(function($comment) {
       return $comment->wilsonScore();
     });

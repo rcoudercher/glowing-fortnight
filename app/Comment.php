@@ -77,7 +77,7 @@ class Comment extends Model
   
   public function children()
   {
-    return Comment::where('parent_id', $this->id)->get();
+    return Comment::where('ancestor_id', $this->id)->get();
   }
   
   public function hasChildren()

@@ -383,14 +383,21 @@ function linkToMessage(className) {
   }
 }
 
-function toggleReplyToCommentForms() {
+function toggleReplyToCommentForms(className) {
   
-  var elements = document.getElementsByClassName("replyBtn");
+  var elements = document.getElementsByClassName(className);
   var csrf = document.getElementsByName("csrf-token").item(0).getAttribute("content");
+  var protocol = window.location.protocol;
+  var host = window.location.host;  
   
   for (var i = 0; i < elements.length; i++) {
     
     let el = elements.item(i);
+    let wrapper = el.closest(".wrapper");
+    let hash = wrapper.getAttribute("data-hash");
+    let type = wrapper.getAttribute("data-type");
+    let name = wrapper.getAttribute("data-name");
+    let url = protocol + "//" + host + "/reply/" + hash;
     
     el.addEventListener("click", function() {
       
@@ -411,7 +418,7 @@ function toggleReplyToCommentForms() {
         // create a form
         var f = document.createElement("form");
         f.setAttribute("method", "post");
-        f.setAttribute("action", window.location.href);
+        f.setAttribute("action", url);
 
         var t = document.createElement("input");
         t.setAttribute("type", "hidden");
@@ -426,6 +433,12 @@ function toggleReplyToCommentForms() {
         var i = document.createElement("textarea");
         i.classList.add("reply", "form-input", "w-full", "whitespace-pre");
         i.setAttribute("name", "content");
+        
+        if (type == "root") {
+          i.placeholder = "ajouter une réponse publique..."
+        } else if (type == "child") {
+          i.value = "@u/" + name + " ";
+        }
         
         var s = document.createElement("input");
         s.setAttribute("type", "submit");

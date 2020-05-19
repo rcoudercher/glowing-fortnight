@@ -18,74 +18,66 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CommentController extends Controller
 {
-  public function store(Request $request, Community $community, Post $post, $slug)
-  {
-    // check if slugs are matching
-    if ($post->slug != $slug) {
-      abort(404);
-    }
-    
-    $data = [
-      'content' => strip_tags($request->input('content'), ['<p>','<a>','<strong>','<em>','<span>','<h2>','<blockquote>','<ul>','<ol>','<li>']),
-    ];
-    
-    $rules = [
-      'content' => ['required', 'string', 'max:2000'],
-    ];
-    
+  
+  // 3 types of comment :
+  // - comment a post (both ancestor_id and parent_id null)
+  // - reply to a comment (ancestor_id and parent_id not null and identical)
+  // - reply to a reply (ancestor_id and parent_id different)
+  
+  public function store(Request $request, Post $post)
+  {  
+    $data = ['content' => $request->input('content')];
+    $rules = ['content' => ['required', 'string', 'max:2000']];
     $messages = [
       'content.required' => 'Ce champ est obligatoire',
       'content.string' => 'Le commentaire doit être une chaîne de caractères',
       'content.max' => 'Le commentaire ne doit pas faire plus de :max caractères',
     ];
-    
     $validator = Validator::make($data, $rules, $messages)->validate();
     
-    // find unique hash
-    $hashes = Comment::all()->pluck('hash');
-    $hash = Str::random(7);
-    while ($hashes->contains($hash)) {
-      $hash = Str::random(7);
-    }
-    // end find unique hash
-    
-    $validator['hash'] = $hash;
+    $validator['hash'] = $this->uniqueHash();
     
     $comment = Comment::create($validator);
     
     $comment->user()->associate(Auth::user());
     $comment->post()->associate($post);
-    $comment->community()->associate($community);
-        
-    // associate a parent comment if a parent_id exists
-    if ($request->has('parent_id')) {
-      
-      // throws an error if the decrypted has is wrong
-      try {
-        $hash = decrypt($request->input('parent_id'));
-      } catch (DecryptException $e) {
-        return back()->with('error', 'something went wrong');
-      }
-      
-      // throws an error if no model is found with the given hash
-      try {
-        $parent = Comment::where('hash', $hash)->firstOrFail();
-      } catch (ModelNotFoundException $e) {
-        return back()->with('error', 'something went wrong');
-      }
-      
-      // throws an error if the found model doesn't belog to this post
-      if (!$post->comments->contains($parent)) {
-        return back()->with('error', 'something went wrong');
-      }
-      
-      $comment->parent()->associate($parent);
-    }
-    
     $comment->save();
     
-    return redirect(route('posts.show', ['community' => $community, 'post' => $post, 'slug' => $post->slug]))
-    ->with('message', 'Votre commentaire a bien été publié.');
+    return redirect(route('posts.show', ['community' => $post->community, 'post' => $post, 'slug' => $post->slug]))
+    ->with('message', 'Commentaire publié.');
+  }
+  
+  public function reply(Request $request, Comment $comment)
+  {
+    $data = ['content' => $request->input('content')];
+    $rules = ['content' => ['required', 'string', 'max:2000']];
+    $messages = [
+      'content.required' => 'Ce champ est obligatoire',
+      'content.string' => 'Le commentaire doit être une chaîne de caractères',
+      'content.max' => 'Le commentaire ne doit pas faire plus de :max caractères',
+    ];
+  
+    $validator = Validator::make($data, $rules, $messages)->validate();
+    $validator['hash'] = $this->uniqueHash();;
+  
+    $reply = Comment::create($validator);
+  
+    $reply->user()->associate(Auth::user());
+    $reply->post()->associate($comment->post);
+    $reply->parent_id = $comment->id;
+    
+    if ($comment->isChild()) {
+      // if the comment the user is replying too was not a root comment, the new comment will share the same ancestor_id
+      $reply->ancestor_id = $comment->ancestor_id;
+    } else {
+      // else, i.e. the user was replying toa root comment, the new comment will have this comment if for ancestor
+      $reply->ancestor_id = $comment->id;
+    }
+  
+    $reply->save();
+  
+    return redirect(route('posts.show', ['community' => $comment->community, 'post' => $comment->post, 'slug' => $comment->post->slug]))
+    ->with('message', 'Commentaire publié');
   }
   
   public function vote(Comment $comment, Request $request)
@@ -165,6 +157,16 @@ class CommentController extends Controller
         'state' => $state,
       ]);
     }
+  }
+  
+  // find unique hash for a new comment
+  private function uniqueHash() {
+    $hashes = Comment::all()->pluck('hash');
+    $hash = Str::random(7);
+    while ($hashes->contains($hash)) {
+      $hash = Str::random(7);
+    }
+    return $hash;
   }
   
   public function getVoteCount(Comment $comment)
