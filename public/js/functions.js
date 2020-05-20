@@ -346,9 +346,15 @@ function addCardLinksToPosts() {
   }
 }
 
-function toggleCommunityRuleDescription() {
+function toggleCommunityRuleDescription(wrapperID) {
   
-  var rules = document.getElementById("rulesBox").children;
+  var wrapper = document.getElementById(wrapperID);
+  
+  if (wrapper === null) {
+    return console.log("toggleCommunityRuleDescription() error : no element fount with id " + wrapperID);
+  }
+  
+  var rules = wrapper.children;
   
   if (rules.length == 0) {
     return console.log("toggleCommunityRuleDescription() error: no rules found");

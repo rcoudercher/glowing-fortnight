@@ -11,7 +11,7 @@
     toggleShareOptionsDropdown();
     copyPostLinkToClipboard();
     addCardLinksToPosts();
-    toggleCommunityRuleDescription();
+    toggleCommunityRuleDescription("rulesBox");
     
     // vote buttons
     var upVoteBtns = document.getElementsByClassName("upVote");
@@ -35,12 +35,29 @@
       });
     }
     
-    function leave(x) {
-      x.innerHTML = "Quitter";
+    // leave button when user is logged in and a member
+    var leaveBtn = document.getElementById("leaveBtn");    
+    if (leaveBtn !== null) {
+      leaveBtn.addEventListener("mouseover", function(e) {
+        var target = e.target || e.srcElement;
+        target.innerHTML = "Quitter";
+      });
+      
+      leaveBtn.addEventListener("mouseout", function(e) {
+        var target = e.target || e.srcElement;
+        target.innerHTML = "Membre";
+      });
     }
-    function member(x) {
-      x.innerHTML = "Membre";
+    
+    // join/leave form
+    var joinLeaveBtn = document.querySelector("#hero button");
+    if (joinLeaveBtn !== null) {
+      joinLeaveBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        document.getElementById("join-leave-form").submit();
+      });
     }
+    
     
   });
   
@@ -60,36 +77,22 @@
         <h2 class="title h2 mt-4">k/{{ $community->display_name }}</h2>
       </div>
       <div class="ml-8">
-        
-        @if (!is_null(Auth::user()) && $community->isAdmin(Auth::user()))
+        {{-- display link to admin if logged in user is an admin of this community --}}
+        @if (Auth::check() && $community->isAdmin(Auth::user()))
           <a class="btn btn-blue mr-6" href="{{ route('communities.admin.dashboard', ['community' => $community]) }}">admin</a>
         @endif
-        
-        @guest
-          <a class="btn btn-black" href="{{ route('communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
-            document.getElementById('destroy-form').submit();">Rejoindre</a>
-          <form id="destroy-form" action="{{ route('communities.join', ['community' => $community]) }}" method="POST" class="hidden">
+        @if (Auth::check() && $community->users->contains(Auth::user()))
+          <button type="button" id="leaveBtn" class="btn btn-black">Membre</button>
+          <form id="join-leave-form" action="{{ route('communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
             @csrf
           </form>
-        @endguest
-        
-        @auth
-          @if ($community->users->contains(Auth::user()))            
-            <a class="btn btn-black" onmouseover="leave(this)" onmouseout="member(this)" href="{{ route('communities.leave', ['community' => $community]) }}" onclick="event.preventDefault(); 
-              document.getElementById('destroy-form').submit();">Membre</a>
-            <form id="destroy-form" action="{{ route('communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
-              @csrf
-            </form>
-          @else            
-            <a class="btn btn-black" href="{{ route('communities.join', ['community' => $community]) }}" onclick="event.preventDefault(); 
-              document.getElementById('destroy-form').submit();">Rejoindre</a>
-            <form id="destroy-form" action="{{ route('communities.join', ['community' => $community]) }}" method="POST" class="hidden">
-              @csrf
-            </form>
-          @endif
-        @endauth
+        @else
+          <button type="button" class="btn btn-black">Rejoindre</button>
+          <form id="join-leave-form" action="{{ route('communities.join', ['community' => $community]) }}" method="POST" class="hidden">
+            @csrf
+          </form>
+        @endif
       </div>
-      
     </div>
   </div>
   
@@ -99,7 +102,7 @@
         <div id="left" class="lg:w-2/3">
           
           {{-- if community is private and user is not a member, don't display community content --}}
-          @if ($community->type == 3 && !Auth::user()->isMember($community))
+          @if (!Auth::check() || ($community->type == 3 && Auth::check() && !Auth::user()->isMember($community)))
             
             <div class="card">
               <p>Cette communauté est privée. Seuls les membres ont accès à son contenu.</p>
@@ -203,7 +206,7 @@
             </div>
           </div>
           
-          @if ($community->type != 3 || ($community->type == 3 && Auth::user()->isMember($community)))
+          @if ($community->communityRules->count() != 0 && !($community->type == 3 && (!Auth::check() || (Auth::check() && !Auth::user()->isMember($community)))))
             @include('components.community-rules')
           @endif
           

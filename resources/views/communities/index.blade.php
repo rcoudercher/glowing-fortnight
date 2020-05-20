@@ -8,7 +8,7 @@
         <div id="left" class="lg:w-2/3">
           
           
-          <div class="border-solid border border-gray-400 hover:border-gray-500 bg-white shadow p-5 mb-5 rounded" style="font-family: 'Roboto', sans-serif;">
+          <div class="card">
             @foreach ($communities as $community)
               <div class="py-5 border-b-2 border-gray-500">
                 <div class="flex mb-3">
@@ -70,9 +70,6 @@
           
         </div>
         <div id="right" class="lg:ml-6 lg:w-1/3">
-          <div class="bg-white shadow p-4 mb-5 rounded">
-            right
-          </div>
           @include('components.footer')
         </div>
       </div>
