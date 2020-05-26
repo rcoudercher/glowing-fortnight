@@ -13,6 +13,10 @@
       @method('DELETE')
       @csrf
     </form>
+    <a class="nav-link" href="{{ route('admin.posts.set-pending', ['post' => $post]) }}">Set pending</a>
+    <a class="nav-link" href="{{ route('admin.posts.approve', ['post' => $post]) }}">Approve</a>
+    <a class="nav-link" href="{{ route('admin.posts.reject', ['post' => $post]) }}">Reject</a>
+    <a class="nav-link" href="{{ route('admin.posts.postpone', ['post' => $post]) }}">Postpone</a>
   </nav>
   
   <table class="table table-bordered">
@@ -22,20 +26,12 @@
         <td>{{ $post->id }}</td>
       </tr>
       <tr>
-        <th scope="row">user_id</th>
-        <td>{{ $post->user_id }}</td>
+        <th scope="row">user</th>
+        <td><a href="{{ route('admin.users.show', ['user' => $post->user ]) }}">u/{{ $post->user->display_name }}</a></td>
       </tr>
       <tr>
         <th scope="row">community</th>
         <td><a href="{{ route('admin.communities.show', ['community' => $post->community]) }}">k/{{ $post->community->display_name }}</a></td>
-      </tr>
-      <tr>
-        <th scope="row">notification</th>
-        <td>{{ $post->notification }}</td>
-      </tr>
-      <tr>
-        <th scope="row">public</th>
-        <td>{{ $post->public }}</td>
       </tr>
       <tr>
         <th scope="row">hash</th>
@@ -69,7 +65,26 @@
         <th scope="row">link</th>
         <td><a href="{{ $post->link }}">{{ $post->link }}</a></td>
       </tr>
-      
+      <tr>
+        <th scope="row">status</th>
+        <td>{{ $post->status }}</td>
+      </tr>
+      <tr>
+        <th scope="row">moderated_at</th>
+        <td>{{ $post->moderated_at }}</td>
+      </tr>
+      <tr>
+        <th scope="row">moderated_by</th>
+        <td>{{ $post->moderated_by }}</td>
+      </tr>
+      <tr>
+        <th scope="row">creted_at</th>
+        <td>{{ $post->created_at }}</td>
+      </tr>
+      <tr>
+        <th scope="row">updated_by</th>
+        <td>{{ $post->updated_at }}</td>
+      </tr>
     </tbody>
   </table>
 @endsection

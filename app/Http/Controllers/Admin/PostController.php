@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\User;
+use App\Community;
 
 class PostController extends Controller
 {
@@ -21,7 +23,9 @@ class PostController extends Controller
     public function create()
     {
       $post = new Post(); // passes an empty model to the view
-      return view('admin.posts.create', compact('post'));
+      $users = User::all();
+      $communities = Community::all();
+      return view('admin.posts.create', compact('post', 'users', 'communities'));
     }
 
     public function store(Request $request)
@@ -29,10 +33,9 @@ class PostController extends Controller
       $validator = request()->validate([
         'user_id' => 'required|integer',
         'community_id' => 'required|integer',
-        'notification' => 'required|integer',
-        'public' => 'required|integer',
-        'title' => 'required',
-        'content' => 'required',
+        'status' => 'required|integer',
+        'title' => 'required|string',
+        'content' => 'required|string',
       ]);
       
       // find unique hash
@@ -58,7 +61,9 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-      return view('admin.posts.edit', compact('post'));
+      $users = User::all();
+      $communities = Community::all();
+      return view('admin.posts.edit', compact('post', 'users', 'communities'));
     }
 
     public function update(Request $request, Post $post)
@@ -66,10 +71,9 @@ class PostController extends Controller
       $validator = Validator::make($request->all(), [
         'user_id' => 'required|integer',
         'community_id' => 'required|integer',
-        'notification' => 'required|integer',
-        'public' => 'required|integer',
-        'title' => 'required',
-        'content' => 'required',
+        'status' => 'required|integer',
+        'title' => 'required|string',
+        'content' => 'required|string',
       ])->validate();
       
       $validator['slug'] = Str::limit(Str::slug($request->input('title'), '_'), 50);
@@ -85,6 +89,36 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
       $post->delete();
-      return redirect(route('admin.posts.index'))->with('message', 'Post deleted successfully.');
+      return redirect(route('admin.posts.index'))
+      ->with('message', 'Post deleted successfully.');
     }
+    
+    public function setPending(Post $post)
+    {
+      $post->status = 0;
+      $post->save();
+      return back()->with('message', 'Post set pending successfully.');
+    }
+    
+    public function approve(Post $post)
+    {
+      $post->status = 1;
+      $post->save();
+      return back()->with('message', 'Post approved successfully.');
+    }
+    
+    public function reject(Post $post)
+    {
+      $post->status = 2;
+      $post->save();
+      return back()->with('message', 'Post rejected successfully.');
+    }
+    
+    public function postpone(Post $post)
+    {
+      $post->status = 3;
+      $post->save();
+      return back()->with('message', 'Post postponed successfully.');
+    }
+    
 }

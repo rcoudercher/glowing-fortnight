@@ -81,4 +81,32 @@ class CommentController extends Controller
       return redirect(route('admin.comments.index'))
       ->with('message', 'Comment deleted successfully.');
     }
+    
+    public function setPending(Comment $comment)
+    {
+      $comment->status = 0;
+      $comment->save();
+      return back()->with('message', 'Comment set pending successfully.');
+    }
+    
+    public function approve(Comment $comment)
+    {
+      $comment->status = 1;
+      $comment->save();
+      return back()->with('message', 'Comment approved successfully.');
+    }
+    
+    public function reject(Comment $comment)
+    {
+      $comment->status = 2;
+      $comment->save();
+      return back()->with('message', 'Comment rejected successfully.');
+    }
+    
+    public function postpone(Comment $comment)
+    {
+      $comment->status = 3;
+      $comment->save();
+      return back()->with('message', 'Comment postponed successfully.');
+    }
 }

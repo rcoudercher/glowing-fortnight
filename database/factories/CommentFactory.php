@@ -12,5 +12,6 @@ $factory->define(Comment::class, function (Faker $faker) {
       'up_votes' => $faker->numberBetween(1,500),
       'down_votes' => $faker->numberBetween(1,500),
       'content' => $faker->text(300),
+      'status' => random_int(0,3),
     ];
 });

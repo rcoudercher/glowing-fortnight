@@ -22,20 +22,26 @@
         <td>{{ $comment->id }}</td>
       </tr>
       <tr>
-        <th scope="row">user_id</th>
-        <td>{{ $comment->user_id }}</td>
+        <th scope="row">user</th>
+        <td><a href="{{ route('admin.users.show', ['user' => $comment->user]) }}">u/{{ $comment->user->display_name }}</a></td>
       </tr>
       <tr>
-        <th scope="row">post_id</th>
-        <td>{{ $comment->post_id }}</td>
+        <th scope="row">post</th>
+        <td><a href="{{ route('admin.posts.show', ['post' => $comment->post]) }}">{{ $comment->post->title }}</a></td>
       </tr>
       <tr>
-        <th scope="row">parent_id</th>
-        <td>{{ $comment->parent_id }}</td>
+        <th scope="row">parent</th>
+        <td>
+          @if ($comment->isChild())
+            <a href="{{ route('admin.comments.show', ['comment' => $comment->parent()]) }}">{{ $comment->parent()->content }}</a>
+          @else
+            N/A
+          @endif
+        </td>
       </tr>
       <tr>
         <th scope="row">community</th>
-        <td>k/{{ $comment->community }}</td>
+        <td><a href="{{ route('admin.communities.show', ['community' => $comment->community]) }}">k/{{ $comment->community->display_name }}</a></td>
       </tr>
       <tr>
         <th scope="row">hash</th>

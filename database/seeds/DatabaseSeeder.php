@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
       $this->call(PostSeeder::class);
       $this->call(TrophySeeder::class);
       $this->call(CommentSeeder::class);
-      $this->call(MembershipSeeder::class);
       $this->call(VoteSeeder::class);
       $this->call(CommunityRuleSeeder::class);
       $this->call(MessageSeeder::class);
+      $this->call(MembershipSeeder::class);
+      
     }
 }

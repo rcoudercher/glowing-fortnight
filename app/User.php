@@ -39,21 +39,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
-    
-    // other functions
-    
-    // relationships functions
-    
     // the trophies this user has got
     public function trophies()
     {
       return $this->belongsToMany('App\Trophy');
     }
     
-    // the communities this user belongs to
     public function communities()
     {
-      return $this->belongsToMany('App\Community')->withPivot('admin')->withTimestamps();
+      return $this->belongsToMany('App\Community')
+      ->withPivot('admin', 'status', 'moderated_at', 'moderated_by')
+      ->withTimestamps();
     }
     
     public function adminCommunities()

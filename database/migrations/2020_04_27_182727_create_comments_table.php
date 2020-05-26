@@ -24,6 +24,9 @@ class CreateCommentsTable extends Migration
             $table->bigInteger('down_votes')->default(0);
             $table->text('content');
             $table->boolean('deleted')->default(0);
+            $table->smallInteger('status')->default(0); // moderation status
+            $table->dateTime('moderated_at')->nullable();
+            $table->unsignedBigInteger('moderated_by')->nullable();
             $table->timestamps();
         });
     }

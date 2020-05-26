@@ -167,4 +167,9 @@ class CommunityController extends Controller
     return redirect(route('communities.admin.dashboard', ['community' => $community]))
     ->with('message', 'Configuration modifiée');
   }
+  
+  public function moderationIndex(Community $community)
+  {
+    return view('communities.moderation.index', compact('community'));
+  }
 }

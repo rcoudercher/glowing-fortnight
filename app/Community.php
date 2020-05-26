@@ -18,7 +18,9 @@ class Community extends Model
   
   public function users()
   {
-    return $this->belongsToMany('App\User')->withPivot('admin')->withTimestamps();
+    return $this->belongsToMany('App\User')
+    ->withPivot('admin', 'status', 'moderated_at', 'moderated_by')
+    ->withTimestamps();
   }
   
   public function admins()

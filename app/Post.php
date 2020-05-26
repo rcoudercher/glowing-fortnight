@@ -74,4 +74,45 @@ class Post extends Model
   {
     return $this->comments()->whereNull('parent_id');
   }
+  
+  public function isPending()
+  {  
+    return $this->status == 0 ? true : false;
+  }
+  
+  public function isApproved()
+  {  
+    return $this->status == 1 ? true : false;
+  }
+  
+  public function isRejected()
+  {  
+    return $this->status == 2 ? true : false;
+  }
+  
+  public function isPostponed()
+  {  
+    return $this->status == 3 ? true : false;
+  }
+  
+  public function scopePending($query)
+  {
+    return $query->where('status', 0);
+  }
+  
+  public function scopeApproved($query)
+  {
+    return $query->where('status', 1);
+  }
+  
+  public function scopeRejected($query)
+  {
+    return $query->where('status', 2);
+  }
+  
+  public function scopePostponed($query)
+  {
+    return $query->where('status', 3);
+  }
+  
 }

@@ -39,5 +39,3 @@
     <small class="form-text text-muted">{{ $message }}</small>
   @enderror
 </div>
-
-@csrf

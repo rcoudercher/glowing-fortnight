@@ -15,6 +15,7 @@ $factory->define(Post::class, function (Faker $faker) {
     'up_votes' => $faker->numberBetween(1,500),
     'down_votes' => $faker->numberBetween(1,500),
     'title' => $title,
+    'status' => random_int(0,3),
   ];
   
   switch (random_int(1,3)) {
@@ -34,6 +35,6 @@ $factory->define(Post::class, function (Faker $faker) {
       $data['link'] = $faker->url;
       break;
   }
-  
+    
   return $data;
 });

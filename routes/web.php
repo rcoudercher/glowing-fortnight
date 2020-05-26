@@ -60,12 +60,16 @@ Route::name('communities.')->group(function () {
   Route::prefix('k/{community:display_name}')->group(function() {
     Route::get('/', 'Front\CommunityController@show')->name('show');
     Route::patch('/', 'Front\CommunityController@update')->name('update')->middleware('auth');
+    
     Route::get('admin', 'Front\CommunityController@showAdminDashboard')->name('admin.dashboard')->middleware('auth');
     Route::get('admin/config', 'Front\CommunityController@editSettings')->name('settings.edit')->middleware('auth');
     Route::patch('admin/config', 'Front\CommunityController@updateSettings')->name('settings.update')->middleware('auth');
+    Route::get('admin/moderation', 'Front\CommunityController@moderationIndex')->name('moderation.index')->middleware('auth');
+    
     Route::get('modifier', 'Front\CommunityController@edit')->name('edit')->middleware('auth');
     Route::post('leave', 'Front\CommunityController@leave')->name('leave')->middleware('auth');
     Route::post('join', 'Front\CommunityController@join')->name('join')->middleware('auth');
+    
   });
 });
 
@@ -133,8 +137,10 @@ Route::prefix('admin')->group(function() {
     Route::get('password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('password.request');
     Route::post('password/reset', 'Auth\AdminResetPasswordController@reset')->name('password.update');
     Route::get('password/reset/{token}', 'Auth\AdminResetPasswordController@showResetForm')->name('password.reset');
-    // model routes
+    
     Route::middleware('auth:admin')->group(function () {
+      
+      // model routes
       Route::resource('trophies', 'Admin\TrophyController');
       Route::resource('comments', 'Admin\CommentController');
       Route::resource('posts', 'Admin\PostController');
@@ -142,6 +148,47 @@ Route::prefix('admin')->group(function() {
       Route::resource('users', 'Admin\UserController');
       Route::resource('community-rules', 'Admin\CommunityRuleController');
       Route::resource('messages', 'Admin\MessageController');
+      
+      // membership routes
+      Route::prefix('memberships')->group(function() {
+        Route::name('memberships.')->group(function() {
+          Route::get('/', 'Admin\MembershipController@index')->name('index');
+          Route::get('create', 'Admin\MembershipController@create')->name('create');
+          Route::post('/', 'Admin\MembershipController@store')->name('store');
+          Route::get('{id}', 'Admin\MembershipController@show')->name('show');
+          Route::get('{id}/edit', 'Admin\MembershipController@edit')->name('edit');
+          Route::patch('{id}', 'Admin\MembershipController@update')->name('update');
+          Route::delete('{id}', 'Admin\MembershipController@destroy')->name('destroy');
+        });
+      });
+      
+      // moderation routes
+      Route::get('moderation/memberships', 'Admin\ModerationController@memberships')->name('moderation.memberships');
+      Route::get('moderation/posts', 'Admin\ModerationController@posts')->name('moderation.posts');
+      Route::get('moderation/comments', 'Admin\ModerationController@comments')->name('moderation.comments');
+      
+      Route::get('posts/{post}/set-pending', 'Admin\PostController@setPending')->name('posts.set-pending');
+      Route::get('posts/{post}/approve', 'Admin\PostController@approve')->name('posts.approve');
+      Route::get('posts/{post}/reject', 'Admin\PostController@reject')->name('posts.reject');
+      Route::get('posts/{post}/postpone', 'Admin\PostController@postpone')->name('posts.postpone');
+      
+      Route::get('comments/{comment}/set-pending', 'Admin\CommentController@setPending')->name('comments.set-pending');
+      Route::get('comments/{comment}/approve', 'Admin\CommentController@approve')->name('comments.approve');
+      Route::get('comments/{comment}/reject', 'Admin\CommentController@reject')->name('comments.reject');
+      Route::get('comments/{comment}/postpone', 'Admin\CommentController@postpone')->name('comments.postpone');
+      
+      Route::get('memberships/{id}/set-pending', 'Admin\MembershipController@setPending')->name('memberships.set-pending');
+      Route::get('memberships/{id}/approve', 'Admin\MembershipController@approve')->name('memberships.approve');
+      Route::get('memberships/{id}/reject', 'Admin\MembershipController@reject')->name('memberships.reject');
+      Route::get('memberships/{id}/postpone', 'Admin\MembershipController@postpone')->name('memberships.postpone');
     });
+    
+    
+    
+    
+    
+    
+    
+    
   });
 });

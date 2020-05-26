@@ -18,6 +18,10 @@ class CreateCommunityUserTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('community_id');
             $table->boolean('admin')->default(0);
+            $table->smallInteger('status')->default(0);
+            $table->dateTime('moderated_at')->nullable();
+            $table->unsignedBigInteger('moderated_by')->nullable();
+            $table->unique(['user_id', 'community_id']);
             $table->timestamps();
         });
     }

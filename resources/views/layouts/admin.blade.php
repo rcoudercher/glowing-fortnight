@@ -11,7 +11,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>@yield('title')</title>
+    <title>@yield('title') - ADMIN</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -21,14 +21,32 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Models
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ route('admin.comments.index') }}">Comments</a>
+              <a class="dropdown-item" href="{{ route('admin.communities.index') }}">Communities</a>
+              <a class="dropdown-item" href="{{ route('admin.memberships.index') }}">Memberships</a>
+              <a class="dropdown-item" href="{{ route('admin.messages.index') }}">Messages</a>
+              <a class="dropdown-item" href="{{ route('admin.posts.index') }}">Posts</a>
+              <a class="dropdown-item" href="{{ route('admin.community-rules.index') }}">Rules</a>
+              <a class="dropdown-item" href="{{ route('admin.trophies.index') }}">Trophies</a>
+              <a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a>
+            </div>
+          </li>
           
-          <li class="nav-item"><a class="nav-link" href="{{ route('admin.trophies.index') }}">Trophies</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('admin.comments.index') }}">Comments</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('admin.posts.index') }}">Posts</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('admin.communities.index') }}">Communities</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('admin.users.index') }}">Users</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('admin.community-rules.index') }}">Rules</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('admin.messages.index') }}">Messages</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Moderation <span class="badge badge-danger">{{ App\Comment::pending()->count() + DB::table('community_user')->where('status', 0)->count() + App\Post::pending()->count() }}</span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ route('admin.moderation.comments') }}">Comments <span class="badge badge-danger">{{ App\Comment::pending()->count() }}</span></a>
+              <a class="dropdown-item" href="{{ route('admin.moderation.memberships') }}">Memberships <span class="badge badge-danger">{{ DB::table('community_user')->where('status', 0)->count() }}</span></a>
+              <a class="dropdown-item" href="{{ route('admin.moderation.posts') }}">Posts <span class="badge badge-danger">{{ App\Post::pending()->count() }}</span></a>
+            </div>
+          </li>
           <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">// FRONT //</a></li>
         </ul>
         {{-- <form class="form-inline my-2 my-lg-0">
