@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 use App\Community;
 
@@ -50,6 +51,17 @@ class User extends Authenticatable
       return $this->belongsToMany('App\Community')
       ->withPivot('admin', 'status', 'moderated_at', 'moderated_by')
       ->withTimestamps();
+    }
+    
+    public function membershipStatus(Community $community)
+    {
+      $membership = DB::table('community_user')
+      ->where('user_id', $this->id)
+      ->where('community_id', $community->id)
+      ->first();
+      
+      return is_null($membership) ? null : $membership->status;
+      
     }
     
     public function adminCommunities()

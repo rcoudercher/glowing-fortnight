@@ -42,14 +42,30 @@ class CommunityController extends Controller
     $community->mod_members ? $status = 0 : $status = 1;
     $user->communities()->attach($community, ['status' => $status]);
     
-    return back()->with('message', 'Vous faites maintenant partie de k/'.$community->name);
+    // specific alert depending on wheter new users are moderated or not
+    if ($community->mod_members) {
+      $message = "Demande en attente de modération";
+    } else {
+      $message = 'Vous faites maintenant partie de k/'.$community->name;
+    }
+    
+    return back()->with('message', $message);
   }
   
   public function leave(Community $community)
-  {  
+  {
     $user = Auth::user();
+    
+    // before detaching user from community, create custom message for alert
+    if ($user->membershipStatus($community) == 1) {
+      $message = 'Vous avez bien quitté k/'.$community->name;
+    } else {
+      $message = 'Demande annulée';
+    }
+    
     $user->communities()->detach($community);
-    return back()->with('message', 'Vous avez bien quitté k/'.$community->name);
+        
+    return back()->with('message', $message);
   }
   
   public function showAdminDashboard(Community $community)
@@ -172,12 +188,21 @@ class CommunityController extends Controller
     ->with('message', 'Configuration modifiée');
   }
   
-  public function moderationIndex(Community $community)
+  public function moderationPending(Community $community)
   {
     $comments = $community->pendingComments;
     $posts = $community->pendingPosts;
     $users = $community->pendingUsers;
     
-    return view('communities.moderation.index', compact('community', 'comments', 'posts', 'users'));
+    return view('communities.moderation.pending', compact('community', 'comments', 'posts', 'users'));
+  }
+  
+  public function moderationRejected(Community $community)
+  {
+    $comments = $community->rejectedComments;
+    $posts = $community->rejectedPosts;
+    $users = $community->rejectedUsers;
+    
+    return view('communities.moderation.rejected', compact('community', 'comments', 'posts', 'users'));
   }
 }

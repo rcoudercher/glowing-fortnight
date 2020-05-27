@@ -10,6 +10,7 @@
       var modBtns = document.getElementsByClassName("modBtn");
       for (var i = 0; i < modBtns.length; i++) {
         modBtns.item(i).addEventListener("click", function(e) {
+          e.preventDefault();
           var target = e.target || e.srcElement;
           var form = target.nextElementSibling;
           form.submit();
@@ -26,7 +27,7 @@
       <div class="lg:flex">
         <div id="left" class="lg:w-2/3">
           <div class="card">
-            <h1 class="title h1 mb-6">Modération</h1>
+            <h1 class="title h1 mb-6">Modération : demandes en attente</h1>
             <div class="mb-6">
               <h3 class="title h3 mb-3">Membres</h3>
               @if ($users->count() == 0)

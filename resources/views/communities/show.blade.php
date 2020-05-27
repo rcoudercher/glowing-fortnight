@@ -49,6 +49,20 @@
       });
     }
     
+    // cancel button when user asked to join but request is still pending
+    var cancelBtn = document.getElementById("cancelBtn");    
+    if (cancelBtn !== null) {
+      cancelBtn.addEventListener("mouseover", function(e) {
+        var target = e.target || e.srcElement;
+        target.innerHTML = "Annuler";
+      });
+      
+      cancelBtn.addEventListener("mouseout", function(e) {
+        var target = e.target || e.srcElement;
+        target.innerHTML = "En attente";
+      });
+    }
+    
     // join/leave form
     var joinLeaveBtn = document.querySelector("#hero button");
     if (joinLeaveBtn !== null) {
@@ -81,17 +95,39 @@
         @if (Auth::check() && $community->isAdmin(Auth::user()))
           <a class="btn btn-blue mr-6" href="{{ route('communities.admin.dashboard', ['community' => $community]) }}">admin</a>
         @endif
+        
         @if (Auth::check() && $community->users->contains(Auth::user()))
-          <button type="button" id="leaveBtn" class="btn btn-black">Membre</button>
-          <form id="join-leave-form" action="{{ route('communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
-            @csrf
-          </form>
+          
+          @switch(Auth::user()->membershipStatus($community))
+            
+            @case(0)
+              <button id="cancelBtn" type="button" class="btn btn-black">En attente</button>
+              <form id="join-leave-form" action="{{ route('communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
+                @csrf
+              </form>
+              @break
+
+            @case(1)
+              <button id="leaveBtn" type="button" class="btn btn-black">Membre</button>
+              <form id="join-leave-form" action="{{ route('communities.leave', ['community' => $community]) }}" method="POST" class="hidden">
+                @csrf
+              </form>
+              @break
+            
+            @case(2)
+              <button type="button" class="btn btn-black">Refusé</button>
+              @break
+            
+          @endswitch          
+          
+          
         @else
           <button type="button" class="btn btn-black">Rejoindre</button>
           <form id="join-leave-form" action="{{ route('communities.join', ['community' => $community]) }}" method="POST" class="hidden">
             @csrf
           </form>
         @endif
+        
       </div>
     </div>
   </div>
