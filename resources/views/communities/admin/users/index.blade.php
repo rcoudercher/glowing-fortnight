@@ -41,7 +41,7 @@
                 @foreach ($community->approvedUsers as $user)
                   <tr>
                     <td class="border px-4 py-2"><a class="link" href="{{ route('users.show.posts', ['user' => $user]) }}">u/{{ $user->display_name }}</a></td>
-                    <td class="border px-4 py-2 text-center">date</td>
+                    <td class="border px-4 py-2 text-center">{{ $user->membershipUpdatedAt($community) }}</td>
                     <td class="border px-4 py-2 text-center">
                       <span class="link cursor-pointer excludeBtn">exclure</span>
                       <form action="{{ route('communities.admin.users.exclude', ['community' => $community, 'user' => $user]) }}" method="POST" class="hidden">

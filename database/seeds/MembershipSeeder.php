@@ -22,7 +22,7 @@ class MembershipSeeder extends Seeder
         $community = Community::all()->except($picked)->random();
         
         
-        $status = random_int(0,3);
+        $status = random_int(0,2);
         
         $data = [
           'admin' => random_int(0,1),

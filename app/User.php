@@ -61,8 +61,18 @@ class User extends Authenticatable
       ->first();
       
       return is_null($membership) ? null : $membership->status;
-      
     }
+    
+    public function membershipUpdatedAt(Community $community)
+    {
+      $membership = DB::table('community_user')
+      ->where('user_id', $this->id)
+      ->where('community_id', $community->id)
+      ->first();
+      
+      return is_null($membership) ? null : $membership->updated_at;
+    }
+    
     
     public function adminCommunities()
     {
