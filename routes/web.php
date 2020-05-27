@@ -60,25 +60,43 @@ Route::name('community-rules.')->group(function() {
 
 // community routes
 Route::name('communities.')->group(function () {
+  
   Route::get('k', 'Front\CommunityController@index')->name('index');
   Route::get('config/communautes/creer', 'Front\CommunityController@create')->name('create')->middleware('auth');
   Route::post('config/communautes/creer', 'Front\CommunityController@store')->name('store')->middleware('auth');
+  
+  
+  
+  
   Route::prefix('k/{community:display_name}')->group(function() {
+    
     Route::get('/', 'Front\CommunityController@show')->name('show');
-    Route::patch('/', 'Front\CommunityController@update')->name('update')->middleware('auth');
     
-    Route::get('admin', 'Front\CommunityController@showAdminDashboard')->name('admin.dashboard')->middleware('auth');
-    Route::get('admin/config', 'Front\CommunityController@editSettings')->name('settings.edit')->middleware('auth');
-    Route::patch('admin/config', 'Front\CommunityController@updateSettings')->name('settings.update')->middleware('auth');
+    Route::get('modifier', 'Front\CommunityController@edit')->name('edit');
+    Route::post('leave', 'Front\CommunityController@leave')->name('leave');
+    Route::post('join', 'Front\CommunityController@join')->name('join');
     
-    // moderation
-    Route::get('admin/moderation', 'Front\CommunityController@moderationPending')->name('moderation.pending')->middleware('auth');
-    Route::get('admin/moderation/refuse', 'Front\CommunityController@moderationRejected')->name('moderation.rejected')->middleware('auth');
+    Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
+      Route::name('admin.')->group(function () {
+        Route::get('membres', 'Front\CommunityController@adminUserIndex')->name('users.index');
+        Route::post('users/{user}/exclude', 'Front\CommunityController@adminUserExclude')->name('users.exclude');
+        
+      });
+    });
     
+    Route::middleware('auth')->group(function () {
+      Route::patch('/', 'Front\CommunityController@update')->name('update');
+      
+      Route::get('admin', 'Front\CommunityController@showAdminDashboard')->name('admin.dashboard');
+      Route::get('admin/config', 'Front\CommunityController@editSettings')->name('settings.edit');
+      Route::patch('admin/config', 'Front\CommunityController@updateSettings')->name('settings.update');
+      
+      // moderation
+      Route::get('admin/moderation', 'Front\CommunityController@moderationPending')->name('moderation.pending');
+      Route::get('admin/moderation/refuse', 'Front\CommunityController@moderationRejected')->name('moderation.rejected');
+      
+    });
     
-    Route::get('modifier', 'Front\CommunityController@edit')->name('edit')->middleware('auth');
-    Route::post('leave', 'Front\CommunityController@leave')->name('leave')->middleware('auth');
-    Route::post('join', 'Front\CommunityController@join')->name('join')->middleware('auth');
     
   });
 });

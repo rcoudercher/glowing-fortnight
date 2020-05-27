@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Community;
 use App\CommunityRule;
+use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -205,4 +206,17 @@ class CommunityController extends Controller
     
     return view('communities.moderation.rejected', compact('community', 'comments', 'posts', 'users'));
   }
+  
+  public function adminUserIndex(Community $community)
+  {
+    return view('communities.admin.users.index', compact('community'));
+  }
+  
+  public function adminUserExclude(Community $community, User $user)
+  {    
+    $community->users()->detach($user);
+    $message = 'u/'.$user->display_name.' exclu';
+    return back()->with('message', $message);
+  }
+  
 }

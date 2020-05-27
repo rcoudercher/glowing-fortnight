@@ -16,5 +16,6 @@
         </li>
       </ul>
     </li>
+    <li class="mb-2"><a class="link" href="{{ route('communities.admin.users.index', ['community' => $community]) }}">Membres</a></li>
   </ul>
 </div>
