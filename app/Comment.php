@@ -11,12 +11,12 @@ class Comment extends Model
   
   public function user()
   {
-    return $this->belongsTo('App\User')->withDefault();
+    return $this->belongsTo('App\User');
   }
   
   public function post()
   {
-    return $this->belongsTo('App\Post')->withDefault();
+    return $this->belongsTo('App\Post');
   }
   
   public function community()
@@ -25,8 +25,23 @@ class Comment extends Model
   }
   
   public function parent()
+  {
+    return is_null($this->parent_id) ? null : Comment::all()->find($this->parent_id);
+  }
+  
+  public function children()
+  {
+    return Comment::where('ancestor_id', $this->id)->get();
+  }
+  
+  public function hasChildren()
   {    
-    return Comment::find($this->parent_id);
+    return $this->children()->count() == 0 ? false : true;
+  }
+  
+  public function isChild()
+  {
+    return is_null($this->parent_id) ? false : true;
   }
   
   public function votes()
@@ -73,21 +88,6 @@ class Comment extends Model
   public function getEncryptedHash()
   {
     return encrypt($this->hash);
-  }
-  
-  public function children()
-  {
-    return Comment::where('ancestor_id', $this->id)->get();
-  }
-  
-  public function hasChildren()
-  {    
-    return $this->children()->count() == 0 ? false : true;
-  }
-  
-  public function isChild()
-  {
-    return is_null($this->parent_id) ? false : true;
   }
   
   public function isPending()

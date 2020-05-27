@@ -35,6 +35,12 @@ Route::name('users.')->group(function() {
   Route::post('inscription', 'Front\UserController@store')->name('store');
   Route::get('mot-de-passe/reinitialiser', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
   Route::patch('config/compte/supprimer', 'Front\UserController@destroy')->name('destroy')->middleware('auth');
+  
+  // moderation
+  Route::post('user/{community:hash}/{user}/approve', 'Front\UserController@approve')->name('approve');
+  Route::post('user/{community:hash}/{user}/reject', 'Front\UserController@reject')->name('reject');
+  // Route::post('user/{community:hash}/{user}/postpone', 'Front\UserController@postpone')->name('postpone');
+  
 });
 
 // rule routes
@@ -80,6 +86,10 @@ Route::name('posts.')->group(function() {
   Route::get('k/{community:display_name}/{post:hash}/{slug}', 'Front\PostController@show')->name('show');
   Route::get('post/{post:hash}/vote-count', 'Front\PostController@getVoteCount')->name('vote-count');
   Route::post('post/{post:hash}/vote', 'Front\PostController@vote')->name('vote');
+  // moderation
+  Route::post('post/{post:hash}/approve', 'Front\PostController@approve')->name('approve');
+  Route::post('post/{post:hash}/reject', 'Front\PostController@reject')->name('reject');
+  // Route::post('post/{post:hash}/postpone', 'Front\PostController@postpone')->name('postpone');
 });
 
 // comment routes
@@ -88,6 +98,10 @@ Route::name('comments.')->group(function() {
   Route::post('reply/{comment:hash}', 'Front\CommentController@reply')->name('reply')->middleware('auth');
   Route::get('comment/{comment:hash}/vote-count', 'Front\CommentController@getVoteCount')->name('vote-count');
   Route::post('comment/{comment:hash}/vote', 'Front\CommentController@vote')->name('vote');
+  // moderation
+  Route::post('comment/{comment:hash}/approve', 'Front\CommentController@approve')->name('approve');
+  Route::post('comment/{comment:hash}/reject', 'Front\CommentController@reject')->name('reject');
+  // Route::post('comment/{comment:hash}/postpone', 'Front\CommentController@postpone')->name('postpone');
 });
 
 // message routes

@@ -31,21 +31,25 @@ class CommunityController extends Controller
   public function join(Community $community)
   {
     $user = Auth::user();
-    $communities = $user->communities; // retrieve user's communities
+    
     // check if the user isn't already a member of the community he's requesting to join
-    if ($communities->contains($community)) {
+    if ($user->communities->contains($community)) {
       return redirect(route('communities.show', ['community' => $community]))
       ->with('error', 'Vous êtes déja membre de cette communauté.');
     }
-    $user->communities()->attach($community); // attach this new community
-    return back()->with('message', 'Vous faites maintenant partie de r/'.$community->name);
+    
+    // attach community with different status depending on the moderation policy of the community
+    $community->mod_members ? $status = 0 : $status = 1;
+    $user->communities()->attach($community, ['status' => $status]);
+    
+    return back()->with('message', 'Vous faites maintenant partie de k/'.$community->name);
   }
   
   public function leave(Community $community)
   {  
     $user = Auth::user();
     $user->communities()->detach($community);
-    return back()->with('message', 'Vous avez bien quitté r/'.$community->name);
+    return back()->with('message', 'Vous avez bien quitté k/'.$community->name);
   }
   
   public function showAdminDashboard(Community $community)
@@ -170,6 +174,10 @@ class CommunityController extends Controller
   
   public function moderationIndex(Community $community)
   {
-    return view('communities.moderation.index', compact('community'));
+    $comments = $community->pendingComments;
+    $posts = $community->pendingPosts;
+    $users = $community->pendingUsers;
+    
+    return view('communities.moderation.index', compact('community', 'comments', 'posts', 'users'));
   }
 }

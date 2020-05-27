@@ -9,6 +9,7 @@ use Auth;
 use App\User;
 use App\Post;
 use App\Comment;
+use App\Community;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -25,7 +26,11 @@ class UserController extends Controller
   public function showComments(User $user)
   {
     // $comment = $user->comments->first();
-    // dd($comment->parent());
+    // $comment = Comment::all()->find(70);
+    
+    // dd($comment);
+    
+    // dd($comment->parent()->user->display_name);
     
     
     $comments = $user->comments->sortByDesc('created_at');
@@ -127,8 +132,26 @@ class UserController extends Controller
     $user->save();
     
     // log the user out for the last time
-    Auth::guard('web')->logout();        
+    Auth::guard('web')->logout();
     
     return redirect(route('home'))->with('message', 'Votre compte a bien été supprimé.');
+  }
+  
+  public function approve(Community $community, User $user)
+  {
+    $community->users()->updateExistingPivot($user, ['status' => 1]);
+    return back()->with('message', 'Nouveau membre accepté');
+  }
+  
+  public function reject(Community $community, User $user)
+  {
+    $community->users()->updateExistingPivot($user, ['status' => 2]);
+    return back()->with('message', 'Nouveau membre refusé');
+  }
+  
+  public function postpone(Community $community, User $user)
+  {
+    $community->users()->updateExistingPivot($user, ['status' => 3]);
+    return back()->with('message', 'Nouveau membre reporté');
   }
 }

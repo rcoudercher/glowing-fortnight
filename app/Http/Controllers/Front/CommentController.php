@@ -37,6 +37,9 @@ class CommentController extends Controller
     
     $validator['hash'] = $this->uniqueHash();
     
+    // set post status depending on the post moderation policy of the community
+    $post->community->mod_comments ? $validator['status'] = 0 : $validator['status'] = 1;
+    
     $comment = Comment::create($validator);
     
     $comment->user()->associate(Auth::user());
@@ -174,5 +177,26 @@ class CommentController extends Controller
     return response()->json([
       'counter' => $comment->voteCount(),
     ]);
+  }
+  
+  public function approve(Comment $comment)
+  {
+    $comment->status = 1;
+    $comment->save();
+    return back()->with('message', 'Commentaire approuvé');
+  }
+  
+  public function reject(Comment $comment)
+  {
+    $comment->status = 2;
+    $comment->save();
+    return back()->with('message', 'Commentaire refusé');
+  }
+  
+  public function postpone(Comment $comment)
+  {
+    $comment->status = 3;
+    $comment->save();
+    return back()->with('message', 'Commentaire reporté');
   }
 }

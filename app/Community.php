@@ -23,6 +23,26 @@ class Community extends Model
     ->withTimestamps();
   }
   
+  public function pendingUsers()
+  {
+    return $this->belongsToMany('App\User')->wherePivot('status', 0);
+  }
+  
+  public function approvedUsers()
+  {
+    return $this->belongsToMany('App\User')->wherePivot('status', 1);
+  }
+  
+  public function rejectedUsers()
+  {
+    return $this->belongsToMany('App\User')->wherePivot('status', 2);
+  }
+  
+  public function postponedUsers()
+  {
+    return $this->belongsToMany('App\User')->wherePivot('status', 3);
+  }
+  
   public function admins()
   {
     return $this->belongsToMany('App\User')->wherePivot('admin', true);
@@ -43,13 +63,62 @@ class Community extends Model
     return $this->hasMany('App\Post');
   }
   
+  public function pendingPosts()
+  {
+    return $this->posts()->where('status', 0);
+  }
+  
+  public function approvedPosts()
+  {
+    return $this->posts()->where('status', 1);
+  }
+  
+  public function rejectedPosts()
+  {
+    return $this->posts()->where('status', 2);
+  }
+  
+  public function postponedPosts()
+  {
+    return $this->posts()->where('status', 3);
+  }
+  
   public function comments()
   {
     return $this->hasManyThrough('App\Comment', 'App\Post');
   }
   
+  public function pendingComments()
+  {
+    return $this->comments()->where('comments.status', 0);
+  }
+  
+  public function approvedComments()
+  {
+    return $this->comments()->where('comments.status', 1);
+  }
+  
+  public function rejectedComments()
+  {
+    return $this->comments()->where('comments.status', 2);
+  }
+  
+  public function postponedComments()
+  {
+    return $this->comments()->where('comments.status', 3);
+  }
+  
   public function communityRules()
   {
     return $this->hasMany('App\CommunityRule');
+  }
+  
+  public function getModerationCount()
+  {
+    $pendingCommentsCount = $this->pendingComments->count();
+    $pendingPostsCount = $this->pendingPosts->count();
+    $pendingUsersCount = $this->pendingUsers->count();
+    
+    return $pendingCommentsCount + $pendingPostsCount + $pendingUsersCount;
   }
 }

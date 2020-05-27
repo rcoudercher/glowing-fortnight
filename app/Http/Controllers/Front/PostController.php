@@ -90,6 +90,9 @@ class PostController extends Controller
     $validator['type'] = $type;
     $validator['slug'] = Str::limit(Str::slug($request->input('title'), '_'), 50);
     
+    // set post status depending on the post moderation policy of the community
+    $community->mod_posts ? $validator['status'] = 0 : $validator['status'] = 1;
+    
     $post = Post::create($validator);
         
     // if image post, upload picture after validation
@@ -189,5 +192,26 @@ class PostController extends Controller
     return response()->json([
       'counter' => $post->voteCount(),
     ]);
+  }
+  
+  public function approve(Post $post)
+  {
+    $post->status = 1;
+    $post->save();
+    return back()->with('message', 'Publication acceptée');
+  }
+  
+  public function reject(Post $post)
+  {
+    $post->status = 2;
+    $post->save();
+    return back()->with('message', 'Publication refusée');
+  }
+  
+  public function postpone(Post $post)
+  {
+    $post->status = 3;
+    $post->save();
+    return back()->with('message', 'Publication reportée');
   }
 }

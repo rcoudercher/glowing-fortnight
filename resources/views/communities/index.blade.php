@@ -13,7 +13,7 @@
               <div class="py-5 border-b-2 border-gray-500">
                 <div class="flex mb-3">
                   <h3 class="title h3 hover:underline flex-grow">
-                    <a href="{{ route('communities.show', ['community' => $community]) }}">r/{{ $community->name }}: {{ substr($community->title, 0, 40) }}</a>
+                    <a href="{{ route('communities.show', ['community' => $community]) }}">k/{{ $community->name }}: {{ substr($community->title, 0, 40) }}</a>
                   </h3>
                   <div>
                     @guest                      
